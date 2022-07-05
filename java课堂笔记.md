@@ -117,9 +117,9 @@ import com.iweb.test.*;
 
 包 java.lang 是唯一一个无需导入所有包都可以使用其中的类的包。
 
-问题：相同类名引入，如何使用？
+## 问题：相同类名引入，如何使用？
 
-答：遵循以下原则：
+### 答：遵循以下原则：
 
 前置准备：
 
@@ -137,39 +137,51 @@ public int num2 = 2;
 }
 ~~~~
 
-- 使用声明更具体的包的类
+1. 使用声明更具体的包的类
 
-  ~~~~java
-  import com.a.*;
-  import com.b.Test:
-  //使用b中的Test类
-  ~~~~
+~~~~java
+import com.a.*;
+import com.b.Test:
+//使用b中的Test类
+~~~~
 
-- 导入包声明程度一样具体——只能使用第一个，第二个直接报错
+2. 导入包声明程度一样具体的——只能使用第一个，第二个直接报错
 
-  ~~~~java
-  import com.a.Test;
-  import com.b.Test;//这一行直接报错
-  //只能使用a中的Test；
-  ~~~~
+~~~~java
+import com.a.Test;
+import com.b.Test;
+//只能使用a中的Test；
+~~~~
 
-- 不同导入包都采用通配符声明——必须进行选择才可正常使用
+3. 不同导入包都采用通配符声明——必须进行选择才可正常使用
 
-  ~~~~java
-  import com.a.*;
-  import com.b.*;
-  public static void main(String[] args){
-      com.a.Test a = new com.a.Test();
-      Test b = new Test();
-      //只能用a中的Test
-  }
-  ~~~~
+~~~~java
+import com.a.*;
+import com.b.*;
+public static void main(String[] args){
+    com.a.Test a = new com.a.Test();
+    Test b = new Test();
+    //一个都用不了
+}
+~~~~
 
-  
+4. 主程序内采用完整包名新建一个对象，都可以使用
 
-- 
+   ~~~~java
+   public class Test3 {
+       public static void main(String[] args) {
+        
+           com.a.Test a = new com.a.Test();
+           com.b.Test b = new com.b.Test();
+   
+           System.out.println(a.num1);
+           System.out.println(b.num2);
+           //都能用
+       }
+   }
+   ~~~~
 
-详情可见：https://blog.csdn.net/weixin_45752941/article/details/102573457
+
 
 ### 继承
 
@@ -195,6 +207,7 @@ public class Student extends Person{
 1. 子类构造过程中必须先调用父类的构造方法来构造父类对象
 2. 当子类中没有写明调用父类的哪个构造方法，则默认调用父类无参的构造方法
 3. 我们在子类构造方法中，可以使用 super(参数列表) 来手都调用父类的某个指定的构造方法（注意：super(参数列表)必须写在方法第一行）
+4. 如果没有手动调用，而父类中又没有午安的构造方法，则编译报错
 
 ### 访问控制符
 
@@ -227,9 +240,19 @@ alt+ins ==> getter and setter 直接生成
 
 它是一个引用，它指向当前对象的父类对象，我们可以使用 super.成员变量 来访问父类的属性，我们可以使用 super.方法 来调用父类的方法
 
+我们可以使用this(参数列表)来调用本类其他构造方法来构造对象
 
+### Object
 
+这是所有类的根类，当某个类不继承任何类的时候，就相当于继承了Object，任何一个类都拥有并且可以使用Object类中的方法toString()——将当前对象以字符串的形式表现出来。Object中的toString()返回的是 全类名@哈希编码；我们可以自由的重写toString()来更好的描述当前对象。
 
+### instanceof
 
+对象名 instanceof 类名
 
+判断一个类的对象是否是某个类的对象，返回一个boolean值
+
+父类引用可以指向其子类的对象，也就是说子类对象可以当做父类对象来用，这被称为哦“向上转型”
+
+我们可以将父类引用所指向的子类对象通过 (子类类型) 转为子类的类型，这被称为“向下转型”
 
