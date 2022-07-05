@@ -119,6 +119,30 @@ import com.iweb.test.*;
 
 问题：相同类名引入，如何使用？
 
+答：遵循以下原则：
+
+- 使用声明更具体的包的类
+
+  ~~~~java
+  import com.a.*;
+  import com.b.Test:
+  //使用b中的Test类
+  ~~~~
+
+- 导入包声明程度一样具体——按顺序使用第一个
+
+  ~~~~java
+  import com.a.Test;
+  import com.b.Test;
+  //只能使用a中的Test；
+  ~~~~
+
+- 不同导入包都采用通配符声明——必须进行选择才可正常使用
+
+- 
+
+https://blog.csdn.net/weixin_45752941/article/details/102573457
+
 ### 继承
 
 “xxx是一种xxx”  这句话说得通则两者存在继承关系
