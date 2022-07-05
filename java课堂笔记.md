@@ -1,4 +1,4 @@
-## Day 1
+# Day 1
 
 面向对象
 
@@ -96,7 +96,7 @@ Car c = new Car("奥迪");
 1. static可以修饰成员变量，被static修饰的成员变量只有一份，它被当前类的所有对象共享；我们可以使用任一对象访问static的成员变量，也可以直接使用类名访问static的成员变量；static的成员变量往往可以用来计数。
 2. static可以修饰方法，这样的方法叫作静态方法，静态方法可以被类名直接调用。静态方法种调用本类其他的静态方法，连类名也可以省略。静态方法种不能直接调用本类种其他非静态方法。
 
-## Day 2
+# Day 2
 
 ### 包
 
@@ -121,6 +121,22 @@ import com.iweb.test.*;
 
 答：遵循以下原则：
 
+前置准备：
+
+~~~~java
+package com.a;
+public class Test(){
+    public int num1 = 1;
+}
+~~~~
+
+~~~~java
+package com.b;
+public class Test(){
+public int num2 = 2;
+}
+~~~~
+
 - 使用声明更具体的包的类
 
   ~~~~java
@@ -133,7 +149,7 @@ import com.iweb.test.*;
 
   ~~~~java
   import com.a.Test;
-  import com.b.Test;
+  import com.b.Test;//这一行直接报错
   //只能使用a中的Test；
   ~~~~
 
@@ -163,6 +179,8 @@ java只支持单继承，一个子类只能有一个父类
 
 子类继承父类，子类就自动拥有了父类所有的属性和方法，子类还可以有自己新增的属性和方法
 
+子类拥有父类的所有属性和方法，但是子类不能访问父类私有的属性和方法
+
 语法：	class 子类名 extends 父类名
 
 ~~~~java
@@ -184,4 +202,28 @@ public class Student extends Person{
 |  不写   |    Y     |    Y     |      |          |
 | protect |    Y     |    Y     |  Y   |          |
 | public  |    Y     |    Y     |  Y   |    Y     |
+
+对于class的修饰可以使用public或者不写，如果不写，只能在当前包中使用
+
+### JavaBean
+
+我们应该将Java中的实体封装成JavaBean，每一个成员变量都私有化，设置为private，针对每个成员变量都提供public 的 get方法来取值，public 的set方法来存值。JavaBean体现了Java面向对象的**封装性**
+
+alt+ins ==> getter and setter 直接生成
+
+### 方法的重写
+
+父类和子类，子类对父类的方法进行重写时，方法名一样，返回值类型一样，参数也一样，根据调用者的类型来决定调用哪个方法
+
+注意：在重写方法的时候可以添加@Override注解检查是否在重写；重写方法不能比被重写方法有更严格的访问权限；
+
+### super
+
+它是一个引用，它指向当前对象的父类对象，我们可以使用 super.成员变量 来访问父类的属性，我们可以使用 super.方法 来调用父类的方法
+
+
+
+
+
+
 
