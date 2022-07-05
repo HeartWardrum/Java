@@ -115,7 +115,7 @@ import 全类名；//导入具体的某个包，然后再当前类中就可以�
 import com.iweb.test.*;
 ~~~~
 
-包 java.lang 是唯一一个无需导入所有包都可以使用其中的类的包。
+包 java.lang 是唯一一个无需导入,所有包都可以使用其中的类的包。
 
 ## 问题：相同类名引入，如何使用？
 
@@ -206,8 +206,8 @@ public class Student extends Person{
 
 1. 子类构造过程中必须先调用父类的构造方法来构造父类对象
 2. 当子类中没有写明调用父类的哪个构造方法，则默认调用父类无参的构造方法
-3. 我们在子类构造方法中，可以使用 super(参数列表) 来手都调用父类的某个指定的构造方法（注意：super(参数列表)必须写在方法第一行）
-4. 如果没有手动调用，而父类中又没有午安的构造方法，则编译报错
+3. 我们在子类构造方法中，可以使用 super(参数列表) 来手动调用父类的某个指定的构造方法（注意：super(参数列表)必须写在方法第一行）
+4. 如果没有手动调用，而父类中又没有无参的构造方法，则编译报错
 
 ### 访问控制符
 
@@ -240,7 +240,36 @@ alt+ins ==> getter and setter 直接生成
 
 它是一个引用，它指向当前对象的父类对象，我们可以使用 super.成员变量 来访问父类的属性，我们可以使用 super.方法 来调用父类的方法
 
-我们可以使用this(参数列表)来调用本类其他构造方法来构造对象
+
+
+~~~~java
+//我们可以使用this(参数列表)来调用本类其他构造方法来构造对象
+package com.iweb.test2;
+
+public class Person {
+
+    String cardId;
+    String name;
+    String age;
+
+    public Person(String cardId, String name, String age) {
+        this.cardId = cardId;
+        this.name = name;
+        this.age = age;
+    }
+
+    public Person(String cardId) {
+        this(cardId, "无名氏", "0");//给另外两个参数赋缺省值
+    }
+
+    public Person() {
+        this("12313131", "无名氏", "0");//全部赋缺省值
+    }
+}
+
+~~~~
+
+
 
 ### Object
 
@@ -254,5 +283,18 @@ alt+ins ==> getter and setter 直接生成
 
 父类引用可以指向其子类的对象，也就是说子类对象可以当做父类对象来用，这被称为哦“向上转型”
 
-我们可以将父类引用所指向的子类对象通过 (子类类型) 转为子类的类型，这被称为“向下转型”
+~~~~java
+//父类Animal 子类Cat  Dog
+Animal animal = new Cat();//声明的是父类，实际指向子类的一个对象
+~~~~
+
+
+
+我们可以将父类引用所指向的子类对象通过 (子类类型) 转为子类的类型，这被称为“向下转型”，目的是调用子类独有的方法
+
+~~~~java
+//父类Animal 子类Cat  Dog
+Anima animal = new Cat; //向上转型
+Cat cat = (Cat)animal;//向下转型
+~~~~
 
