@@ -129,7 +129,7 @@ import com.iweb.test.*;
   //使用b中的Test类
   ~~~~
 
-- 导入包声明程度一样具体——按顺序使用第一个
+- 导入包声明程度一样具体——只能使用第一个，第二个直接报错
 
   ~~~~java
   import com.a.Test;
@@ -139,9 +139,21 @@ import com.iweb.test.*;
 
 - 不同导入包都采用通配符声明——必须进行选择才可正常使用
 
+  ~~~~java
+  import com.a.*;
+  import com.b.*;
+  public static void main(String[] args){
+      com.a.Test a = new com.a.Test();
+      Test b = new Test();
+      //只能用a中的Test
+  }
+  ~~~~
+
+  
+
 - 
 
-https://blog.csdn.net/weixin_45752941/article/details/102573457
+详情可见：https://blog.csdn.net/weixin_45752941/article/details/102573457
 
 ### 继承
 
