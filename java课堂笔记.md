@@ -1,4 +1,4 @@
-# Day 1
+# 第一天
 
 面向对象
 
@@ -42,7 +42,14 @@
 
 ### 构造方法 
 
-用来创建对象的方法，被new关键字调用；其方法名与类同名；当我们不写构造方法，系统会自动提供默认无参构造方法；当我们自己手写时，系统就不会提供默认构造方法；它没有返回值，前面也不能加void
+用来创建对象的方法，被new关键字调用；其方法名与类同名；
+
+~~~~java
+//格式
+类名 对象名 = new 类名(); //左边的对象存储一个来自堆的地址
+~~~~
+
+当我们不写构造方法，系统会自动提供默认无参构造方法；当我们自己手写时，系统就不会提供默认构造方法；它没有返回值，前面也不能加void
 
 手写有参构造方法时最好再配一个无参构造方法
 
@@ -96,7 +103,7 @@ Car c = new Car("奥迪");
 1. static可以修饰成员变量，被static修饰的成员变量只有一份，它被当前类的所有对象共享；我们可以使用任一对象访问static的成员变量，也可以直接使用类名访问static的成员变量；static的成员变量往往可以用来计数。
 2. static可以修饰方法，这样的方法叫作静态方法，静态方法可以被类名直接调用。静态方法种调用本类其他的静态方法，连类名也可以省略。静态方法种不能直接调用本类种其他非静态方法。
 
-# Day 2
+# 第二天
 
 ### 包
 
@@ -159,9 +166,9 @@ import com.b.Test;
 import com.a.*;
 import com.b.*;
 public static void main(String[] args){
-    com.a.Test a = new com.a.Test();
+    com.a.Test a = new com.a.Test();//当写出这一行时，开头自动生成 import com.a.Test;
     Test b = new Test();
-    //一个都用不了
+    //只能用a中的Test
 }
 ~~~~
 
@@ -240,6 +247,8 @@ alt+ins ==> getter and setter 直接生成
 
 它是一个引用，它指向当前对象的父类对象，我们可以使用 super.成员变量 来访问父类的属性，我们可以使用 super.方法 来调用父类的方法
 
+super(参数)来调用父类中某一个构造函数，调用super()必须写在子类构造方法的第一行，否则编译不通过
+
 
 
 ~~~~java
@@ -281,20 +290,112 @@ public class Person {
 
 判断一个类的对象是否是某个类的对象，返回一个boolean值
 
-父类引用可以指向其子类的对象，也就是说子类对象可以当做父类对象来用，这被称为哦“向上转型”
+### “向下转型”和“向上转型”
+
+父类引用可以指向其子类的对象，也就是说子类对象可以当做父类对象来用，这被称为“向上转型”
 
 ~~~~java
-//父类Animal 子类Cat  Dog
+//父类Animal 	有方法run() 
+//子类Cat 	重写方法run() 单独定义方法miaow()
 Animal animal = new Cat();//声明的是父类，实际指向子类的一个对象
+//注意：
+//1. 向上转型后，子类单独定义的方法会丢失（父类并不知道子类定义的新属性与方法） animal.miaow();是错误的
+//2. 父类引用可以指向子类对象，但是子类引用不能指向父类对象
+//3. 如果子类中重写了父类的方法，那么调用这个方法的时候，将会调用子类中的方法
 ~~~~
 
-
-
-我们可以将父类引用所指向的子类对象通过 (子类类型) 转为子类的类型，这被称为“向下转型”，目的是调用子类独有的方法
+我们可以将父类引用所指向的子类对象通过 (子类类型) 转为子类的类型，这被称为“向下转型”，目的是调用子类独有的方法;这种方法可扩展性好，防止甲方乱改方案。
 
 ~~~~java
-//父类Animal 子类Cat  Dog
-Anima animal = new Cat; //向上转型
-Cat cat = (Cat)animal;//向下转型
+package com.iweb.test;
+
+//父类：动物类
+public class Animal {
+    String name;//动物名
+
+    public Animal(String name) {
+        this.name = name;
+    }
+
+    public void run() {
+        System.out.println("会跑");
+    }
+}
+
+//子类：猫咪类
+ class Cat extends Animal {
+    String eyesColor;  //猫咪瞳色
+    
+    public Cat(String name, String eyesColor) {
+        super(name);
+        this.eyesColor = eyesColor;
+    }
+    
+    public void miaow() {
+        System.out.println("喵喵叫");
+    }
+}
+//测试类
+ class ZTest {
+
+    public static void main(String[] args) {
+
+        Animal a = new Animal("动物");
+        Cat c = new Cat("猫", "蓝色");
+
+        f(a);//最终返回： 动物 该生物不是猫咪
+        f(c);//最终返回： 猫 该生物是猫咪 猫 蓝色 喵喵叫
+
+    }
+
+    public static void f(Animal animal) {
+        System.out.println(animal.name);
+
+        if (animal instanceof Cat) { //该生物是猫咪 返回1
+            System.out.println("该生物是猫咪");
+            System.out.println(((Cat) animal).name); //((Cat) animal)即为向下转型
+            System.out.println(((Cat) animal).eyesColor);
+            ((Cat) animal).miaow();
+
+        } else {
+            System.out.println("该生物不是猫咪");
+        }
+    }
+}
 ~~~~
 
+## 第三天
+
+### equals()方法
+
+Object类的equals方法用来比较两个对象是否相等，它原生态的写法等同于“==”，只有当两个对象是同一对象时返回true；
+
+我们应该按照自己的方式去重写equals()方法
+
+### 运行时多态
+
+又叫做动态绑定
+
+当父类引用指向子类对象的时候，父类的引用去调用父类的方法，实际调用到的是子类重写过后的方法
+
+关键词：继承、重写、父类引用指向子类对象
+
+### 抽象方法
+
+定义：只有方法的声明而没有方法的实现，抽向方法需要被abstract关键字修饰
+
+~~~~java
+public abstract void draw();//抽向方法必须被重写
+~~~~
+
+### 抽向类
+
+含有抽向方法的类被称为抽象类
+
+- 抽向类需要被abstract关键字修饰
+- 抽象类不能被实例化（不能直接创建对象）
+- 抽向类是用来被继承的，抽向方法是用来被重写的
+
+### final
+
+可以用来修饰一个类——最终类：它不能被继承
