@@ -372,6 +372,61 @@ Object类的equals方法用来比较两个对象是否相等，它原生态的�
 
 我们应该按照自己的方式去重写equals()方法
 
+~~~~java
+//例题
+//自行定义能满足需要的MyDate类，在MyDate类中重写equals方法，使其判断当两个MyDate类型对象的年月日都相同时，结果为true，否则为false
+
+//MyDate类
+package com.iweb.homework;
+
+public class MyDate {
+    int year, month, day;
+
+    public MyDate() {
+
+    }
+
+    public MyDate(int year, int month, int day) {
+        this.year = year;
+        this.month = month;
+        this.day = day;
+    }
+
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        } else {
+            if (obj instanceof MyDate) {
+                MyDate myDate = (MyDate) obj;
+                if (this.year == myDate.year && this.month == myDate.month && this.day == myDate.day) {
+                    return true;
+                } else {
+                    return false;
+                }
+            } else {
+                return false;
+            }
+        }
+    }
+}
+~~~~
+
+~~~~java
+//测试类
+package com.iweb.homework;
+
+public class ATest {
+    public static void main(String[] args) {
+        MyDate myDate1 = new MyDate(2000,1,1);
+        MyDate myDate2 = new MyDate(2000,1,1);
+
+        System.out.println(myDate1.equals(myDate2));
+    }
+}
+~~~~
+
 ### 运行时多态
 
 又叫做动态绑定
@@ -417,3 +472,21 @@ public static final 数据类型 常量名 = 常量值；
 - 接口被实现类来实现，我们使用implements关键字进行实现
 - 实现一个接口，就必须重写接口中所有的抽向方法
 - 接口类型的引用可以指向实现类的对象，当它调用接口中的方法时，实际调用到的是实现类中重写过后的方法
+- 一个类可以同时实现多个无关的接口
+- 注意：当一个类实现多个接口时，该类对象可以多个接口之间转换
+
+~~~~java
+package com.iweb.test2;
+//画画类
+public interface Painter {
+    public void draw();
+    public void sleep();
+    public void eat();
+}
+~~~~
+
+
+
+# 问题
+
+既然有get和set，那么构造方法存在的意义？
