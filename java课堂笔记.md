@@ -674,8 +674,6 @@ throw 和 throws 的区别：
 
 <img src="https://cdn.jsdelivr.net/gh/HeartWardrum/MyImageHost/异常类的结构图.png" alt="异常类的结构图" style="zoom:67%;" />
 
-- 
-
 ### String
 
 不可变的字符序列（关于它的变化都会创建一个新字符串）
