@@ -590,20 +590,61 @@ public class Teachers implements Singer,Painter { //用implements来实现一或
 
 ### try {    }    catch(){   }
 
-一个try可以对应多个catch，那么多个catch按照先捕获小的异常再捕获大的异常这样的原则进行顺序鞭蝎，也可以只捕获大的异常。
+一个try可以对应多个catch，这些catch按照先捕获小的异常再捕获大的异常这样的原则进行顺序编译，也可以只捕获大的异常。
 
 ~~~~java
 try{
-    里面编写一些可能发生异常的代码
+    //里面编写一些可能发生异常的代码
 }
 catch(异常类型 变量名){
-    当代码块发生异常时要做的事
+    //catch块   当代码块发生异常时要做的事
 }
 ~~~~
 
+~~~~java
+package com.iweb.test;
+
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+
+public class Test6 {
+
+    public static void main(String[] args) {
+        InputStream is = null;
+        try {
+            is = new FileInputStream("D:\\Desktop\\内容读取.txt");
+            int i = 0;
+            while ((i = is.read()) != -1) {
+                System.out.print((char) i);
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                is.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+}
+~~~~
+
+### finally{  }
+
+它是跟在try/catch后面的第三个代码块，写在finally里面的代码是无论如何都一定会被执行
+
+- 注意：如果finally代码块前面执行了return语句，它依然会执行，并且是在return之前执行
+
 ### throws
 
-写在方法声明处，表示该方法可能抛出怎样的异常
+写在方法声明处【签名(方法的名称+参数类型)的尾部】，表示该方法可能抛出怎样的异常
+
+当一个方法产生一个它不处理的异常时，那么就需要在该方法的头部声明这个异常，以便将该异常传递到方法的外部进行处理
 
 ~~~~java
 static void b(int n, int m) throws ArithmeticException {
@@ -619,17 +660,21 @@ static void b(int n, int m) throws ArithmeticException {
 throw new 异常对象 
 ~~~~
 
+throw 和 throws 的区别：
+
+- throws 用来声明一个方法可能抛出的所有异常，而 throw 则是抛出一个具体的异常类型
+- 通常在一个方法的声明处通过 throws 声明方法可能抛出的所有异常信息，而在方法的内部声明一个具体的异常信息
+- throws 通常不明显地捕获异常，而是由系统自动将所有捕获的异常信息抛给上级方法，throw 则需要程序员自己捕获相关的异常，然后再对其进行包装，最后将包装的异常信息抛出。
+
+
+
 ### 异常类的结构图
 
 注意：RunTimeException在编译的过程中，可以不被try/catch或者throw/throws；而剩下的异常必须被try/catch或者throw/throws，否则边编译报错
 
 <img src="https://cdn.jsdelivr.net/gh/HeartWardrum/MyImageHost/异常类的结构图.png" alt="异常类的结构图" style="zoom:67%;" />
 
-### finally{  }
-
-它是跟在try/catch后面的第三个代码块，写在finally里面的代码是无论如何都一定会被执行
-
-- 注意：如果finally代码块前面执行了return语句，它依然会执行，并且是在return之前执行
+- 
 
 ### String
 
@@ -735,6 +780,41 @@ System.out.println("加法" + b1.add(b2));//2.3
 System.out.println("乘法" + b1.multiply((b2)));//1.32
 System.out.println("保留五位小数" + b1.divide(b2, 5, BigDecimal.ROUND_HALF_UP));//1.09091
   
+~~~~
+
+### 简单的文件读取
+
+~~~~java
+package com.iweb.test;
+
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+
+public class Test6 {
+
+    public static void main(String[] args) {
+        InputStream is = null;
+        try {
+            is = new FileInputStream("D:\\Desktop\\内容读取.txt");
+            int i = 0;
+            while ((i = is.read()) != -1) {
+                System.out.print((char) i);
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                is.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+}
 ~~~~
 
 
