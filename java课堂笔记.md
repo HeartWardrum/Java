@@ -590,6 +590,8 @@ public class Teachers implements Singer,Painter { //用implements来实现一或
 
 ### try {    }    catch(){   }
 
+一个try可以对应多个catch，那么多个catch按照先捕获小的异常再捕获大的异常这样的原则进行顺序鞭蝎，也可以只捕获大的异常。
+
 ~~~~java
 try{
     里面编写一些可能发生异常的代码
@@ -617,9 +619,19 @@ static void b(int n, int m) throws ArithmeticException {
 throw new 异常对象 
 ~~~~
 
+### 异常类的结构图
 
+注意：RunTimeException在编译的过程中，可以不被try/catch或者throw/throws；而剩下的异常必须被try/catch或者throw/throws，否则边编译报错
 
+![异常类的结构图](https://obohe.com/i/2022/07/07/md4j2c.png)
 
+### finally{  }
+
+它是跟在try/catch后面的第三个代码块，写在finally里面的代码是无论如何都一定会被执行
+
+- 注意：如果finally代码块前面执行了return语句，它依然会执行，并且是在return之前执行
+
+  
 
 # 问题
 
