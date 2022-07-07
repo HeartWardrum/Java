@@ -493,6 +493,8 @@ public abstract void draw();//抽向方法必须被重写
 
 ### 常量
 
+整个内存只有一份
+
 ~~~~java
 public static final 数据类型 常量名 = 常量值； 
     
@@ -568,3 +570,9 @@ public class Teachers implements Singer,Painter { //用implements来实现一或
     }
 }
 ~~~~
+
+## 第四天
+
+### getClass()
+
+获得当前对象的全类名
