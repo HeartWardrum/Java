@@ -715,6 +715,28 @@ System.out.println(Math.abs(-100));  //取绝对值  此处返回100
 System.out.println(Math.sqrt(81.0));  //开方  此处返回9.0
 ~~~~
 
+### BigDecimal类
+
+大数值型，可以解决java中基本数据类型长度限制和计算精度的问题
+
+~~~~java
+double d3 = 1.2;
+double d2 = 1.1;
+System.out.println(d3 - d2);//0.09999999999999987
+
+BigDecimal b1 = new BigDecimal("1.2");
+BigDecimal b2 = new BigDecimal("1.1");
+BigDecimal b3 = b1.subtract(b2);
+System.out.println(b3);//0.1
+double result = b3.doubleValue();
+System.out.println(b3);//0.1
+
+System.out.println("加法" + b1.add(b2));//2.3
+System.out.println("乘法" + b1.multiply((b2)));//1.32
+System.out.println("保留五位小数" + b1.divide(b2, 5, BigDecimal.ROUND_HALF_UP));//1.09091
+  
+~~~~
+
 
 
 # 问题
