@@ -523,7 +523,7 @@ public class HelloWorld {
 - 注意：当一个类实现多个接口时，该类对象可以多个接口之间转换
 - 1. 接口中没有成员变量，只有常量，它是常量和抽象方法的集合
   2. 接口中所有方法都是public，而且只能是public
-  3. 1.8及以后版本的jdk，接口中还可以存在static修饰的非抽象方法（问题：怎么调用？）
+  3. 1.8及以后版本的jdk，接口中还可以存在static修饰的非抽象方法，使用  接口名.方法名  直接调用
 
 ~~~~java
 //画家接口
@@ -533,6 +533,9 @@ public interface Painter {
     public void draw();
     public void sleep();
     public void eat();
+    public static void methodInterface(){   //1.8及以后版本的jdk，接口中还可以存在static修饰的非抽象方法，使用  接口名.方法名  直接调用  例如：在测试类中写   Painter.methodInterface();
+        System.out.println("我是接口内的非抽象函数")；            
+    }
     
 }
 ~~~~
@@ -596,10 +599,27 @@ catch(异常类型 变量名){
 }
 ~~~~
 
+### throws
+
+写在方法声明处，表示该方法可能抛出怎样的异常
+
+~~~~java
+static void b(int n, int m) throws ArithmeticException {
+            int result = n / m;
+            System.out.println(result);
+    }
+~~~~
+
+### throw 
+
+~~~~java
+//人为的手动抛异常
+throw new 异常对象 
+~~~~
+
 
 
 
 
 # 问题
 
-怎么调用接口中的非抽象方法？
