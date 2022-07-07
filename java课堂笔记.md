@@ -720,7 +720,7 @@ System.out.println("s11 =" + s11);//s11 =hello
 
 可变的字符串
 
-我们通过 new StringBuffer(String)来构造一个StringBuffer对象
+我们通过 new StringBuffer(String s)来构造一个StringBuffer对象
 
 ~~~~java
 //append(String s)   在原字符串后面追加新的字符串
@@ -769,9 +769,9 @@ System.out.println(d3 - d2);//0.09999999999999987
 
 BigDecimal b1 = new BigDecimal("1.2");
 BigDecimal b2 = new BigDecimal("1.1");
-BigDecimal b3 = b1.subtract(b2);
+BigDecimal b3 = b1.subtract(b2);//b1-b2
 System.out.println(b3);//0.1
-double result = b3.doubleValue();
+double result = b3.doubleValue();//将此 BigDecimal转换为 double 
 System.out.println(b3);//0.1
 
 System.out.println("加法" + b1.add(b2));//2.3
