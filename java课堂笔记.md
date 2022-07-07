@@ -9,16 +9,15 @@
 ### java标识符命名规则：
 
 - 类名：首字母大写
-
 - 变量名和方法名：首字母小写
+  - 如果有多个单词，后面每个单词首字母大写（驼峰命名法）
 
-- 如果有多个单词，后面每个单词首字母大写（驼峰命名法）
 
 ### java代码的编写
 
 1. 先有类后有对象
 
-   - 我们使用class感激案子定义一个类
+   - 我们使用class关键词定义一个类
 
    - 类：
 
@@ -31,14 +30,47 @@
        }
 
   2. 每一句话都以分号结尾
-  3. 基本数据类型：
-     - byte short int long   默认值：0
-     - float double        0.0
-     - char           '\u0000' 
-     - boolean         false
+
+  3. 
+     |    基本数据类型     |  缺省值  |
+     | :-----------------: | :------: |
+     | byte short int long |    0     |
+     |    float double     |   0.0    |
+     |        char         | '\u0000' |
+     |       boolean       |  false   |
+
+     
+
  4. 引用类型默认值： null
+
  5. 定义多个变量 ： double x,y,z;
- 6. 
+
+### 引用类型
+
+如果 reference 类型的数据中存储的数值代表的是另外一块内存的起始地址，就称为这块内存代表着一个引用。
+
+~~~~java
+String s; //创建一个引用，引用可以独立存在，并不一定需要和一个对象相关联
+String str = new String("123");//通过将这个叫“引用”的标识符指向某个对象，之后便可以通过这个引用来实现操作对象了。
+~~~~
+
+- 强引用
+
+  ~~~~java
+  //Java中默认声明的就是强引用，比如：
+  Object obj = new Object(); //只要obj还指向Object对象，Object对象就不会被回收
+  obj = null;  //手动置null
+  //只要强引用存在，垃圾回收器将永远不会回收被引用的对象，哪怕内存不足时，JVM也会直接抛出OutOfMemoryError，不会去回收。如果想中断强引用与对象之间的联系，可以显示的将强引用赋值为null，这样一来，JVM就可以适时的回收对象了
+  ~~~~
+
+- 软引用
+
+  ~~~~java
+  //软引用是用来描述一些非必需但仍有用的对象。在内存足够的时候，软引用对象不会被回收，只有在内存不足时，系统则会回收软引用对象，如果回收了软引用对象之后仍然没有足够的内存，才会抛出内存溢出异常。这种特性常常被用来实现缓存技术，比如网页缓存，图片缓存等
+  ~~~~
+
+- 弱引用
+- 虚引用
 
 ### 构造方法 
 
@@ -437,19 +469,19 @@ public class ATest {
 
 ### 抽象方法
 
-定义：只有方法的声明而没有方法的实现，抽向方法需要被abstract关键字修饰
+定义：只有方法的声明而没有方法的实现，抽象方法需要被abstract关键字修饰
 
 ~~~~java
 public abstract void draw();//抽向方法必须被重写
 ~~~~
 
-### 抽向类
+### 抽象类 
 
-含有抽向方法的类被称为抽象类
+含有抽象方法的类被称为抽象类
 
-- 抽向类需要被abstract关键字修饰
+- 抽象类需要被abstract关键字修饰
 - 抽象类不能被实例化（不能直接创建对象）
-- 抽向类是用来被继承的，抽向方法是用来被重写的
+- 抽象类是用来被继承的，抽象方法是用来被重写的
 
 ### final
 
@@ -463,11 +495,24 @@ public abstract void draw();//抽向方法必须被重写
 
 ~~~~java
 public static final 数据类型 常量名 = 常量值； 
+    
+//常量有三种
+public class HelloWorld {
+    // 静态常量
+    public static final double PI = 3.14;
+    // 声明成员常量
+    final int y = 10;
+
+    public static void main(String[] args) {
+        // 声明局部常量
+        final double x = 3.3;
+    }
+}
 ~~~~
 
 ### 接口
 
-- 如果一个类中所有的方法都是抽向的，那么这个类可以做成接口
+- 如果一个类中所有的方法都是抽象的，那么这个类可以做成接口
 - 接口使用interface定义
 - 接口被实现类来实现，我们使用implements关键字进行实现
 - 实现一个接口，就必须重写接口中所有的抽向方法
@@ -476,8 +521,9 @@ public static final 数据类型 常量名 = 常量值；
 - 注意：当一个类实现多个接口时，该类对象可以多个接口之间转换
 
 ~~~~java
+//画家接口
 package com.iweb.test2;
-//画画类
+
 public interface Painter {
     public void draw();
     public void sleep();
@@ -485,8 +531,40 @@ public interface Painter {
 }
 ~~~~
 
+~~~~java
+//歌手接口
+package com.iweb.test2;
+
+public interface Singer {
+    public void sing();
+    public void sleep();
+}
+~~~~
+
+~~~~java
+//老师类
+package com.iweb.test2;
+public class Teachers implements Singer,Painter { //用implements来实现一或多个接口
 
 
-# 问题
+    @Override
+    public void draw() {
+        System.out.println("老师在画画");
+    }
 
-既然有get和set，那么构造方法存在的意义？
+    @Override
+    public void eat() {
+        System.out.println("老师在吃饭");
+    }
+
+    @Override
+    public void sing() {
+        System.out.println("老师在唱歌");
+    }
+
+    @Override
+    public void sleep() {
+        System.out.println("老师在睡觉");
+    }
+}
+~~~~
