@@ -623,7 +623,7 @@ throw new 异常对象
 
 注意：RunTimeException在编译的过程中，可以不被try/catch或者throw/throws；而剩下的异常必须被try/catch或者throw/throws，否则边编译报错
 
-![异常类的结构图](https://obohe.com/i/2022/07/07/md4j2c.png)
+<img src="https://cdn.jsdelivr.net/gh/HeartWardrum/MyImageHost/异常类的结构图.png" alt="异常类的结构图" style="zoom:67%;" />
 
 ### finally{  }
 
@@ -631,7 +631,91 @@ throw new 异常对象
 
 - 注意：如果finally代码块前面执行了return语句，它依然会执行，并且是在return之前执行
 
-  
+### String
+
+不可变的字符序列（关于它的变化都会创建一个新字符串）
+
+我们可以通过String 变量名 = "字符串"  来创建一个String对象，它存放在常量区
+
+当我们new String(字符串)时，它实际上创建了两个对象，将指定的字符串对象拷贝了一份
+
+在比较两个字符串的时候，统一使用equals()方法，它比较的是字符串的内容相不相同
+
+```java
+
+String s1 = "hello",s2 = "HELLO",s3 = "e";
+s1.equalsIgnoreCase(s2); //字符串比较，忽略大小写
+s1.indexOf(s3);//返回指定字符在字符串中第一次出现处的索引，如果此字符串中没有这样的字符，则返回 -1
+
+//字符串分割 spilit("正则表达式")
+String s6 = "Tom,Jerry,Marry";
+String[] arr = s6.split(",");
+for (int i = 0; i < arr.length; i++) {
+     System.out.println(arr[i]);
+}
+
+//字符串截取  substring(int beginString,int endString)
+String s7 = s6.substring(4);
+System.out.println(s7);  //Jerry,Marry
+String s8 = s6.substring(4, 9);
+System.out.println(s8); //Jerry
+
+//取出字符串前后空格  trim()
+String s10 = "     hello    ";
+String s11 = s10.trim();
+System.out.println("s11 =" + s11);//s11 =hello
+
+//其他类型转字符串  String.valueOf()
+
+
+    
+```
+
+详见API文档
+
+### StringBuffer
+
+可变的字符串
+
+我们通过 new StringBuffer(String)来构造一个StringBuffer对象
+
+~~~~java
+//append(String s)   在原字符串后面追加新的字符串
+String s = "hello world";
+StringBuffer stringBuffer = new StringBuffer(s);
+System.out.println(stringBuffer);//hello world
+stringBuffer.append(",Tom").append(",Jerry");//甚至可以多次追加
+System.out.println(stringBuffer);//hello world,Tom,Jerry
+
+//delete(起始位置，结束位置)   从起始位置删除到结束位置
+//insert(位置，String s)    在指定位置插入字符串
+ StringBuffer stringBuffer1 = new StringBuffer("0123456789");
+ stringBuffer1.delete(4,stringBuffer1.length());
+ System.out.println(stringBuffer1); //0123
+ stringBuffer1.insert(1,arr);
+ System.out.println(stringBuffer1);//0abc123
+~~~~
+
+### StringBuilder
+
+可变的字符串
+
+面试题：StringBuffer  和  StringBuilder的区别
+
+- StringBuffer 线程安全（同步），性能较差
+- StringBuilder  线程不安全，性能较好
+
+### Math类
+
+算数相关的类，提供各种算数运算的静态方法    Math.方法名
+
+~~~~java
+System.out.println(Math.round(3.14)); //4舍5入取整    此处返回3
+System.out.println(Math.abs(-100));  //取绝对值  此处返回100
+System.out.println(Math.sqrt(81.0));  //开方  此处返回9.0
+~~~~
+
+
 
 # 问题
 
