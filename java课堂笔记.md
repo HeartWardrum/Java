@@ -521,6 +521,9 @@ public class HelloWorld {
 - 接口类型的引用可以指向实现类的对象，当它调用接口中的方法时，实际调用到的是实现类中重写过后的方法
 - 一个类可以同时实现多个无关的接口
 - 注意：当一个类实现多个接口时，该类对象可以多个接口之间转换
+- 1. 接口中没有成员变量，只有常量，它是常量和抽象方法的集合
+  2. 接口中所有方法都是public，而且只能是public
+  3. 1.8及以后版本的jdk，接口中还可以存在static修饰的非抽象方法（问题：怎么调用？）
 
 ~~~~java
 //画家接口
@@ -530,6 +533,7 @@ public interface Painter {
     public void draw();
     public void sleep();
     public void eat();
+    
 }
 ~~~~
 
@@ -576,3 +580,26 @@ public class Teachers implements Singer,Painter { //用implements来实现一或
 ### getClass()
 
 获得当前对象的全类名
+
+### 异常
+
+在代码运行的过程中发生的某些错误情况，例如：除0错误等
+
+### try {    }    catch(){   }
+
+~~~~java
+try{
+    里面编写一些可能发生异常的代码
+}
+catch(异常类型 变量名){
+    当代码块发生异常时要做的事
+}
+~~~~
+
+
+
+
+
+# 问题
+
+怎么调用接口中的非抽象方法？
