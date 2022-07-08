@@ -666,8 +666,6 @@ throw 和 throws 的区别：
 - 通常在一个方法的声明处通过 throws 声明方法可能抛出的所有异常信息，而在方法的内部声明一个具体的异常信息
 - throws 通常不明显地捕获异常，而是由系统自动将所有捕获的异常信息抛给上级方法，throw 则需要程序员自己捕获相关的异常，然后再对其进行包装，最后将包装的异常信息抛出。
 
-
-
 ### 异常类的结构图
 
 注意：RunTimeException在编译的过程中，可以不被try/catch或者throw/throws；而剩下的异常必须被try/catch或者throw/throws，否则边编译报错
@@ -681,6 +679,12 @@ throw 和 throws 的区别：
 我们可以通过String 变量名 = "字符串"  来创建一个String对象，它存放在常量区
 
 当我们new String(字符串)时，它实际上创建了两个对象，将指定的字符串对象拷贝了一份
+
+~~~~java
+String str = new String("aa");//1.常量池里创建一个 "aa"对象，这是第一个对象
+                              //2. 执行该行代码时new一个"aa"的String对象存放在Java堆中，这是第二个对象
+						    //3. 栈上的str会指向第二个对象
+~~~~
 
 在比较两个字符串的时候，统一使用equals()方法，它比较的是字符串的内容相不相同
 
@@ -814,6 +818,105 @@ public class Test6 {
     }
 }
 ~~~~
+
+
+
+## 第五天
+
+### Arrays.sort(arr);
+
+//对数组arr进行升序排序
+
+### 读取键盘输入
+
+~~~~java
+Scanner sc = new Scanner(System.in);  //System.in 标准输入  
+
+        System.out.println("请输入一个int型的整数：");
+        int num = 0;
+        try {
+            num = sc.nextInt();       //读取整型输入 
+        } catch (Exception e) {
+            System.out.println("对不起，输入数值非法");
+            return;
+        }finally {
+            sc.close();
+        }
+        System.out.println("您输入的整数为：" + num);
+~~~~
+
+### enum
+
+枚举类型，在定义类型的时候指定它允许的若干值
+
+~~~~java
+enum 枚举类型 {
+    val1,val2...
+};
+~~~~
+
+### switch
+
+switch语句允许传入那些类型的变量：byte short int char enum 以及JDK1.7版本之后的String
+
+### 基本数据类型的包装类
+
+我们可以将8种数据类型各自定义为其包装类；包装类的对象中包着基本数据类型的值
+
+~~~~java
+Integer 对应 int
+Character 对应 char
+剩下的六种首字母大写
+包装类的对象转基本数据类型 .xxxValue();
+//例如：
+Integer integer = new Integer(100);
+int i = integer.intValue();
+
+//String 转 double  字符串解包
+String s = "3.1415926";
+double d3 = Double.parseDouble(s);  //parseXxx(String s) 将字符串中的内容转型成基本数据类型
+System.out.println(d3);//3.1415926
+
+
+Double d4 = Double.valueOf(s); //valueOf(string s)将字符串中的内容转型成基本数据类型包装类的对象
+System.out.println(d4);//3.1415926 
+~~~~
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
