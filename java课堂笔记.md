@@ -924,6 +924,8 @@ System.out.println(s);//11:23:08 2022/07/08
 
   1. 继承Thread类并重写run()方法，然后利用该类对象调用start()方法启动一个新的线程执行run()方法
 
+     （这种方法不好）
+  
      ~~~~java
      package com.iweb.Test;
      public class TestThread extends Thread {
@@ -966,12 +968,16 @@ System.out.println(s);//11:23:08 2022/07/08
      ~~~~
 
      
-
-  2. 实现Runnable接口并重写run()方法，使用的时候首先创建该类对象，然后当作参数传入Thread构造方法创建Thread，最后再由Thread对象调用start()方法启动一个新的线程来执行run()方法
+  
+  2. 实现Runnable接口并重写run()方法，使用的时候：
+  
+     > 首先创建该类对象
+     >
+     > 然后将该类对象当作参数传入Thread构造方法创建Thread
+     >
+     > 最后再由Thread对象调用start()方法启动一个新的线程来执行run()方法
 
 ~~~~java
-package com.iweb.Test;
-
 public class TestRunnable implements Runnable {
     @Override
     public void run() {
