@@ -891,7 +891,17 @@ System.out.println(d4);//3.1415926
 - 凡是需要包装类对象的地方，直接传入基本数据类型值即可，系统会自动创建对象
 - 凡是需要基本数据类型值的地方，直接传入包装类对象即可，系统会自动将值取出
 
+### 获取当前时间
 
+~~~~java
+//方法一 
+System.out.println(new Date());//Fri Jul 08 11:23:08 CST 2022
+
+//方法二
+SimpleDateFormat sdf = new SimpleDateFormat("hh:mm:ss yyyy/MM/dd");
+String s = sdf.format(new Date());
+System.out.println(s);//11:23:08 2022/07/08
+~~~~
 
 ### 进程
 
@@ -1134,29 +1144,290 @@ public class TestRunnable implements Runnable {
   我是run方法，我打印到：8
   ~~~
 
+  - setName(线程名) ---- 可以设定线程的名字
+  - currentThread().getName() ---- 获得当前线程的名字
+
+  ~~~~java
+  package com.iweb.Test;
+  
+  public class TestRunnable implements Runnable {
+      @Override
+      public void run() {
+          for (int i = 1; i < 201; i++) {
+  
+              System.out.println("我是"+Thread.currentThread().getName()+"线程,我打印到：" + i);
+          }
+      }
+  
+      public static void main(String[] args) {
+  
+          TestRunnable tr = new TestRunnable();
+          Thread t = new Thread(tr);
+          t.setName("啦啦啦");
+          t.start();
+  
+  
+          for (int i = 1; i < 201; i++) {
+  
+              System.out.println("我是main线程,我打印到：" + i);
+          }
+      }
+  }
+  
+  ~~~~
+
   
 
-### 获取当前时间
+  - setPriority(int i) ---- 设置优先级
+
+  ~~~~java
+  package com.iweb.Test;
+  
+  public class TestRunnable implements Runnable {
+      @Override
+      public void run() {
+          for (int i = 1; i < 201; i++) {
+  
+  
+              System.out.println("我是main线程,我的优先级为：" + Thread.currentThread().getPriority() + "我打印到：" + i);
+  
+          }
+      }
+  
+  
+      public static void main(String[] args) {
+  
+          TestRunnable tr = new TestRunnable();
+          Thread t = new Thread(tr);
+          t.setName("啦啦啦");
+          t.setPriority(10);
+          t.start();
+  
+          Thread.currentThread().setPriority(1);
+          for (int i = 1; i < 201; i++) {
+  
+              System.out.println("我是main线程,我的优先级为：" + Thread.currentThread().getPriority() + "我打印到：" + i);
+          }
+      }
+  }
+  ~~~~
+
+  
+
+  - getPriority() ---- 获得优先级
+
+- 线程不同步实例
 
 ~~~~java
-//方法一 
-System.out.println(new Date());//Fri Jul 08 11:23:08 CST 2022
+package com.iweb.Test;
+public class Time {
+    int i = 0;
 
-//方法二
-SimpleDateFormat sdf = new SimpleDateFormat("hh:mm:ss yyyy/MM/dd");
-String s = sdf.format(new Date());
-System.out.println(s);//11:23:08 2022/07/08
+   void add(String str) {  //第一种方法： synchronized void add(String str) 则线程同步
+        this.i++;
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        System.out.println(str + "你好，你是第" + i + "个访问改对象的线程");
+    }
+}
 ~~~~
 
+~~~~java
+package com.iweb.Test;
+
+public class TestSync implements Runnable {
+    Time time;
+
+    TestSync() {
+        time = new Time();
+    }
+
+    @Override
+    public void run() {
+        time.add(Thread.currentThread().getName());
+    }
+}
+~~~~
+
+~~~java
+//测试类
+package com.iweb.Test;
+
+public class Test11 {
 
 
+    public static void main(String[] args) {
+        TestSync testSync = new TestSync();
+        Thread t1 = new Thread(testSync);
+        Thread t2 = new Thread(testSync);
+        t1.setName("T1");
+        t2.setName("t2");
+        t1.start();
+        t2.start();
+    }
+}
+~~~
 
+- synchronized ----- 可以添加在方法的声明处，使得当前方法线程同步，也就是说当一个线程方法访问某对象的该方法，其他线程无法访问该对象的该方法
 
+~~~java
+synchronized(对象){
+    不可分割的代码块
+}
+~~~
 
+~~~java
+package com.iweb.Test;
 
+public class Time {
+    int i = 0;
 
+    void add(String str) {
+        synchronized (this) {  //第二种方法  线程同步
+            this.i++;
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            System.out.println(str + "你好，你是第" + i + "个访问改对象的线程");
+        }
+    }
+}
+~~~
 
+### 死锁
 
+多个线程同时锁定了对方想要锁定的对象，导致相互等待
+
+ 简单死锁：
+
+~~~~java
+//例如
+package com.iweb.Test2;
+
+public class TestDeadLock implements Runnable {
+    int flag;
+
+    static Object o1 = new Object();
+    static Object o2 = new Object();
+
+    public int getFlag() {
+        return flag;
+    }
+
+    public void setFlag(int flag) {
+        this.flag = flag;
+    }
+
+    @Override
+    public void run() {
+        if (flag == 1) {
+            synchronized (o1) {
+                System.out.println("我是" + Thread.currentThread().getName() + " 线程,我开始工作了");
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                synchronized (o2) {
+                    System.out.println("我的任务完成了！ ");
+                }
+            }
+        } else {
+            synchronized (o2) {
+                System.out.println("我是" + Thread.currentThread().getName() + " 线程,我开始工作了");
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                synchronized (o1) {
+                    System.out.println("我的任务完成了");
+                }
+
+            }
+        }
+    }
+}
+~~~~
+
+~~~java
+//测试类
+package com.iweb.Test2;
+
+public class Test {
+    public static void main(String[] args) {
+        TestDeadLock td1 = new TestDeadLock();
+        td1.setFlag(1);
+        Thread t1 = new Thread(td1);
+        t1.setName("t1");
+
+        TestDeadLock td2 = new TestDeadLock();
+        td2.setFlag(2);
+        Thread t2 = new Thread(td2);
+        t2.setName("t2");
+
+        t1.start();
+        t2.start();
+    }
+}
+~~~
+
+避免死锁：尽可能将加锁的粒度加粗
+
+- 解锁如下：
+
+~~~java
+package com.iweb.Test2;
+
+public class TestDeadLock implements Runnable {
+    int flag;
+
+    static Object o1 = new Object();
+    static Object o2 = new Object();
+
+    public int getFlag() {
+        return flag;
+    }
+    public void setFlag(int flag) {
+        this.flag = flag;
+    }
+
+    @Override
+    public void run() {
+        if (flag == 1) {
+            synchronized (this) {
+                System.out.println("我是" + Thread.currentThread().getName() + " 线程,我开始工作了");
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                //synchronized (o2) {
+                    System.out.println("我的任务完成了！ ");
+                //}
+            }
+        } else {
+            synchronized (this) {
+                System.out.println("我是" + Thread.currentThread().getName() + " 线程,我开始工作了");
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                //synchronized (o1) {
+                    System.out.println("我的任务完成了");
+                //}
+
+            }
+        }
+    }
+}
+~~~
 
 
 
