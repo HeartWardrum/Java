@@ -898,10 +898,21 @@ System.out.println(d4);//3.1415926
 ### 线程 
 
 - 进程中的一条执行路径
+- 线程中的五种状态：
 
 ![](https://cdn.jsdelivr.net/gh/HeartWardrum/MyImageHost/线程的五种状态.png)
 
-- 
+
+
+
+
+
+
+
+
+
+
+
 
 ### 多线程
 
@@ -1013,40 +1024,37 @@ public class TestRunnable implements Runnable {
   ~~~~
 
   ~~~~java
-  //测试类
-  package com.iweb.Test;
-  import java.util.concurrent.ThreadLocalRandom;
-  
-  public class Test2 {
-  
-      public static void main(String[] args) {
-          MySleep ms = new MySleep();
-          Thread t = new Thread(ms);
-          t.start();
-  
-          try {
-              Thread.sleep(10000);//睡10s
-          } catch (InterruptedException e) {
-              e.printStackTrace();
-          }
-          t.interrupt();
-      }
-  }
-  
-  //打印结果   每隔一秒打印当前时间  十秒后停止
-  11:31:03 2022/07/08
-  11:31:04 2022/07/08
-  11:31:05 2022/07/08
-  11:31:06 2022/07/08
-  11:31:07 2022/07/08
-  11:31:08 2022/07/08
-  11:31:09 2022/07/08
-  11:31:10 2022/07/08
-  11:31:11 2022/07/08
-  11:31:12 2022/07/08
-  ~~~~
-
-  
+    //测试类
+    package com.iweb.Test;
+    import java.util.concurrent.ThreadLocalRandom;
+    
+    public class Test2 {
+    
+        public static void main(String[] args) {
+            MySleep ms = new MySleep();
+            Thread t = new Thread(ms);
+            t.start();
+    
+            try {
+                Thread.sleep(10000);//睡10s
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            t.interrupt();
+        }
+    }
+    
+    //打印结果   每隔一秒打印当前时间  十秒后停止
+    11:31:03 2022/07/08
+    11:31:04 2022/07/08
+    11:31:05 2022/07/08
+    11:31:06 2022/07/08
+    11:31:07 2022/07/08
+    11:31:08 2022/07/08
+    11:31:09 2022/07/08
+    11:31:10 2022/07/08
+    11:31:11 2022/07/08
+    11:31:12 2022/07/08
 
 
 
