@@ -1046,6 +1046,12 @@ public class TestRunnable implements Runnable {
     11:31:11 2022/07/08
     11:31:12 2022/07/08
 
+- join() ---- 使指定线程和当前线程合并为同一个线程
+
+
+
+
+
 
 
 
