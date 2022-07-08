@@ -1078,10 +1078,63 @@ public class TestRunnable implements Runnable {
         }
     }
 }
-//打印接过  run方法先打印完再开始打印main方法
+//打印结果  run方法先打印完再开始打印main方法
 ~~~
 
 - yield() ---- 让出当前CPU使自己处于就绪状态
+
+  ~~~java
+  package com.iweb.Test;
+  
+  public class TestRunnable implements Runnable {
+      @Override
+      public void run() {
+          for (int i = 1; i < 201; i++) {
+  
+  
+              System.out.println("我是run方法，我打印到：" + i);
+              if (i % 10 == 0) {
+                  Thread.yield();
+              }
+          }
+      }
+  
+  
+      public static void main(String[] args) {
+  
+          TestRunnable tr = new TestRunnable();
+          Thread t = new Thread(tr);
+          t.start();
+  
+  
+          for (int i = 1; i < 201; i++) {
+  
+              System.out.println("我是main方法，我打印到：" + i);
+              if (i % 10 == 0) {
+                  Thread.yield();  //整十的时候更容易发生切换
+              }
+          }
+      }
+  }
+  
+  //打印结果  //整十的时候更容易发生切换
+  我是main方法，我打印到：1
+  我是main方法，我打印到：2
+  我是run方法，我打印到：1
+  我是run方法，我打印到：2
+  我是main方法，我打印到：3
+  我是main方法，我打印到：4
+  我是main方法，我打印到：5
+  我是run方法，我打印到：3
+  我是run方法，我打印到：4
+  我是run方法，我打印到：5
+  我是main方法，我打印到：6
+  我是run方法，我打印到：6
+  我是run方法，我打印到：7
+  我是run方法，我打印到：8
+  ~~~
+
+  
 
 ### 获取当前时间
 
