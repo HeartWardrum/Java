@@ -1482,7 +1482,7 @@ public class Test13 {
 
 ### Object类中线程相关的方法
 
-- wait() ---- 使当前线程出于等待状态
+- wait() ---- 使当前线程处于等待状态
 - notify() ---- 唤醒当前对象上某个wait中的线程
 - notifyAll() ---- 唤醒当前对象上所有wait中的线程
 
@@ -1491,11 +1491,160 @@ public class Test13 {
 1. 类不一样
 2. 某个线程在sleep的过程中不会释放线程锁，而在wait的过程中会释放线程锁
 
+### 多线程经典例题：生产消费
+
+~~~java
+//消费类
+package com.iweb.test3;
+
+public class Customer implements Runnable {
+
+    ManTouStack manTouStack;
+
+    public Customer() {
+    }
+
+    public Customer(ManTouStack manTouStack) {
+        this.manTouStack = manTouStack;
+    }
+
+    @Override
+    public void run() {
+        for (int i = 1; i < 20; i++) {
+            ManTou mt = manTouStack.pop();
+            try {
+                Thread.sleep((long) (Math.random() * 1000));
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+        }
+    }
+}
+~~~
+
+~~~java
+package com.iweb.test3;
+
+public class ManTou {
+    private int id;
+
+    public ManTou() {
+
+    }
+
+    public ManTou(int id) {
+        this.id = id;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    @Override
+    public String toString() {
+        return "ManTou{" +
+                "id=" + id +
+                '}';
+    }
+}
+
+~~~
+
+~~~java
+package com.iweb.test3;
+
+public class ManTouStack {
+    ManTou[] arr = new ManTou[6];
+    int index = 0;//表示当前框中的馒头
+
+    //生产
+    synchronized void push(ManTou mt) {
+        while (arr.length == index) {
+            try {
+                wait();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        notify();
+        arr[index] = mt;
+        index++;
+        System.out.println("捏好一个馒头：" + mt);
+    }
+
+    //消费
+    synchronized ManTou pop() {
+        while (index == 0) {
+            try {
+                wait();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        notify();
+        index--;
+        System.out.println("消费了馒头:" + arr[index]);
+        return arr[index];
+    }
+}
+~~~
+
+~~~java
+//生产类
+package com.iweb.test3;
+
+public class Producer implements Runnable {
+    ManTouStack manTouStack;
+
+    public Producer(ManTouStack manTouStack) {
+        this.manTouStack = manTouStack;
+    }
+
+    public Producer() {
+    }
+
+    @Override
+    public void run() {
+        for (int i = 1; i <= 20; i++) {
+            ManTou mt = new ManTou(i);
+            manTouStack.push(mt);
+        }
+        try {
+            Thread.sleep((long) (Math.random() * 1000));
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+}
+
+~~~
+
+~~~java
+//测试类
+package com.iweb.test3;
+
+public class Test {
 
 
+    public static void main(String[] args) {
+        ManTouStack mts = new ManTouStack();
+        Producer p1 = new Producer(mts);
+        Customer c1 = new Customer(mts);
 
+        Thread thread = new Thread(p1);
+        Thread thread2 = new Thread(c1);
 
+        thread.start();
+        thread2.start();
+    }
+}
 
+~~~
 
 
 
