@@ -902,17 +902,7 @@ System.out.println(d4);//3.1415926
 
 ![](https://cdn.jsdelivr.net/gh/HeartWardrum/MyImageHost/线程的五种状态.png)
 
-
-
-
-
-
-
-
-
-
-
-
+![线程中的五种状态](D:\GitHub\MyImageHost\线程的五种状态.png)
 
 ### 多线程
 
