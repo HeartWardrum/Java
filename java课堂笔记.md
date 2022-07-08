@@ -882,7 +882,102 @@ Double d4 = Double.valueOf(s); //valueOf(string s)将字符串中的内容转型
 System.out.println(d4);//3.1415926 
 ~~~~
 
+### 自动打包和自动解包
 
+也叫做自动装箱和自动拆箱
+
+- 凡是需要包装类对象的地方，直接传入基本数据类型值即可，系统会自动创建对象
+- 凡是需要基本数据类型值的地方，直接传入包装类对象即可，系统会自动将值取出
+
+
+
+### 进程
+
+- 一段程序的执行过程
+
+### 线程 
+
+- 进程中的一条执行路径
+
+### 多线程
+
+- 多个线程同时执行
+
+- 实现多线程的方式：
+
+  1. 继承Thread类并重写run()方法，然后利用该类对象调用start()方法启动一个新的线程执行run()方法
+
+     ~~~~java
+     package com.iweb.Test;
+     public class TestThread extends Thread {
+         @Override
+         public void run() {
+             for (int i = 0; i < 200; i++) {
+     
+                 System.out.println("我是run方法，我打印到：" + i);
+             }
+         }
+     
+         public static void main(String[] args) {
+     
+             TestThread t = new TestThread();
+             t.start();
+     
+             for (int i = 0; i < 200; i++) {
+                 System.out.println("我是main方法，我打印到：" + i);
+             }
+         }
+     }
+     //打印结果 两边交替打印，但是所分配时间并不均匀
+     我是main方法，我打印到：0
+     我是main方法，我打印到：1
+     我是main方法，我打印到：2
+     我是main方法，我打印到：3
+     我是main方法，我打印到：4
+     我是run方法，我打印到：0
+     我是main方法，我打印到：5
+     我是run方法，我打印到：1
+     我是main方法，我打印到：6
+     我是run方法，我打印到：2
+     我是main方法，我打印到：7
+     我是main方法，我打印到：8
+     我是main方法，我打印到：9
+     我是main方法，我打印到：10
+     我是main方法，我打印到：11
+     我是main方法，我打印到：12
+         ......
+     ~~~~
+
+     
+
+  2. 实现Runnable接口并重写run()方法，使用的时候首先创建该类对象，然后当作参数传入Thread构造方法创建Thread，最后再由Thread对象调用start()方法启动一个新的线程来执行run()方法
+
+~~~~java
+package com.iweb.Test;
+
+public class TestRunnable implements Runnable {
+    @Override
+    public void run() {
+            for (int i = 0; i < 200; i++) {
+                System.out.println("我是run方法，我打印到：" + i);
+            }
+    }
+
+    public static void main(String[] args) {
+
+        TestRunnable tr = new TestRunnable();//先创建该类对象 tr
+        Thread t = new Thread(tr);//将tr当作参数传入Thread构造方法创建Thread
+        t.start();//Thread对象调用start()
+
+        for (int i = 0; i < 200; i++) {
+            System.out.println("我是main方法，我打印到：" + i);
+        }
+    }
+}
+//打印结果同第一种
+~~~~
+
+**注意**：第二种方法比较好，以为java是单继承多实现，我们应该尽可能将继承的机会留给业务逻辑
 
 
 
