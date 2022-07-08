@@ -1429,7 +1429,53 @@ public class TestDeadLock implements Runnable {
 }
 ~~~
 
+注意：1. 当一个线程进入了某个加锁的方法时，其他线程完全可以访问其他没有加锁的方法
 
+~~~java
+package com.iweb.Test2;
+
+public class T implements Runnable {
+
+    int i = 100;
+
+    synchronized void m1() {
+        this.i = 1000;
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    void m2() {
+        System.out.println(i);
+    }
+
+    @Override
+    public void run() {
+        m1();
+    }
+}
+~~~
+
+~~~java
+package com.iweb.Test2;
+
+public class Test13 {
+    public static void main(String[] args) {
+        T t = new T();
+        Thread thread = new Thread(t);
+        thread.start();
+
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        t.m2();
+    }
+}
+~~~
 
 
 
