@@ -899,6 +899,10 @@ System.out.println(d4);//3.1415926
 
 - 进程中的一条执行路径
 
+![](https://cdn.jsdelivr.net/gh/HeartWardrum/MyImageHost/线程的五种状态.png)
+
+- 
+
 ### 多线程
 
 - 多个线程同时执行
@@ -980,6 +984,85 @@ public class TestRunnable implements Runnable {
 **注意**：第二种方法比较好，以为java是单继承多实现，我们应该尽可能将继承的机会留给业务逻辑
 
 
+
+#### 常用方法
+
+- sleep(毫秒数) ---- 使当前线程休眠毫秒数
+
+  ~~~~java
+  package com.iweb.Test;
+  
+  import java.text.SimpleDateFormat;
+  import java.util.Date;
+  
+  public class MySleep implements Runnable {
+      @Override
+      public void run() {
+          while (true) {
+              SimpleDateFormat sdf = new SimpleDateFormat("hh:mm:ss yyyy/MM/dd");
+              String s = sdf.format(new Date());
+              System.out.println(s);
+              try {
+                  Thread.sleep(1000);//
+              } catch (InterruptedException e) {  //如果睡眠被中断，直接跳出循环
+                  return;    
+              }
+          }
+      }
+  }
+  ~~~~
+
+  ~~~~java
+  //测试类
+  package com.iweb.Test;
+  import java.util.concurrent.ThreadLocalRandom;
+  
+  public class Test2 {
+  
+      public static void main(String[] args) {
+          MySleep ms = new MySleep();
+          Thread t = new Thread(ms);
+          t.start();
+  
+          try {
+              Thread.sleep(10000);//睡10s
+          } catch (InterruptedException e) {
+              e.printStackTrace();
+          }
+          t.interrupt();
+      }
+  }
+  
+  //打印结果   每隔一秒打印当前时间  十秒后停止
+  11:31:03 2022/07/08
+  11:31:04 2022/07/08
+  11:31:05 2022/07/08
+  11:31:06 2022/07/08
+  11:31:07 2022/07/08
+  11:31:08 2022/07/08
+  11:31:09 2022/07/08
+  11:31:10 2022/07/08
+  11:31:11 2022/07/08
+  11:31:12 2022/07/08
+  ~~~~
+
+  
+
+
+
+
+
+### 获取当前时间
+
+~~~~java
+//方法一 
+System.out.println(new Date());//Fri Jul 08 11:23:08 CST 2022
+
+//方法二
+SimpleDateFormat sdf = new SimpleDateFormat("hh:mm:ss yyyy/MM/dd");
+String s = sdf.format(new Date());
+System.out.println(s);//11:23:08 2022/07/08
+~~~~
 
 
 
