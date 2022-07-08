@@ -672,6 +672,8 @@ throw 和 throws 的区别：
 
 <img src="https://cdn.jsdelivr.net/gh/HeartWardrum/MyImageHost/异常类的结构图.png" alt="异常类的结构图" style="zoom:67%;" />
 
+<img src="D:\GitHub\MyImageHost\异常类的结构图.png" alt="异常类的结构图" style="zoom:67%;" />
+
 ### String
 
 不可变的字符序列（关于它的变化都会创建一个新字符串）
@@ -1048,13 +1050,38 @@ public class TestRunnable implements Runnable {
 
 - join() ---- 使指定线程和当前线程合并为同一个线程
 
+~~~java
+package com.iweb.Test;
+
+public class TestRunnable implements Runnable {
+    @Override
+    public void run() {
+        for (int i = 0; i < 200; i++) {
+            System.out.println("我是run方法，我打印到：" + i);
+        }
+    }
 
 
+    public static void main(String[] args) {
 
+        TestRunnable tr = new TestRunnable();
+        Thread t = new Thread(tr);
+        t.start();
+        try {
+            t.join();      // 使指定线程和当前线程合并为同一个线程
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
+        for (int i = 0; i < 200; i++) {
+            System.out.println("我是main方法，我打印到：" + i);
+        }
+    }
+}
+//打印接过  run方法先打印完再开始打印main方法
+~~~
 
-
-
+- yield() ---- 让出当前CPU使自己处于就绪状态
 
 ### 获取当前时间
 
