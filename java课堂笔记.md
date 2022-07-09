@@ -916,6 +916,8 @@ System.out.println(s);//11:23:08 2022/07/08
 
 ![线程中的五种状态](D:\GitHub\MyImageHost\线程的五种状态.png)
 
+线程阻塞：通常是指一个线程在执行过程中暂停（例如sleep），以等待某个条件的触发
+
 ### 多线程
 
 - 多个线程同时执行
@@ -1000,7 +1002,7 @@ public class TestRunnable implements Runnable {
 //打印结果同第一种
 ~~~~
 
-**注意**：第二种方法比较好，以为java是单继承多实现，我们应该尽可能将继承的机会留给业务逻辑
+**注意**：第二种方法比较好，因为java是单继承多实现，我们应该尽可能将继承的机会留给业务逻辑
 
 
 
@@ -1495,7 +1497,8 @@ public class Test13 {
 ### wait和sleep的区别
 
 1. 类不一样
-2. 某个线程在sleep的过程中不会释放线程锁，而在wait的过程中会释放线程锁
+2. sleep会自动醒，wait需要notify唤醒
+3. 某个线程在sleep的过程中不会释放线程锁，而在wait的过程中会释放线程锁
 
 ### 多线程经典例题：生产消费
 
@@ -1652,9 +1655,207 @@ public class Test {
 
 ~~~
 
+改写生产者消费者的代码:
+两个师傅各生产20个馒头 : 张师傅,李师傅
+四个学生各消费10个馒头 : 小明,小王,小强,小红
+
+~~~~java
+//馒头类
+public class ManTou {
+    private int id;
+    static int sid = 1;
+
+    public ManTou() {
+        this.id = sid++;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    @Override
+    public String toString() {
+        return "ManTou{" +
+                "id=" + id +
+                '}';
+    }
+}
+~~~~
 
 
 
+~~~java
+//馒头框类
+public class ManTouStack {
+    ManTou[] arr = new ManTou[6];//创建一个可以存放6个馒头的数组
+    int index = 0;//表示当前框中的馒头数
+
+    //生产
+    synchronized void push(String ProducerName) {//传入生产者的名字
+        while (arr.length == index) {//如果馒头框满了，线程等待
+            try {
+                wait();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        notify();
+        ManTou mt = new ManTou();
+        arr[index] = mt;
+        index++;
+        System.out.println(ProducerName + "生产了馒头：" + mt);
+    }
+
+
+    //消费
+    synchronized ManTou pop(String ConsumerName) {
+
+        while (index == 0) {
+            try {
+                wait();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        notify();
+        index--;
+        System.out.println(ConsumerName + "消费了馒头：" + arr[index]);
+        return arr[index];
+    }
+}
+~~~
+
+~~~~java
+//生产者类
+public class Producer implements Runnable {
+
+    ManTouStack manTouStack;
+    String name;
+
+    public Producer(ManTouStack manTouStack, String name) {
+        this.manTouStack = manTouStack;
+        this.name = name;
+    }
+
+    public Producer() {
+    }
+
+    @Override
+    public void run() {
+        for (int i = 0; i < 20; i++) {
+            //ManTou mt = new ManTou();
+            //manTouStack.push( mt,this.name);
+            manTouStack.push(this.name);
+            try {
+                Thread.sleep((long) (Math.random() * 1000));
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+        }
+    }
+}
+~~~~
+
+~~~~java
+//消费者类
+public class Consumer implements Runnable {
+
+
+    ManTouStack manTouStack;
+    String name;
+
+    public Consumer() {
+    }
+
+    public Consumer(ManTouStack manTouStack, String name) {
+        this.manTouStack = manTouStack;
+        this.name = name;
+    }
+
+    @Override
+    public void run() {
+        for (int i = 0; i <= 10; i++) {
+            ManTou mt = manTouStack.pop(this.name);
+            try {
+                Thread.sleep((long) (Math.random() * 2000));
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+}
+~~~~
+
+~~~java
+//测试类
+public class Test {
+
+    public static void main(String[] args) {
+        ManTouStack mts = new ManTouStack();
+        Producer p1 = new Producer(mts, "张师傅");
+        Producer p2 = new Producer(mts, "李师傅");
+        Consumer c1 = new Consumer(mts, "小明");
+        Consumer c2 = new Consumer(mts, "小王");
+        Consumer c3 = new Consumer(mts, "小强");
+        Consumer c4 = new Consumer(mts, "小红");
+
+        Thread thread1 = new Thread(p1);
+        Thread thread2 = new Thread(p2);
+        Thread thread3 = new Thread(c1);
+        Thread thread4 = new Thread(c2);
+        Thread thread5 = new Thread(c3);
+        Thread thread6 = new Thread(c4);
+
+        thread1.start();
+        thread2.start();
+        thread3.start();
+        thread4.start();
+        thread5.start();
+        thread6.start();
+    }
+}
+~~~
+
+## 第六天
+
+### 集合
+
+- 结构图：
+
+![](https://cdn.jsdelivr.net/gh/HeartWardrum/MyImageHost/集合结构图.png)
+
+![](D:\GitHub\MyImageHost\集合结构图.png)
+
+- ArrayList ---- 这是一个常用的集合类，它实现了List接口
+
+  - 常用方法：
+
+    > add(对象) ---- 往集合中添加一个对象
+    >
+    > get(下标) ---- 获取集合中指定位置的对象，注意：下标从0开始
+    >
+    > size() ---- 获取集合的长度
+
+~~~~java
+//例如 
+public static void main(String[] args) {
+        List list = new ArrayList();
+        list.add(new Student("1111","张三",20));
+        list.add(new Student("2222","王五",20));
+        list.add(new Student("3333","李四",20));
+        list.add(1000);
+        list.add(1.1);
+        System.out.println("当前list长度为： " + list.size());
+        for (int i = 0; i < list.size(); i++) { //遍历集合
+            System.out.println(list.get(i));
+        }
+    }
+~~~~
 
 
 
@@ -1666,3 +1867,11 @@ public class Test {
 
 # 问题
 
+```
+public ManTou() {
+    synchronized (sid){
+        this.id = id;
+    }
+    
+}//没看到，估计写得不对，在上午第二节课开始处
+```
