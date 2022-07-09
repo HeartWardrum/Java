@@ -1840,6 +1840,10 @@ public class Test {
     > get(下标) ---- 获取集合中指定位置的对象，注意：下标从0开始
     >
     > size() ---- 获取集合的长度
+    >
+    > remove() ---- 从当前集合中删除与指定对象相等的对象，注意：是否相等看的是equals方法
+    >
+    > contains(对象) ---- 判断当前集合中是否包含指定的对象，注意：是否包含看的是equals方法
 
 ~~~~java
 //例如 
@@ -1851,15 +1855,58 @@ public static void main(String[] args) {
         list.add(1000);
         list.add(1.1);
         System.out.println("当前list长度为： " + list.size());
-        for (int i = 0; i < list.size(); i++) { //遍历集合
+    
+    	//使用简单for遍历
+        for (int i = 0; i < list.size(); i++) { 
             System.out.println(list.get(i));
         }
+        //使用foreach遍历
+    	for (Object o : list) {
+            System.out.println(o);
+        }
+
+    	//在自己定义的Student类中重写equals方法后，可以删除一个Studdent类型的元素
+    	list.remove(new Student("1111", "张三", 20));
+    	//当我们传入int类型的时候,为了移除制定的元素而不至于引起混淆，可以将传入的int先封装一下
+        list.remove((Integer)1000);//不封装的话则默认删除下标为1000的元素
     }
 ~~~~
 
+- 注意：ArrayList 、Vector 和 LinkedList 都是实现了List接口的实现类，他们所提供的方法都是一样的
 
+  - 区别: 
 
+    > ArrayList 和 LinkedList 线程不同步，效率高；Vector 线程同步，效率低
+    >
+    > ArrayList 底层是数组，擅长查询；LinkedList 底层是链表，擅长插入和删除
 
+    
+
+### 迭代器 Iterator
+
+> 同来遍历一个集合，
+>
+> 我们使用  集合对象.iterator()  获取迭代器
+>
+> 使用迭代器的 hasNext() 方法判断是否遍历到集合末尾
+>
+> 使用迭代器的remove()删除集合中的每一个元素  
+>
+> 注意：在迭代的过程中不可以使用集合对象的remove()删除元素
+
+~~~java
+//foreach的底层   迭代器
+Iterator iterator = list.iterator();//获取迭代器
+while(iterator.hasNext()){
+	System.out.println(iterator.next());
+}
+
+//迭代器中删除元素
+Iterator iterator = list.iterator();
+while(iterator.hasNext()){
+	iterator.remove();
+}
+~~~
 
 
 
@@ -1874,4 +1921,8 @@ public ManTou() {
     }
     
 }//没看到，估计写得不对，在上午第二节课开始处
+
+
+
+list.remove(1000);//删除int值？下标溢出？
 ```
