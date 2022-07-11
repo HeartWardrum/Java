@@ -157,3 +157,159 @@ public class Test {
 ### 泛型中的继承
 
 1. 当父类是泛型类时，如果子类也是泛型类，则定义子类时，它的泛型标识必须和父类一致
+
+~~~java
+//父类
+public class Parent<T> {
+    T value;
+
+    public T getValue() {
+        return value;
+    }
+
+    public void setValue(T value) {
+        this.value = value;
+    }
+
+    public Parent(T value) {
+        this.value = value;
+    }
+
+    public Parent() {
+    }
+}
+~~~
+
+~~~java
+//子类1
+public class Child<E> extends Parent<E> {
+
+    @Override
+    public E getValue() {
+        return super.getValue();
+    }
+
+    @Override
+    public void setValue(E value) {
+        super.setValue(value);
+    }
+}
+~~~
+
+2. 当父类是泛型类时，如果子类不是泛型类，需要指明父类的泛型类型
+
+~~~java
+//子类2
+public class Child2 extends Parent {
+
+    @Override
+    public Object getValue() {
+        return super.getValue();
+    }
+
+    @Override
+    public void setValue(Object value) {
+        super.setValue(value);
+    }
+}
+~~~
+
+~~~java
+    //测试类
+public static void main(String[] args) {
+        Child<String> child = new Child<>();
+        child.setValue("abc");
+        System.out.println(child.getValue());
+
+        Child2 child2 = new Child2();
+        child2.setValue("hello");
+        System.out.println(child2.getValue());
+        
+    }
+~~~
+
+### 泛型接口
+
+1. 当接口是泛型接口时，如果实现类也是泛型类，则定义实现类时，它的泛型标识必须和接口一致
+
+~~~java
+public interface GenericInterface<T> {
+    T getValue(T t);
+}
+~~~
+
+~~~java
+public class MyImplement<T> implements GenericInterface<T> {
+    @Override
+    public T getValue(T t) {
+        return t;
+    }
+}
+~~~
+
+2. 当接口是泛型接口时，如果实现类不是泛型类，则定义实现类时，需要指明接口的泛型类型
+
+### 泛型方法
+
+我们在方法声明的地方添加 <泛型标识> ,这样的方法称为泛型方法，它可以在用户调用方法的时候来指明具体的泛型
+
+注意：如果方法是静态的，我们可以定义多个泛型
+
+~~~java
+static <T, E, K> void test1(T t, E e, K k){
+        System.out.println(t.getClass());
+        System.out.println(e.getClass());
+        System.out.println(k.getClass());
+    }
+~~~
+
+~~~java
+ProductGetter.test1(false,10,"hello");
+//打印结果
+class java.lang.Boolean
+class java.lang.Integer
+class java.lang.String
+~~~
+
+### 可变参数的泛型方法
+
+在定义泛型方法的时候，参数列表使用`泛型标识...变量`来表示可变参数
+
+实际接收到的参数是一个泛型参数的数组
+
+~~~java
+static <T> void test2(T...t){
+        System.out.println("参数数组的个数： " + t.length);
+        for (int i = 0; i < t.length; i++) {
+            System.out.print(t[i] + "   ");
+        }
+    }
+~~~
+
+~~~java
+productGetter.test2(1,2,3,4,5);
+//打印结果
+参数数组的个数： 5
+1   2   3   4   5
+~~~
+
+### 泛型中的通配符 
+
+`?` 在泛型中表示通配符，它可以修饰某个类型的变量，该变量可以接收任何泛型的该类对象
+
+~~~java
+List<?> list1 = new ArrayList<>();
+List<String> list2 = new ArrayList<>();
+list1 = list2;
+~~~
+
+~~~java
+Map<?,?> map1 = new HashMap<>();
+Map<String,Integer> map2 = new HashMap<>();
+map1 = map2;
+~~~
+
+
+
+
+
