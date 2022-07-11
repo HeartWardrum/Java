@@ -823,7 +823,7 @@ public class Test6 {
 
 
 
-## 第五天
+## 第五天 (多线程真tm难)
 
 ### Arrays.sort(arr);
 
@@ -1861,11 +1861,14 @@ public static void main(String[] args) {
             System.out.println(list.get(i));
         }
         //使用foreach遍历
+    	for(类型名 变量 : 集合名){
+			使用变量
+		}
     	for (Object o : list) {
             System.out.println(o);
-        }
+         }
 
-    	//在自己定义的Student类中重写equals方法后，可以删除一个Studdent类型的元素
+    	//在自己定义的Student类中重写equals方法后，可以删除一个Student类型的元素
     	list.remove(new Student("1111", "张三", 20));
     	//当我们传入int类型的时候,为了移除制定的元素而不至于引起混淆，可以将传入的int先封装一下
         list.remove((Integer)1000);//不封装的话则默认删除下标为1000的元素
