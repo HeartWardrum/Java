@@ -309,6 +309,20 @@ Map<String,Integer> map2 = new HashMap<>();
 map1 = map2;
 ~~~
 
+### Arrays.copyOf(旧数组，新数组的长度) 
+
+创建一个新数组，然后将旧数组拷贝到新数组中，返回新数组的引用
+
+
+
+
+
+
+
+
+
+
+
 
 
 
