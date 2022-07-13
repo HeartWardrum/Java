@@ -263,6 +263,113 @@ public class Test2 {
 }
 ~~~
 
+## 2. 二叉树
+
+~~~java
+//BinaryTree 接口
+public interface BinaryTree {
+
+    //是否是空树
+    public boolean isEmpty();
+
+    //节点的数量
+    public int size();
+
+    //获取二叉树的高度
+    public int getHeight();
+
+    //根据节点值查找指定的节点
+    public Node findKey(int value);
+
+    //先序遍历
+    public void preOrderTravers();
+
+    //中序遍历
+    public void inOrderTravers();
+
+    //后序遍历
+    public void postOrderTravers();
+
+    //从指定的节点开始先序遍历
+    public void preOrderTravers(Node node);
+
+    //从指定的节点开始中序遍历
+    public void inOrderTravers(Node node);
+
+    //从指定的节点开始后序遍历
+    public void postOrderTravers(Node node);
+
+    //层次遍历整个二叉树
+    public void levelOrderByStack();
+
+}
+~~~
+
+~~~java
+//Node k
+public class Node {
+
+    Object value;//节点的值
+    Node leftChild;//左孩子
+    Node rightChild;//右孩子
+
+    public Node() {
+    }
+
+    public Node(Object value, Node leftChild, Node rightChild) {
+        this.value = value;
+        this.leftChild = leftChild;
+        this.rightChild = rightChild;
+    }
+
+    public Object getValue() {
+        return value;
+    }
+
+    public void setValue(Object value) {
+        this.value = value;
+    }
+
+    public Node getLeftChild() {
+        return leftChild;
+    }
+
+    public void setLeftChild(Node leftChild) {
+        this.leftChild = leftChild;
+    }
+
+    public Node getRightChild() {
+        return rightChild;
+    }
+
+    public void setRightChild(Node rightChild) {
+        this.rightChild = rightChild;
+    }
+}
+~~~
+
+
+
+
+
+~~~java
+public class LinkedBinaryTree implements BinaryTree{
+    Node root;
+    
+    public LinkedBinaryTree(){
+        
+    }
+    public LinkedBinaryTree(Node root){
+        this.root = root;
+    }
+    public Node getRoot(){return root;}
+    public void setRoot(Node root){this.root = root;}
+
+    @Override
+    publlic 
+}
+~~~
+
 
 
 
