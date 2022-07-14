@@ -908,7 +908,128 @@ public class Singleton2 {
 }
 ~~~
 
+#### 工厂模式
 
+提供一个工厂类，将创建的对象的工作封装起来，提供公共的静态的工厂方法给访问者调用，返回它所需要的对象
+
+- 静态工厂模式：创建对象以及封装对象的过程放在静态代码块中，用户无需创建工厂，而可以直接调用静态的工厂方法获得产品对象
+
+~~~java
+public class Car {
+    private String cno;
+    private String brand;
+    private double price;
+
+    @Override
+    public String toString() {
+        return "Car{" +
+                "cno='" + cno + '\'' +
+                ", brand='" + brand + '\'' +
+                ", price=" + price +
+                '}';
+    }
+
+    public Car(String cno, String brand, double price) {
+        this.cno = cno;
+        this.brand = brand;
+        this.price = price;
+    }
+
+    public Car() {
+    }
+
+
+    public String getCno() {
+        return cno;
+    }
+
+    public void setCno(String cno) {
+        this.cno = cno;
+    }
+
+    public String getBrand() {
+        return brand;
+    }
+
+    public void setBrand(String brand) {
+        this.brand = brand;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
+}
+~~~
+
+~~~java
+public class CarFactory {
+
+
+    private static Map<String, Car> map = new HashMap<>();
+
+    static {
+        map.put("1001", new Car("1001", "Audi", 300000.0));
+        map.put("1002", new Car("1002", "Ford", 150000.0));
+        map.put("1003", new Car("1003", "Volvo", 200000.0));
+
+    }
+
+    public static Car getCar(String id) {
+        return map.get(id);
+    }
+}
+~~~
+
+~~~java
+public class Test2 {
+
+    public static void main(String[] args) {
+        Car car = CarFactory.getCar("1002");
+        System.out.println(car);
+    }
+}
+~~~
+
+- 实例工厂模式：创建对象以及封装对象的过程放在工厂类的构造方法中，用户首先需要创建工厂对象，然后通过工厂对象调用工厂方法
+
+  ~~~java
+  public class CarFactory2 {
+      private static Map<String, Car> map;
+  
+      CarFactory2() {
+          map = new HashMap<>();
+          map.put("1001", new Car("1001", "Audi", 300000.0));
+          map.put("1002", new Car("1002", "Ford", 150000.0));
+          map.put("1003", new Car("1003", "Volvo", 200000.0));
+  
+      }
+  
+      public static Car getCar(String id) {
+          return map.get(id);
+      }
+  }
+  ~~~
+
+  ~~~java
+  public class Test3 {
+  
+      public static void main(String[] args) {
+          CarFactory2 cf2 = new CarFactory2();
+          Car car = cf2.getCar("1003");
+          System.out.println(car);
+      }
+  }
+  ~~~
+
+  
+
+  
+
+  
 
 
 
