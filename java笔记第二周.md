@@ -447,5 +447,488 @@ return sum;
 }
 ~~~
 
+## 第十天
+
+###  IO流
+
+- 按照传输的方向来分:
+
+  > 输入流：数据流向了CPU，所以读文件是输入流
+  >
+  > 输出流：数据从CPU流出去，所以写文件是输出流
+  >
+  > 注意：输入和输出的方向问题，永远都是站在CPU的角度来看待的
+
+- 按照传输的最小单位分：
+
+  > 字节流 ---- 按照字节为单位进行传输
+  >
+  > 字符流 ---- 按照字符为单位进行传输
+
+- > 节点流 ---- 基本功能的数据流，数据往往按照最小单位传输
+  >
+  > 处理流 ---- 功能强大的一些数据流，数据往往是批量传输
+
+在Java中，所有的流都继承自以下4个抽象类：
+
+`InputStream ---- 字节输入流`
+
+`OutputStream ---- 字节输出流`
+
+`Reader ---- 字符输入流`
+
+`Writer ---- 字符输出流`
+
+### FileInputStream 
+
+文件输入流，用来读文件；当我们new一个FileInputStream对象时，需要传入文件路径，换句话说相当于一根管道怼到了该文件上，这根管道可以用来从文件中抽水
+
+`Read() ---- 抽一个字节出来返回给CPU`
+
+`Close() ---- 关闭该输入流`
+
+Windows的文件分割符默认为反斜杠，Linux是正斜杠；Java中的File.separator 返回的是当前操作系统的文件分隔符
+
+在实际开发中，我们其实只需要写正斜杆，因为Windows会只能地将其转为反斜杠
+
+~~~java
+  public static void main(String[] args) {
+        InputStream is = null;
+        //String path = File.separator;
+        try {
+            is = new FileInputStream("D:/GitHub/Java/算法.md");
+            int i = 0;
+            while ((i = is.read()) != -1) {
+                System.out.print((char) i);
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (is != null)// 提高代码健壮性 如果路径失效 就不用close
+                    is.close();//相当于截断管道
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+//打印结果中的中文字会变成乱码
+~~~
+
+注意：字节流每读取一个中文字，实际上是读取到中文字的一半的编码，所以不能直接打印，我们可以使用字符流来读取并打印
+
+### FileReader
+
+文件字符输入流，用来读文件；当我们new一个FileReader对象时，需要传入文件路径，换句话说相当于一根管道怼到了该文件上，这根管道可以用来从文件中抽水
+
+~~~java
+public static void main(String[] args) {
+        Reader is = null;
+        //String path = File.separator;
+        try {
+            is = new FileReader("D:/java/MyProject/Test20220708/src/com/iweb/test/Test.java");
+            int i = 0;
+            while ((i = is.read()) != -1) {
+                System.out.print((char) i);
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (is != null)// 提高代码健壮性 如果路径失效 就不用close
+                    is.close();//相当于截断管道
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+~~~
+
+### FileOutputStream
+
+文件字节输出流，用来写文件；当我们new一个FileOutputStream对象时，需要传入文件路径，如果路径不存在，则会自动创建。换句话说相当于一根管道怼到了该文件上，这根管道可以用来向文件中注水
+
+`write(int) ---- 将一个字节通过该字节流输出到文件中`
+
+`close() ---- 关闭该输入流`
+
+~~~java
+public static void main(String[] args) {
+        InputStream is = null;
+        OutputStream os = null;
+        //String path = File.separator;
+        try {
+            is = new FileInputStream("D:/java/MyProject/Test20220708/src/com/iweb/test/Test.java");
+            os = new FileOutputStream("D:/Desktop/hello.txt");
+            int i = 0;
+            while ((i = is.read()) != -1) {
+                os.write(i);
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (is != null)// 提高代码健壮性 如果路径失效 就不用close
+                    is.close();//相当于截断管道
+                if (os != null)
+                    os.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+~~~
+
+### FileWriter
+
+文件字字符输出流，用来写文件；当我们new一个FileWriter对象时，需要传入文件路径，如果路径不存在，则会自动创建。换句话说相当于一根管道怼到了该文件上，这根管道可以用来向文件中注水
+
+`write(int) ---- 将一个字节通过该字节流输出到文件中`
+
+`close() ---- 关闭该输入流`
+
+注意：构造方法的第二个参数
+
+- 是true表示追加
+- 是false表示覆盖
+
+~~~java
+public static void main(String[] args) {
+        Writer w = null;
+        try {
+            w = new FileWriter("D:/Desktop/hello.txt");
+            for (int i = 0; i < 50000; i++) {
+                w.write(i);
+            }
+            System.out.println("创建完毕");
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (w != null) {
+                try {
+                    w.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+~~~
+
+### BufferedInputStream和BufferedOutputStream
+
+字节输入/输出缓冲流
+
+他们的read方法和write方法会一次性从硬盘读取/写入8k个字节到缓存，然后针对缓存进行操作；当缓存用完之后才会再访问硬盘，减少了硬盘的访问次数
+
+他们都是处理流
+
+注意：处理流是包在节点流外面的，当处理流关闭时，节点流自动关闭
+
+~~~java
+public static void main(String[] args) {
+        InputStream is = null;
+        BufferedInputStream bis = null;
+        try {
+            is = new FileInputStream("D:/java/MyProject/Test20220708/src/com/iweb/test/Test.java");
+            bis = new BufferedInputStream(is);
+            int i = 0;
+            while ((i = is.read()) != -1) {
+                System.out.print((char) i);
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (bis != null)// 提高代码健壮性 如果路径失效 就不用close
+                    bis.close();//相当于截断管道
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+~~~
+
+### BufferedReader
+
+字符输入缓冲流，它可以读文件
+
+`readLine() ---- 每次从文件中读一行，返回该字符串`
+
+`close() ---- 关闭该缓冲流`
+
+### BufferedWriter
+
+字符输出缓冲流，它可以写文件
+
+`write(String s) ---- 写入一个字符串`
+
+`newLine() ---- 另起一行`
+
+`flush() ---- 清空缓冲区`
+
+`close() ---- 关闭该输出流`
+
+~~~java
+public static void main(String[] args) {
+        BufferedReader br = null;
+        BufferedWriter bw = null;
+        try {
+            bw = new BufferedWriter(new FileWriter("D:/Desktop/random.txt"));
+            br = new BufferedReader(new FileReader("D:/Desktop/random.txt"));
+            for (int i = 0; i < 100; i++) {
+                String s = String.valueOf(Math.random());
+                bw.write(s);
+                bw.newLine();//另起一行
+            }
+            bw.flush();//清空缓冲区
+            String s1 = "";
+            while ((s1 = br.readLine()) != null) {
+                System.out.println(s1);
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+~~~
+
+### PrintWriter
+
+打印流
+
+用来打印日志，它只有输出，没有输入，不会抛出异常
+
+提供各种重载的print()方法和println()方法用来打印
+
+它自带缓冲功能，具有flush()方法
+
+### InputStreamReader
+
+这是将字节流转字符流的桥梁，传入一个字节流，它返回一个字符流
+
+注意：该字符流是一个节点流
+
+~~~java
+public static void main(String[] args) {
+        String s = null;
+        PrintWriter pw = null;
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        try {
+            FileWriter fw = new FileWriter("D:/Desktop/log.txt", true);
+            pw = new PrintWriter(fw);
+            while ((s = br.readLine()) != null) {
+                if ("exit".equals(s)) {
+                    break;
+                }
+                System.out.println(s);
+                pw.println("--------");
+                pw.println(s);
+            }
+            pw.println("======" + new Date() + "======");
+            pw.flush();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (pw != null)
+                    pw.close();
+                if (br != null)
+                    br.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+~~~
+
+### DataInputStream 和 DataOutputStream
+
+数据流，往往用于网络上的数据传输，它们的readUTF()方法和writeUTF()方法可以实现UTF-8的编码格式来传输数据
+
+UTF-8 ---- 可变长度的Unicode编码格式
+
+### ServerSocket
+
+这是网络编程中的服务器类，它可以调用accept()方法来接收某个客户端向它发起是请求，并返回Socket对象
+
+### Socket
+
+这是网络编程中的客户端类，它可以向服务器发起请求，该类对象可以调用getInputStream()和getOutputStream()获取当前请求响应的数据流中的字节流对象
+
+### 简单服务器
+
+~~~java
+//服务器端
+public class TcpServer {
+
+    public static void main(String[] args) {
+        System.out.println("我是服务器，我开始启动了");
+        ServerSocket ss = null;
+        Socket s = null;
+        DataInputStream dis = null;
+        DataOutputStream dos = null;
+        try {
+            ss = new ServerSocket(9527);
+            while (true) {
+                s = ss.accept();
+                InputStream is = s.getInputStream();
+                dis = new DataInputStream(is);
+                String str = dis.readUTF();
+                System.out.println(str);
+                dos = new DataOutputStream(s.getOutputStream());
+                dos.writeUTF("Hello I am Server!");
+                dos.flush();
+
+
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (s != null)
+                    s.close();
+                if (dis != null)
+                    dis.close();
+                if (dos != null)
+                    dos.close();
+                if (ss != null)
+                    ss.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+}
+
+~~~
+
+~~~java
+//客户端
+public class TcpClient {
+    public static void main(String[] args) {
+        System.out.println("我是客户端，我即将向服务器发起请求");
+        Socket s = null;
+        DataOutputStream dos = null;
+        DataInputStream dis = null;
+        try {
+            s = new Socket("127.0.0.1", 9527);
+            dos = new DataOutputStream(s.getOutputStream());
+            dos.writeUTF("Hello,I am Client!");
+            dis = new DataInputStream(s.getInputStream());
+            System.out.println(dis.readUTF());
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (dos != null)
+                    dos.close();
+                if (dis != null) {
+                    dis.close();
+                }
+                if (s != null)
+                    s.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+}
+~~~
+
+### 设计模式
+
+#### 单例Singleton
+
+一个类只能创建出一个对象
+
+- 饿汉模式：
+  1. 构造方法私有化
+  2. 提供`static finally 当前类型的成员变量`，初始化为当前类的对象
+  3. 提供一个public static 返回当前类型的方法，用来返回该唯一对象
+
+~~~java
+//单例类  饿汉模式
+public class Singleton1 {
+
+    static final Singleton1 only = new Singleton1();
+
+    private Singleton1() {
+
+    }
+
+    public static Singleton1 getSingleton1() {
+        return only;
+    }
+}
+~~~
+
+~~~java
+//测试类
+public class Test {
+    public static void main(String[] args) {
+        Singleton1 s1  = Singleton1.getSingleton1();
+
+    }
+}
+~~~
+
+- 懒汉模式：
+
+  1. 构造方法私有化
+  2. 提供 `static  当前类型的成员变量`
+  3. 提供一个`public static` 返回当前类型的方法，判断成员变量是否为空，如果为空则创建唯一对象，返回该唯一对象
+
+  注意： 懒汉模式需要做线程同步
+
+~~~java
+public class Singleton2 {
+
+    static Singleton2 only;
+
+    private Singleton2() {
+
+    }
+
+    public static Singleton2 getSingleton1() {
+        if (only == null)
+            only = new Singleton2();
+        return only;
+    }
+}
+~~~
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# 问题
+
+懒汉线程
+
 
 
