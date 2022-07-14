@@ -483,9 +483,9 @@ return sum;
 
 文件输入流，用来读文件；当我们new一个FileInputStream对象时，需要传入文件路径，换句话说相当于一根管道怼到了该文件上，这根管道可以用来从文件中抽水
 
-`Read() ---- 抽一个字节出来返回给CPU`
+`read() ---- 抽一个字节出来返回给CPU 返回值是一个unicode编码 类型为int`
 
-`Close() ---- 关闭该输入流`
+`close() ---- 关闭该输入流`
 
 Windows的文件分割符默认为反斜杠，Linux是正斜杠；Java中的File.separator 返回的是当前操作系统的文件分隔符
 
@@ -499,7 +499,7 @@ Windows的文件分割符默认为反斜杠，Linux是正斜杠；Java中的File
             is = new FileInputStream("D:/GitHub/Java/算法.md");
             int i = 0;
             while ((i = is.read()) != -1) {
-                System.out.print((char) i);
+                System.out.print((char) i); //将i转成char型 不然打印结果为一堆数字
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -507,7 +507,7 @@ Windows的文件分割符默认为反斜杠，Linux是正斜杠；Java中的File
             e.printStackTrace();
         } finally {
             try {
-                if (is != null)// 提高代码健壮性 如果路径失效 就不用close
+                if (is != null)// 提高代码健壮性 如果路径失效 压根没开启is 就不用close
                     is.close();//相当于截断管道
             } catch (IOException e) {
                 e.printStackTrace();
