@@ -42,6 +42,16 @@ map.put("two",new String("hello"));
 map.put(null,new Integer(200));
 ~~~
 
+遍历map
+
+~~~java
+for (Map.Entry<Character, Integer> entry: map.entrySet()) {
+                System.out.println("\""+entry.getKey()+"\""+"的数量是:"+entry.getValue());
+            }
+~~~
+
+
+
 HashMap和HashTable的区别：
 
 - HashMap线程不同步，效率高；HashTable线程同步，效率低
@@ -465,7 +475,9 @@ return sum;
   >
   > 字符流 ---- 按照字符为单位进行传输
 
-- > 节点流 ---- 基本功能的数据流，数据往往按照最小单位传输
+- 按功能的强弱分：
+  
+  > 节点流 ---- 基本功能的数据流，数据往往按照最小单位传输
   >
   > 处理流 ---- 功能强大的一些数据流，数据往往是批量传输
 
@@ -602,7 +614,7 @@ public static void main(String[] args) {
 public static void main(String[] args) {
         Writer w = null;
         try {
-            w = new FileWriter("D:/Desktop/hello.txt");
+            w = new FileWriter("D:/Desktop/hello.txt");// FileWriter(路径,Boolean boolean)
             for (int i = 0; i < 50000; i++) {
                 w.write(i);
             }
@@ -900,10 +912,10 @@ public class Singleton2 {
 
     }
 
-    public static Singleton2 getSingleton1() {
+    public synchronized static Singleton2 getSingleton1() {
         if (only == null)
             only = new Singleton2();
-        return only;
+        return only; 
     }
 }
 ~~~
@@ -996,40 +1008,251 @@ public class Test2 {
 
 - 实例工厂模式：创建对象以及封装对象的过程放在工厂类的构造方法中，用户首先需要创建工厂对象，然后通过工厂对象调用工厂方法
 
-  ~~~java
-  public class CarFactory2 {
-      private static Map<String, Car> map;
-  
-      CarFactory2() {
-          map = new HashMap<>();
-          map.put("1001", new Car("1001", "Audi", 300000.0));
-          map.put("1002", new Car("1002", "Ford", 150000.0));
-          map.put("1003", new Car("1003", "Volvo", 200000.0));
-  
-      }
-  
-      public static Car getCar(String id) {
-          return map.get(id);
-      }
-  }
-  ~~~
+~~~java
+public class CarFactory2 {
+    private static Map<String, Car> map;
 
-  ~~~java
-  public class Test3 {
-  
-      public static void main(String[] args) {
-          CarFactory2 cf2 = new CarFactory2();
-          Car car = cf2.getCar("1003");
-          System.out.println(car);
-      }
-  }
-  ~~~
+    CarFactory2() {
+        map = new HashMap<>();
+        map.put("1001", new Car("1001", "Audi", 300000.0));
+        map.put("1002", new Car("1002", "Ford", 150000.0));
+        map.put("1003", new Car("1003", "Volvo", 200000.0));
 
-  
+    }
 
-  
+    public static Car getCar(String id) {
+        return map.get(id);
+    }
+}
+~~~
 
-  
+~~~java
+public class Test3 {
+
+    public static void main(String[] args) {
+        CarFactory2 cf2 = new CarFactory2();
+        Car car = cf2.getCar("1003");
+        System.out.println(car);
+    }
+}
+~~~
+
+#### 代理模式
+
+首先要有主题业务，在主题业务的周边还存在许多次要的业务，代理类就是负责处理主题业务的同时再去处理这些周边的业务
+
+这样一来，主体类只需要专注于主体业务，降低了程序的耦合度
+
+实际操作过程中，我们需要提供业务的接口，主体类和代理类同时实现该接口，代理类中包含主体类的对象，并在业务方法中调用主体方法，同时执行其他周边的业务操作
+
+~~~java
+public interface CarSale {
+
+    public void sale();
+}
+~~~
+
+~~~java
+public class CarFactory implements CarSale {
+
+
+    private static Map<String, Car> map = new HashMap<>();
+
+    static {
+        map.put("1001", new Car("1001", "Audi", 300000.0));
+        map.put("1002", new Car("1002", "Ford", 150000.0));
+        map.put("1003", new Car("1003", "Volvo", 200000.0));
+
+    }
+
+    public static Car getCar(String id) {
+        return map.get(id);
+    }
+
+
+    @Override
+    public void sale() {
+        System.out.println("工厂正在卖车");
+    }
+}
+~~~
+
+~~~java
+public class Car4s implements CarSale {
+    CarFactory cf = new CarFactory();
+
+    @Override
+    public void sale() {
+        System.out.println("办个车展");
+        System.out.println("开展促销优惠活动");
+        cf.sale();
+        System.out.println("帮忙上保险");
+        System.out.println("帮忙上牌照");
+        System.out.println("提供售后服务");
+
+    }
+}
+~~~
+
+~~~java
+ public static void main(String[] args) {
+        CarSale cs = new Car4s();
+        cs.sale();
+    }
+~~~
+
+## 第十一天
+
+### 反射
+
+当某个类加载到内存中的静态代码区时，系统自动创建Class类的对象，这个对象称为反射对象，它就像一面镜子一样把当前类的所有成员变量及方法看的清清楚楚。它还可以创建当前类的对象，调用当前类的方法
+
+获取Class对象的三种方式：
+
+1. `类名.class`
+2. `Class.forName(当前类的全类名)`
+3. `对象名.getClass()`
+
+~~~java
+public static void main(String[] args) {
+        Class c1 = Person.class;//1
+        System.out.println(c1);
+
+        Class<Person> c2 = null;
+        try {
+            c2 = (Class<Person>)Class.forName("com.iweb.test9.Person");//2
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        System.out.println(c2);
+        
+        Person p = new Person();
+        Class c3 = p.getClass();//3
+        System.out.println(c3);
+
+    }
+~~~
+
+我们可以通过Class对象调用`getFields()`得到当前类中的public 的成员变量，返回Field 数组，
+
+也可以调用`getDeclaredFields()`得到当前类中的所有成员变量，返回Field数组
+
+注意：在反射看来，每一个成员变量其实都是Field对象
+
+~~~java
+        Field[] fields1 = c2.getFields();
+        System.out.println(fields1.length);
+
+        Field[]  fields2 = c2.getDeclaredFields();
+        System.out.println(fields2.length);
+
+        for (Field field : fields2) {
+            System.out.println(field);
+        }
+//打印结果
+1
+3
+public java.lang.String com.iweb.test9.Person.pno
+private java.lang.String com.iweb.test9.Person.pname
+private java.lang.String com.iweb.test9.Person.page
+~~~
+
+我们可以通过Class对象调用`getDeclaredMethods()`获取当类中的所有方法，返回Method数组
+
+我们可以通过Class对象调用`getDeclaredConstructor()`获取当前类中所有的构造方法，返回Constructor数组
+
+~~~java
+System.out.println("----------------------------------------------");
+Method[] methods = c2.getDeclaredMethods();
+System.out.println(methods.length);
+for (Method method : methods) {
+	System.out.println(method);
+}
+System.out.println("----------------------------------------------");
+Constructor[] constructors = c2.getDeclaredConstructors();
+for (Constructor constructor : constructors) {
+	System.out.println(constructor);
+}
+~~~
+
+我们可以调用Class对象的`newInstance()`方法来获取当前类的对象，我们还可以调用Class对象的`getField(成员变量名)`获取某个public的成员变量的Field对象
+
+我们通过Field调用set方法传入当前类对象和属性值来给成员变量赋值
+
+~~~java
+            Person p1 = c2.newInstance();
+            Field f1 = c2.getField("pno");
+            f1.set(p1, "1001");
+            System.out.println(p1);
+~~~
+
+我们可以通过Class调用`getDeclaredConstructor()`传入参数的反射对象来得到Constructor对象，在由该类Constructor对象调用newInstance方法去执行有参构造方法来得到当前类的对象
+
+~~~java
+            Person p2 = null;
+            Constructor<Person> c4 = c2.getDeclaredConstructor(String.class, String.class, String.class);
+            p2 = c4.newInstance("1002", "Jerry", "20");
+            System.out.println(p2);
+~~~
+
+对于非public的成员变量，我们可以通过Class对象调用getDeclaredField(变量名)得到Field对象，然后将Field调用setAccessible(true)进行授权
+
+最后才可以调用set()方法进行赋值
+
+~~~java
+            Field f3 = c2.getDeclaredField("page");
+            f3.setAccessible((true));
+            f3.set(p1, "20");
+            System.out.println(p1);
+~~~
+
+我们可以通过Class对象调用getDeclaredMethod("方法名")获取对应的Method对象，再由Method对象调用invoke(当前类对象)完成无参方法调用
+
+~~~java
+            Method m1 = c2.getDeclaredMethod("show");
+            m1.invoke(p2);
+~~~
+
+我们可以通过Class对象调用getDeclaredMethod(方法名,参数类型的Class对象)获取对应的Metho的对象，再由Method对象调用Invoke(当前类对象,参数值)完成对有参方法的调用
+
+~~~java
+            Method m2 = c2.getDeclaredMethod("display", String.class);
+            m2.invoke(p2,"中国");
+~~~
+
+### 数据库表结构的设计：
+
+照名词，将名词分为 实体和属性
+
+每个实体一张表，每个属性一个字段
+
+确定表与表的关系：
+
+- 一对一： 将一张表的编号字段添加到另一张表中作为关键字段
+- 一对多：将一的一端的编号添加到多的一端表中作为关联字段
+- 多对多：新建一张关系表，它记录着两端的编号
+
+ ER图 ---- 这是一个数据库表结构设计的辅助工具 矩形表示表，椭圆表示字段，菱形表示关系
+
+员工关系系统需求：公司的每个部门中包含各自的员工，部门需要统计编号，名称所在地。员工需要统计编号，姓名
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -1048,8 +1271,4 @@ public class Test2 {
 
 
 # 问题
-
-懒汉线程
-
-
 
