@@ -1110,30 +1110,29 @@ public class Car4s implements CarSale {
 获取Class对象的三种方式：
 
 1. `类名.class`
-2. `Class.forName(当前类的全类名)`
+2. `Class.forName("当前类的全类名")`
 3. `对象名.getClass()`
 
 ~~~java
-public static void main(String[] args) {
-        Class c1 = Person.class;//1
+        System.out.println("获取Class对象的三种方式---------------------------");
+        System.out.println("第一种：");
+        Class c1= Person.class;
         System.out.println(c1);
-
-        Class<Person> c2 = null;
+        System.out.println("第二种：");
+        Class c2 =null;
         try {
-            c2 = (Class<Person>)Class.forName("com.iweb.test9.Person");//2
+             c2 = Class.forName("com.iweb.test9.Person");
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
         System.out.println(c2);
-        
-        Person p = new Person();
-        Class c3 = p.getClass();//3
+        System.out.println("第三种:");
+        Person p1 = new Person();
+        Class c3 = p1.getClass();
         System.out.println(c3);
-
-    }
 ~~~
 
-我们可以通过Class对象调用`getFields()`得到当前类中的public 的成员变量，返回Field 数组，
+我们可以通过Class对象调用`getFields()`得到当前类中的public的成员变量，返回Field 数组
 
 也可以调用`getDeclaredFields()`得到当前类中的所有成员变量，返回Field数组
 
@@ -1141,17 +1140,19 @@ public static void main(String[] args) {
 
 ~~~java
         Field[] fields1 = c2.getFields();
-        System.out.println(fields1.length);
-
-        Field[]  fields2 = c2.getDeclaredFields();
-        System.out.println(fields2.length);
-
+        System.out.println("Person类中public方法数目为：" + fields1.length);
+        for(Field field : fields1){
+            System.out.println(field);
+        }
+        Field[] fields2 = c2.getDeclaredFields();
+        System.out.println("Person类中所有方法数目为："  + fields2.length);
         for (Field field : fields2) {
             System.out.println(field);
         }
 //打印结果
-1
-3
+Person类中public方法数目为：1
+public java.lang.String com.iweb.test9.Person.pno
+Person类中所有方法数目为：3
 public java.lang.String com.iweb.test9.Person.pno
 private java.lang.String com.iweb.test9.Person.pname
 private java.lang.String com.iweb.test9.Person.page
@@ -1160,6 +1161,8 @@ private java.lang.String com.iweb.test9.Person.page
 我们可以通过Class对象调用`getDeclaredMethods()`获取当类中的所有方法，返回Method数组
 
 我们可以通过Class对象调用`getDeclaredConstructor()`获取当前类中所有的构造方法，返回Constructor数组
+
+注意：构造方法不属于传统意义的方法，只是名字类似
 
 ~~~java
 System.out.println("----------------------------------------------");
