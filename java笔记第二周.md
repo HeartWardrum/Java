@@ -1119,9 +1119,9 @@ public class Car4s implements CarSale {
         Class c1= Person.class;
         System.out.println(c1);
         System.out.println("第二种：");
-        Class c2 =null;
+        Class<Person> c2 = null;
         try {
-             c2 = Class.forName("com.iweb.test9.Person");
+            c2 = (Class<Person>)Class.forName("com.iweb.test9.Person");
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
@@ -1158,7 +1158,7 @@ private java.lang.String com.iweb.test9.Person.pname
 private java.lang.String com.iweb.test9.Person.page
 ~~~
 
-我们可以通过Class对象调用`getDeclaredMethods()`获取当类中的所有方法，返回Method数组
+我们可以通过Class对象调用`getDeclaredMethods()`获取当前类中的所有方法，返回Method数组
 
 我们可以通过Class对象调用`getDeclaredConstructor()`获取当前类中所有的构造方法，返回Constructor数组
 
@@ -1178,13 +1178,13 @@ for (Constructor constructor : constructors) {
 }
 ~~~
 
-我们可以调用Class对象的`newInstance()`方法来获取当前类的对象，我们还可以调用Class对象的`getField(成员变量名)`获取某个public的成员变量的Field对象
+我们可以调用Class对象的`newInstance()`方法来获取当前类的对象，我们还可以调用Class对象的`getField("成员变量名")`获取某个public的成员变量的Field对象
 
 我们通过Field调用set方法传入当前类对象和属性值来给成员变量赋值
 
 ~~~java
             Person p1 = c2.newInstance();
-            Field f1 = c2.getField("pno");
+            Field f1 = c2.getField("pno");//获取当前类中指定的成员变量
             f1.set(p1, "1001");
             System.out.println(p1);
 ~~~
@@ -1198,13 +1198,13 @@ for (Constructor constructor : constructors) {
             System.out.println(p2);
 ~~~
 
-对于非public的成员变量，我们可以通过Class对象调用getDeclaredField(变量名)得到Field对象，然后将Field调用setAccessible(true)进行授权
+对于非public的成员变量，我们可以通过Class对象调用getDeclaredField("变量名")得到Field对象，然后将Field调用setAccessible(true)进行授权
 
 最后才可以调用set()方法进行赋值
 
 ~~~java
             Field f3 = c2.getDeclaredField("page");
-            f3.setAccessible((true));
+            f3.setAccessible(true);
             f3.set(p1, "20");
             System.out.println(p1);
 ~~~
