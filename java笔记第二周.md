@@ -1053,6 +1053,7 @@ public interface CarSale {
 ~~~
 
 ~~~java
+//主体类
 public class CarFactory implements CarSale {
 
 
@@ -1078,6 +1079,7 @@ public class CarFactory implements CarSale {
 ~~~
 
 ~~~java
+//代理类
 public class Car4s implements CarSale {
     CarFactory cf = new CarFactory();
 
