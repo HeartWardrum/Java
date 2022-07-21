@@ -238,5 +238,82 @@ public static void main(String[] args) {
     }
 ~~~
 
+## 防止sql注入
 
+`PreparedStatement` ----这是一个Statement 接口的子接口，它可以执行sql语句的时候，防止用户进行sql注入
+
+具体步骤：
+
+1. 在sql中需要传入参数的地方使用`?`
+2. 将sql语句传入Connection对象的`prepareStatement()`方法得到当前的`PreparedStatement`对象
+3. 使用`PreparedStatement`对象调用`setXxx()`方法依次对每一个问好进行参数绑定，问好从1开始
+4. 调用`executeQuery()`完成sql执行并返回ResultSet结果集
+
+~~~java
+public static void main(String[] args) {
+        //System.out.println(isLogin("admin","123' or '1' = '1"));
+        System.out.println(isLogin("admin", "123456"));
+    }
+
+    public static boolean isLogin(String username, String password) {
+
+        Connection conn = null;
+        PreparedStatement pstat = null;
+        ResultSet rest = null;
+        int cou = 0;
+
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            conn = DriverManager.getConnection("jdbc:mysql://192.168.77.100:3306/mysql?characterEncoding=utf8", "root", "123456");
+            //pstat = conn.createStatement();
+            String sql = "select count(*) cou from my_user u where u.username = ? \n" +
+                    "and u.password = ? ";
+            pstat = conn.prepareStatement(sql);
+            pstat.setString(1, username);
+            pstat.setString(2, password);
+            rest = pstat.executeQuery();//不需要再传入sql
+            while (rest.next()) {
+                cou = rest.getInt("cou");
+            }
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (conn != null)
+                    conn.close();
+                if (pstat != null)
+                    pstat.close();
+                if (rest != null)
+                    rest.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return cou > 0;
+    }
+~~~
+
+## MD5加密
+
+我们可以调用`DigestUtils.md5Hex(明文字符串)`  来得到对应的密文字符串
+
+~~~java
+public static void main(String[] args) {
+        String s1 = "123456";
+        s1 = DigestUtils.md5Hex(s1);
+        System.out.println(s1);
+    }
+~~~
+
+## Sha256加密
+
+还可以调用`DigestUtils.shaHex(明文字符串)`来得到对应的密文字符串
+
+~~~java
+        String s2 = "123456";
+        s2 = DigestUtils.sha256Hex(s2);
+        System.out.println(s2);  
+~~~
 
