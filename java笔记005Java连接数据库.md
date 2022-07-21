@@ -317,7 +317,7 @@ public static void main(String[] args) {
         System.out.println(s2);  
 ~~~
 
-## 工具类
+## 工具类(最终版)
 
 ~~~java
 package com.iweb.test;
@@ -333,7 +333,6 @@ public class JdbcUtil {
     static Connection conn = null;
     static PreparedStatement pstat = null;
     static ResultSet rest = null;
-    static Statement stat = null;
 
 
     //获取数据库连接
@@ -341,13 +340,10 @@ public class JdbcUtil {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             conn = DriverManager.getConnection("jdbc:mysql://192.168.77.100:3306/mysql?characterEncoding=utf8", "root", "123456");
-
-
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         } catch (SQLException e) {
             e.printStackTrace();
-
         }
         return conn;
     }
