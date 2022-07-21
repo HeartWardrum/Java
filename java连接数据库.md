@@ -150,7 +150,7 @@ public static void main(String[] args) {
 
 ## 增删改
 
-我们可以调用Statement对象的executeUpdate(sql语句)来执行增删改操作
+我们可以调用`Statement`对象的`executeUpdate(sql语句)`来执行增删改操作
 
 使用JDBC操作Mysql数据库，如果需要操作中文数值，则url后面需要添加参数：`?characterEncoding=utf-8`
 
@@ -167,7 +167,7 @@ public static void myJdbc() {
             conn = DriverManager.getConnection("jdbc:mysql://192.168.77.100:3306/mysql?characterEncoding=utf-8", "root", "123456");//这是第二步 getConnection("jdbc:mysql://xxx.xxx.xxx.xxx:3306/数据库名,"账号","密码")
             stat = conn.createStatement();//这是第三步 获取sql语句的操作对象
             String sql = "insert into stu0720(sno,sname,birthday,age) \n"
-                    + "values(null,'李寻欢','2001-03-23',21)";
+                    + "values(null,'李寻欢','2001-03-23',21)"; //增删改的语句写在这里面
             int i = stat.executeUpdate(sql);
             System.out.println("成功操作了：" + i + "条记录");
         } catch (ClassNotFoundException e) {
@@ -190,6 +190,51 @@ public static void myJdbc() {
                 e.printStackTrace();
             }
         }
+    }
+~~~
+
+## 登录
+
+~~~java
+public static void main(String[] args) {
+        System.out.println(isLogin("admin","123456"));
+    }
+
+    public static boolean isLogin(String username, String password) {
+
+        Connection conn = null;
+        Statement stat = null;
+        ResultSet rest = null;
+        int cou = 0;
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            conn = DriverManager.getConnection("jdbc:mysql://192.168.77.100:3306/mysql?characterEncoding=utf-8", "root", "123456");
+            stat = conn.createStatement();
+            String sql = "select count(*) cou from my_user u\n" +
+                    "where u.username = '" + username + "'\n" +
+                    "and u.password = '" + password + "'";
+            rest = stat.executeQuery(sql);
+            while(rest.next()){
+                cou = rest.getInt("cou");
+            }
+
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }finally{
+            try {
+                if(conn != null)
+                    conn.close();
+                if(stat != null)
+                    stat.close();
+                if(rest != null)
+                    rest.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return cou > 0;
     }
 ~~~
 
