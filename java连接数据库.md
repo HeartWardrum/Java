@@ -317,3 +317,123 @@ public static void main(String[] args) {
         System.out.println(s2);  
 ~~~
 
+## 工具类
+
+~~~java
+package com.iweb.test;
+
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+public class JdbcUtil {
+
+    static Connection conn = null;
+    static PreparedStatement pstat = null;
+    static ResultSet rest = null;
+    static Statement stat = null;
+
+
+    //获取数据库连接
+    private static Connection getConnection() {
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            conn = DriverManager.getConnection("jdbc:mysql://192.168.77.100:3306/mysql?characterEncoding=utf8", "root", "123456");
+
+
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+
+        }
+        return conn;
+    }
+
+
+    //关闭资源
+    private static void closeResource() {
+        try {
+            if (rest != null)
+                rest.close();
+            if (pstat != null)
+                pstat.close();
+            if (conn != null)
+                conn.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    //查询的jdbc
+    public static <E> List<Map<String, Object>> quaryBySql(String sql, E... e) {
+        getConnection();
+        List<Map<String, Object>> list = new ArrayList<>();
+
+        try {
+            pstat = conn.prepareStatement(sql);
+            for (int i = 0; i < e.length; i++) {
+                pstat.setObject(i + 1, e[i]);
+            }
+            rest = pstat.executeQuery();
+            ResultSetMetaData rsmd = rest.getMetaData();
+            while (rest.next()) {
+                Map<String, Object> map = new HashMap<>();
+                for (int i = 0; i < rsmd.getColumnCount(); i++) {
+                    map.put(rsmd.getColumnName(i + 1), rest.getObject(i + 1));
+                }
+                list.add(map);
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        } finally {
+            closeResource();
+            return list;
+        }
+    }
+
+
+    //增删改的JDBC
+    public static <E> int updateBySql(String sql, E... e) {
+        getConnection();//获取连接
+        int res = 0;
+
+        try {
+            pstat = conn.prepareStatement(sql);
+            for (int j = 0; j < e.length; j++) {
+                pstat.setObject(j + 1, e[j]);
+            }
+            res = pstat.executeUpdate();
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        } finally {
+            closeResource();
+        }
+        return res;
+    }
+}
+~~~
+
+~~~java
+//测试查询
+public static void main(String[] args) {
+        String sql = "select * from fiction";
+        List<Map<String, Object>> list = new ArrayList<>();
+        list = JdbcUtil.quaryBySql(sql);
+        System.out.println(list);
+    }
+~~~
+
+~~~java
+//测试增删改
+    public static void main(String[] args) {
+        String sql = "insert into my_user values(?,?,'123456')";
+        int i = JdbcUtil.updateBySql(sql, "1008", "wangwu");
+        System.out.println("成功操作：" + i + "条数据");
+    }
+~~~
+
