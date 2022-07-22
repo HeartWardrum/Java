@@ -433,3 +433,10 @@ public static void main(String[] args) {
     }
 ~~~
 
+### 连接oracle数据库
+
+~~~java
+Class.forName("oracle.jdbc.driver.OracleDriver");
+            conn = DriverManager.getConnection("jdbc:oracle:thin:@192.168.77.100:1521:helowin","scott","123456");
+~~~
+
