@@ -433,7 +433,11 @@ public static void main(String[] args) {
     }
 ~~~
 
-### 连接oracle数据库
+### Oracle数据库的JDBC配置
+
+1. jar:  ojdbc6_g.jar
+2. 驱动类： oracle.jdbc.driver.OracleDriver
+3. URL: jdbc.oracle:thin:@ip地址:1521:数据库名
 
 ~~~java
 Class.forName("oracle.jdbc.driver.OracleDriver");
