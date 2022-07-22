@@ -246,7 +246,7 @@ public static void main(String[] args) {
 
 1. 在sql中需要传入参数的地方使用`?`
 2. 将sql语句传入Connection对象的`prepareStatement()`方法得到当前的`PreparedStatement`对象
-3. 使用`PreparedStatement`对象调用`setXxx()`方法依次对每一个问好进行参数绑定，问好从1开始
+3. 使用`PreparedStatement`对象调用`setXxx()`方法依次对每一个`?`进行参数绑定，`?`从1开始
 4. 调用`executeQuery()`完成sql执行并返回ResultSet结果集
 
 ~~~java
