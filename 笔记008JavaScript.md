@@ -320,3 +320,68 @@ JS的代码都是通过一系列的事件调用方法来执行的
 </html>
 ~~~
 
+### childNodes ---- 获取某元素节点下的所有子节点，包括文本节点和元素节点
+
+~~~html
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<script type="text/javascript">
+			window.onload = function() {
+				var btns = document.getElementsByTagName("button");
+				// alert(btns.length);
+				btns[0].onclick = function() {
+					alert("我是第一个按钮");
+				};
+				btns[1].onclick = function() {
+					alert("我是第二个按钮");
+				};
+
+				var btn3 = document.getElementById("btn3");
+				btn3.onclick = function() {
+					alert("我是第三个按钮");
+				};
+
+
+				var lis = document.getElementsByTagName("li");
+				// alert(lis.length);
+
+				var city = document.getElementById("city");
+				var cityLis = city.getElementsByTagName("li");
+				// alert(cityLis.length);
+
+				var types = document.getElementsByName("type");
+				//alert(types.length);
+
+				var dels = document.getElementsByClassName("delete");
+				// alert(dels.length);
+
+				var textNode = document.getElementById("text1");
+				//alert(textNode.value);
+				textNode.value = "abd";
+
+				var cityChilds = city.childNodes;
+				alert(cityChilds.length);
+			}
+		</script>
+	</head>
+	<body>
+		<ul id="city">
+			<li>北京</li>
+			<li>上海</li>
+			<li>广州</li>
+			<li>南京</li>
+		</ul>
+		<br>
+		<ul id="game">
+			<li>英雄联盟</li>
+			<li>星际争霸</li>
+			<li>魔兽世界</li>
+		</ul>
+	</body>
+</html>
+
+~~~
+
