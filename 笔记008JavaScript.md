@@ -351,9 +351,9 @@ JS的代码都是通过一系列的事件调用方法来执行的
 
 
 
-我们可以通过  元素节点.属性名  获得属性值
+我们可以通过  `元素节点.属性名`  获得属性值
 
-我们可以通过  元素节点.属性名=新值  来改变属性值
+我们可以通过  `元素节点.属性名=新值`  来改变属性值
 
 ~~~html
 <!DOCTYPE html>
@@ -385,37 +385,9 @@ JS的代码都是通过一系列的事件调用方法来执行的
 		<title></title>
 		<script type="text/javascript">
 			window.onload = function() {
-				var btns = document.getElementsByTagName("button");
-				// alert(btns.length);
-				btns[0].onclick = function() {
-					alert("我是第一个按钮");
-				};
-				btns[1].onclick = function() {
-					alert("我是第二个按钮");
-				};
-
-				var btn3 = document.getElementById("btn3");
-				btn3.onclick = function() {
-					alert("我是第三个按钮");
-				};
-
-
-				var lis = document.getElementsByTagName("li");
-				// alert(lis.length);
-
 				var city = document.getElementById("city");
 				var cityLis = city.getElementsByTagName("li");
-				// alert(cityLis.length);
 
-				var types = document.getElementsByName("type");
-				//alert(types.length);
-
-				var dels = document.getElementsByClassName("delete");
-				// alert(dels.length);
-
-				var textNode = document.getElementById("text1");
-				//alert(textNode.value);
-				textNode.value = "abd";
 
 				var cityChilds = city.childNodes;
 				alert(cityChilds.length);
@@ -442,9 +414,9 @@ JS的代码都是通过一系列的事件调用方法来执行的
 
 如何获取文本？
 
-元素节点.firstChild.nodeValue;
+`元素节点.firstChild.nodeValue;`
 
-注意：元素节点.firstChild.nodeValue=新值  可以改变文本内容
+注意：`元素节点.firstChild.nodeValue=新值`  可以改变文本内容
 
 ~~~html
 <!DOCTYPE html>
@@ -505,7 +477,7 @@ JS的代码都是通过一系列的事件调用方法来执行的
 
 ### document.createElement(元素节点名) ---- 创建一个元素节点
 
-父节点.appendChild(新节点) ---- 将新创建的节点挂在某个父节点下
+`父节点.appendChild(新节点) `---- 将新创建的节点挂在某个父节点下
 
 ~~~html
 				var myLi = document.createElement("li");
@@ -555,6 +527,8 @@ JS的代码都是通过一系列的事件调用方法来执行的
 ~~~
 
 ## 多选框
+
+全选框  可复用
 
 ~~~html
 <!DOCTYPE html>
@@ -606,8 +580,373 @@ JS的代码都是通过一系列的事件调用方法来执行的
 
 ~~~
 
-# 问题
+# js第二天
 
-window.onload=function(){
+### 删除元素节点
 
-}外部的函数直接失效
+`父节点.removeChild(子节点)` ---- 删除指定的子节点
+
+~~~html
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<script type="text/javascript">
+			window.onload = function() {
+				var btn1 = document.getElementById("btn1");
+				btn1.onclick = function() {
+					var yxlmNode = document.getElementById("yxlm");
+					var gameNode = document.getElementById("game");
+
+					gameNode.removeChild(yxlmNode);
+				}
+
+			}
+		</script>
+	</head>
+	<body>
+		<ul id="city">
+			<li>北京</li>
+			<li>上海</li>
+			<li>广州</li>
+			<li>南京</li>
+		</ul>
+		<br>
+		<ul id="game">
+			<li id="yxlm">英雄联盟</li>
+			<li>星际争霸</li>
+			<li>魔兽世界</li>
+		</ul>
+		<button type="button" id="btn1">删除节点</button>
+	</body>
+</html>
+~~~
+
+### 确认提示信息
+
+confirm(字符串) ---- 弹出一个确认框
+
+当用户点击确认时返回true
+
+当用户点击取消时，返回false
+
+~~~html
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<script type="text/javascript">
+			window.onload = function() {
+				var btn1 = document.getElementById("btn1");
+				btn1.onclick = function() {
+					var yxlmNode = document.getElementById("yxlm");
+					var gameNode = document.getElementById("game");
+
+					var flag = confirm("确定删除" + yxlmNode.firstChild.NodeValue + "的元素消息吗？");
+
+					if (flag) {
+						gameNode.removeChild(yxlmNode);
+					}
+				}
+
+			}
+		</script>
+	</head>
+	<body>
+		<ul id="city">
+			<li>北京</li>
+			<li>上海</li>
+			<li>广州</li>
+			<li>南京</li>
+		</ul>
+		<br>
+		<ul id="game">
+			<li id="yxlm">英雄联盟</li>
+			<li>星际争霸</li>
+			<li>魔兽世界</li>
+		</ul>
+		<button type="button" id="btn1">删除节点</button>
+	</body>
+</html>
+
+~~~
+
+### parentNode
+
+表示当前节点的父节点
+
+~~~html
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<script type="text/javascript">
+			window.onload = function() {
+				var btn1 = document.getElementById("btn1");
+				btn1.onclick = function() {
+					var yxlmNode = document.getElementById("yxlm");
+					var gameNode = document.getElementById("game");
+
+					var myParent = yxlmNode.parentNode;
+					var testNode = myParent.getElementsByTagName("li");
+					alert(testNode[0].firstChild.nodeValue);
+				}
+
+			}
+		</script>
+	</head>
+	<body>
+		<ul id="city">
+			<li>北京</li>
+			<li>上海</li>
+			<li>广州</li>
+			<li>南京</li>
+		</ul>
+		<br>
+		<ul id="game">
+			<li id="yxlm">英雄联盟</li>
+			<li>星际争霸</li>
+			<li>魔兽世界</li>
+		</ul>
+		<button type="button" id="btn1">删除节点</button>
+	</body>
+</html>
+~~~
+
+点谁删谁
+
+~~~html
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<script type="text/javascript">
+			window.onload = function() {
+
+				var lis = document.getElementsByTagName("li");
+				for (var i = 0; i < lis.length; i++) {
+					lis[i].onclick = function() {
+						if (confirm("确定删除" + this.firstChild.nodeValue + "节点吗？")) {
+							this.parentNode.removeChild(this);
+						}
+					}
+				}
+
+
+			}
+		</script>
+	</head>
+	<body>
+		<ul id="city">
+			<li>北京</li>
+			<li>上海</li>
+			<li>广州</li>
+			<li>南京</li>
+		</ul>
+		<br>
+		<ul id="game">
+			<li id="yxlm">英雄联盟</li>
+			<li>星际争霸</li>
+			<li>魔兽世界</li>
+		</ul>
+		<button type="button" id="btn1">删除节点</button>
+	</body>
+</html>
+
+~~~
+
+### 添加删除实例：员工管理系统
+
+~~~html
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<style type="text/css">
+			body {
+				text-align: center;
+			}
+
+			table {
+				border-collapse: collapse;
+				margin: 0px auto;
+			}
+
+			table,
+			td,
+			th {
+				boder: 1px black solid;
+				padding: 10px;
+			}
+		</style>
+
+		<script type="text/javascript">
+			function removeTr(aNode) {
+				var trNode = aNode.parentNode.parentNode; // td  tr
+				var nameText = trNode.getElementsByTagName("td")[0].firstChild.nodeValue;
+				var flag = confirm("确定要删除：" + nameText + " 的信息吗？");
+				if (flag) {
+					trNode.parentNode.removeChild(trNode);
+				}
+			}
+
+			window.onload = function() {
+				//删除原始数据
+				var aNodes = document.getElementsByTagName("a");
+				for (var i = 0; i < aNodes.length; i++) {
+					aNodes[i].onclick = function() {
+						removeTr(this);
+					}
+				}
+
+
+				//新增一条记录
+				document.getElementById("btn1").onclick = function() {
+					var trNode = document.createElement("tr");
+					document.getElementById("table1").appendChild(trNode);
+
+					for (var i = 0; i < 4; i++) {
+						//前三个td
+						if (i <= 2) {
+							var textNode = document.createTextNode(document.getElementsByTagName("input")[i].value);
+							var tdNode = document.createElement("td");
+							trNode.appendChild(tdNode);
+
+							tdNode.appendChild(textNode);
+						} else {
+							//最后一个特殊的td
+							var textNode = document.createTextNode("Delete");
+							var tdNode = document.createElement("td");
+							trNode.appendChild(tdNode);
+							var aNode = document.createElement("a");
+							aNode.href = "#";
+							tdNode.appendChild(aNode);
+							aNode.appendChild(textNode);
+							aNode.onclick = function() {
+								removeTr(this);
+							}
+						}
+					}
+				}
+			}
+		</script>
+	</head>
+	<body>
+
+		员工管理系统
+		<br><br>
+		name:<input type="text" name="" id="name" value="Lucy" />&nbsp;&nbsp;
+		email:<input type="text" name="" id="email" value="Lucy@qq.com" />&nbsp;&nbsp;
+		salary:<input type="text" name="" id="salary" value="10000" />&nbsp;&nbsp;
+
+		<br><br>
+		<button type="button" id="btn1">新增</button>
+		<br><br>
+		<hr>
+		<br><br>
+		<table border="" id="table1">
+			<tr>
+				<th>name</th>
+				<th>email</th>
+				<th>salary</th>
+				<th></th>
+			</tr>
+			<tr>
+				<td>Tom</td>
+				<td>abc@qqcom</td>
+				<td>8000</td>
+				<td><a href="#">Delete</a></td>
+			</tr>
+			<tr>
+				<td>Jerry</td>
+				<td>abdfafc@qqcom</td>
+				<td>80dd00</td>
+				<td><a href="#">Delete</a></td>
+			</tr>
+			<tr>
+				<td>Mary</td>
+				<td>abdsfsfc@qqcom</td>
+				<td>80031310</td>
+				<td><a href="#">Delete</a></td>
+			</tr>
+		</table>
+	</body>
+</html>
+~~~
+
+
+
+### 元素节点隐藏显示
+
+`元素节点.style.display=""`可以控制元素节点是否显示
+
+- 取值为none表示隐藏
+- 取值为list-item表示以列表项的形式展示
+- 取值为block 表示以块级元素的形式展示
+
+~~~html
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<script type="text/javascript">
+			window.onload = function() {
+				document.getElementById("btn1").onclick = function() {
+					document.getElementById("yxlm").style.display = "none";
+				}
+
+				document.getElementById("btn2").onclick = function() {
+					document.getElementById("yxlm").style.display = "list-item";
+				}
+
+				var flag = true;
+				document.getElementById("btn3").onclick = function() {
+					flag = !flag;
+					if (flag) {
+						document.getElementById("yxlm").style.display = "list-item";
+					} else {
+						document.getElementById("yxlm").style.display = "none";
+					}
+
+				}
+			}
+		</script>
+	</head>
+	<body>
+		<input type="hidden" name="" id="" value="100" />
+
+
+		<ul id="city">
+			<li>北京</li>
+			<li>上海</li>
+			<li>广州</li>
+			<li>南京</li>
+		</ul>
+		<br>
+		<ul id="game">
+			<li id="yxlm">英雄联盟</li>
+			<li>星际争霸</li>
+			<li>魔兽世界</li>
+		</ul>
+		<button type="button" id="btn1">隐藏英雄联盟</button>
+		<button type="button" id="btn2">显示英雄联盟</button>
+		<button type="button" id="btn3">显示/隐藏英雄联盟</button>
+	</body>
+</html>
+
+~~~
+
+
+
+### `<input type="hidden" value="xxx">` ---- 隐藏域
+
+通常写在`<form>`中，他不显示，但会随着表单的提交而被提交
+
+
+
