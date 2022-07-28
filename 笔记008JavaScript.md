@@ -1097,3 +1097,92 @@ function abc() {
 </html>
 ~~~
 
+## jQuery
+
+这是一个流行的封装了js的前端框架
+
+窗体加载事件
+
+~~~html
+			$(function() {
+				alert("hello jquery");
+			})
+~~~
+
+### jQuery 的选择器
+
+$("元素名") ---- 元素选择器，选中指定元素
+
+
+
+注意：jQuery的选择器选择到的对象，其实是一个数组类型
+
+注意：jQuery对象不能直接调用js的属性和方法，但它可以通过数组下标转型成js对象，然后就可以调用js属性和方法
+
+jQuery对象也可以通过get(下标)来转型js对象
+
+~~~html
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<script type="text/javascript" src="jquery-1.11.3.min.js"></script>
+		<script type="text/javascript">
+			$(function() {
+                //以下三种输出都一样
+				var jsNode = $("p")[0];
+				alert(jsNode.firstChild.nodeValue);
+                
+				alert($("p")[0].firstChild.nodeValue);
+                
+				alert($("p").get(0).firstChild.nodeValue);
+			})
+		</script>
+	</head>
+	<body>
+		<p>我是一个段落</p>
+		<br><br>
+		<p>我是第二个段落</p>
+		<br><br>
+		<p>我是第三个段落</p>
+	</body>
+</html>
+
+~~~
+
+js对象也不能直接调用`jQuery`的方法，但是它可以先转型为`jQuery`对象，然后就可以调用
+
+我们只需要使用`$(js对象)`，就可以实现js对象转`jQuery`对象
+
+~~~html
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<script type="text/javascript" src="jquery-1.11.3.min.js"></script>
+		<script type="text/javascript">
+			$(function() {
+				var p1Node = document.getElementById("p1");
+				alert($(p1Node).text());
+			})
+		</script>
+	</head>
+	<body>
+		<p id="p1">我是一个段落</p>
+		<br><br>
+		<p>我是第二个段落</p>
+		<br><br>
+		<p>我是第三个段落</p>
+	</body>
+</html>
+
+~~~
+
+
+
+### jQuery 的方法
+
+text() ---- 获取指定元素节点中的文本内容
+
