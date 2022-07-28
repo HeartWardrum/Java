@@ -962,35 +962,54 @@ confirm(字符串) ---- 弹出一个确认框
 		<title></title>
 		<script type="text/javascript">
 			window.onload = function() {
-				document.getElementById("btn1").onclick = function() {
-					var str = document.getElementById("str");
-					if (str.disabled == true) {
-						str.disabled = false;
-					} else {
-						str.disabled = true;
-					}
+				document.getElementById("btn").onclick = function() {
+					document.getElementById("t1").disabled = 										!document.getElementById("t1").disabled;
 				}
 			}
 		</script>
+		</script>
 	</head>
 	<body>
-		<input type="text" name="" id="str" value="" />
+
+		<input type="text" name="" id="t1" value="" />
 		<br>
-		<button type="button" id="btn1">置灰</button>
+		<button type="button" id="btn">置灰/取消置灰</button>
 	</body>
 </html>
 ~~~
 
 ## 只读
 
-元素节点.readOnly  属性表示是否只读 ，它的取值为true和false，true表示只读，false表示可写
+`元素节点.readOnly`  属性表示是否只读 ，它的取值为true和false，true表示只读，false表示可写
 
 注意：disabled 和 readOnly 的本质区别在于disabled 中的value值无法随表单提交，而readOnly中的value值可以随表单提前交
+~~~html
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<script type="text/javascript">
+			window.onload = function() {
+				document.getElementById("btn").onclick = function() {
+					document.getElementById("t1").readOnly = !document.getElementById("t1").readOnly;
+				}
+			}
+		</script>
+		</script>
+	</head>
+	<body>
+
+		<input type="text" name="" id="t1" value="" />
+		<br>
+		<button type="button" id="btn">只读/可写</button>
+	</body>
+</html>
+~~~
 
 ## innerHTML
 
 它可以获取当前节点的HTML代码
-
 也可以使用元素节点.innerHTML=新的HTML代码 来改变当前元素节点的子元素
 
 ~~~html
