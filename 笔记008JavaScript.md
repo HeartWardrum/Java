@@ -1366,3 +1366,61 @@ function menu(o) {
 ~~~
 each() ---- 遍历当前jQuery对象中的每一个元素节点
 val() ---- 操作元素节点的value属性，如果无参，则是获取value值，如果传参数，则是改变value值
+prop(属性名) ---- 获取当前元素的某属性值
+prop(属性名，新值) ---- 改变当前元素的某些属性
+~~~html
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<script type="text/javascript" src="./jquery-1.11.3.min.js"></script>
+		<script type="text/javascript">
+			$(function() {
+				var myValue = $("#test1").prop("value");
+				alert(myValue);
+				$("#test1").prop("value", "zhangsan");
+
+			})
+		</script>
+	</head>
+	<body>
+		<input type="text" name="hello" id="test1" value="abc" title="haha" />
+	</body>
+</html>
+~~~
+
+~~~html
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<script type="text/javascript" src="./jquery-1.11.3.min.js"></script>
+		<script type="text/javascript">
+			$(function() {
+				$("#btn1").click(function() {
+					alert($("#c1").prop("checked"));
+				})
+
+
+				$("#btn2").click(function() {
+					$("#c1").prop("checked", !$("#c1").prop("checked"))
+				})
+			})
+		</script>
+	</head>
+	<body>
+		<input type="text" name="hello" id="test1" value="abc" title="haha" />
+		<br><br>
+		<input type="checkbox" name="" id="c1" value="" />
+		<button type="button" id="btn1">看看有没有选中</button>
+		<br><br>
+		<button type="button" id="btn2">选中</button>
+	</body>
+</html>
+~~~
+
+
+
+
