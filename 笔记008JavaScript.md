@@ -1122,7 +1122,7 @@ function abc() {
 
 窗体加载事件
 
-~~~html
+~~~css
 			$(function() {
 				alert("hello jquery");
 			})
@@ -1186,7 +1186,7 @@ jQuery对象也可以通过get(下标)来转型js对象
 
 ~~~
 
-js对象也不能直接调用`jQuery`的方法，但是它可以先转型为`jQuery`对象，然后就可以调用
+js对象也不能直接调用`jQuery`的方法，但是它可以先转型为`jQuery`对象
 
 我们只需要使用`$(js对象)`，就可以实现js对象转`jQuery`对象
 
@@ -1219,11 +1219,38 @@ js对象也不能直接调用`jQuery`的方法，但是它可以先转型为`jQu
 
 ### jQuery 的方法
 
-#### text() ---- 获取指定元素节点中的文本内容
+#### text() 
 
-#### click() ---- onClick事件
+---- 获取指定元素节点中的文本内容
 
-#### css(属性值，属性名) ---- 改变元素节点的css样式
+~~~html
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<script type="text/javascript" src="jquery-1.11.3.min.js"></script>
+		<script type="text/javascript">
+			$(function() {
+
+				alert($("#p1").text());
+			})
+		</script>
+		</script>
+	</head>
+	<body>
+		<p id="p1">我是一个段落</p>
+	</body>
+</html>
+~~~
+
+#### click() 
+
+---- onClick事件
+
+#### css(属性值，属性名) 
+
+---- 改变元素节点的css样式
 
 ~~~html
 <!DOCTYPE html>
@@ -1253,7 +1280,9 @@ js对象也不能直接调用`jQuery`的方法，但是它可以先转型为`jQu
 
 ~~~
 
-#### change() ---- onChange事件
+#### change() 
+
+---- onChange事件
 
 ~~~html
 <!DOCTYPE html>
@@ -1284,7 +1313,9 @@ js对象也不能直接调用`jQuery`的方法，但是它可以先转型为`jQu
 </html>
 ~~~
 
-#### mouseenter() ---- onMouseenter事件
+#### mouseenter() 
+
+---- onMouseenter事件
 
 mouseleave() ---- onMouseleave事件
 
@@ -1329,8 +1360,13 @@ mouseleave() ---- onMouseleave事件
 </html>
 ~~~
 
-#### hide() ---- 隐藏指定元素节点
-####  show() ---- 显示隐藏的节点
+#### hide() 
+
+---- 隐藏指定元素节点
+
+####  show() 
+
+---- 显示隐藏的节点
 
 ~~~html
 <!DOCTYPE html>
@@ -1364,30 +1400,121 @@ mouseleave() ---- onMouseleave事件
 </html>
 ~~~
 
-#### is(":hidden") ---- 判断当前控件是否隐藏，返回true和false
-#### find(元素节点) ---- 在当前元素节点下的子节点中查找指定元素节点
+#### is(":hidden") 
 
-~~~javascript
-$(function() {
-	$("dd").hide();
-	$("dt").click(function() {
-		menu(this.parentNode);
-	})
-})
+---- 判断当前控件是否隐藏，返回true和false
 
-function menu(o) {
-	var dd = $(o).find("dd");
-	if (dd.is(":hidden")) {
-		dd.show();
-	} else {
-		dd.hide();
-	}
-}
+~~~html
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<script type="text/javascript" src="jquery-1.11.3.min.js"></script>
+		<script type="text/javascript">
+			$(function() {
+
+				$("p").click(function() {
+					$(this).hide();
+				})
+				$("#btn1").click(function() {
+					$("p").show();
+				})
+				$("#btn2").click(function() {
+					$("p").each(function() {
+						alert($(this).is(":hidden"));
+					})
+				})
+			})
+		</script>
+		</script>
+	</head>
+	<body>
+		<p>点我我就消失</p>
+		<p>点我我就消失2</p>
+		<p>点我我就消失3</p>
+		<button type="button" id="btn1">全部出来！</button>
+		<button type="button" id="btn2">查看控件隐藏状态</button>
+	</body>
+</html>
 ~~~
-#### each() ---- 遍历当前jQuery对象中的每一个元素节点
-#### val() ---- 操作元素节点的value属性，如果无参，则是获取value值，如果传参数，则是改变value值
-#### prop(属性名) ---- 获取当前元素的某属性值
-#### prop(属性名，新值) ---- 改变当前元素的某些属性
+
+#### find(元素节点) 
+
+---- 在当前元素节点下的子节点中查找指定元素节点
+
+~~~html
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<script type="text/javascript" src="jquery-1.11.3.min.js"></script>
+		<script type="text/javascript">
+			$(function() {
+
+
+				$("#ul1").find("li").click(function() {
+					$(this).hide();
+				})
+
+			})
+		</script>
+		</script>
+	</head>
+	<body>
+		<ul id="ul1">
+			<li>点我我就消失1</li>
+			<li>点我我就消失2</li>
+			<li>点我我就消失3</li>
+		</ul>
+		<ul id="ul2">
+			<li>点我我不消失1</li>
+			<li>点我我不消失2</li>
+			<li>点我我不消失3</li>
+		</ul>
+	</body>
+</html>
+
+~~~
+#### each() 
+
+---- 遍历当前jQuery对象中的每一个元素节点
+
+#### val()
+
+---- 操作元素节点的value属性，如果无参，则是获取value值，如果传参数，则是改变value值
+
+~~~html
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<script type="text/javascript" src="jquery-1.11.3.min.js"></script>
+		<script type="text/javascript">
+			$(function() {
+
+				alert($("input").val());
+				$("input").val("你好");
+				alert($("input").val())
+			})
+		</script>
+		</script>
+	</head>
+	<body>
+		<input type="text" name="" id="" value="嗨嗨" />
+	</body>
+</html>
+~~~
+
+#### prop(属性名) 
+
+---- 获取当前元素的某属性值
+
+#### prop(属性名，新值)
+
+---- 改变当前元素的某些属性
 
 ~~~html
 <!DOCTYPE html>
@@ -1480,7 +1607,10 @@ function menu(o) {
 
 ~~~
 
-html() ---- 可以获取指定元素节点下的子节点的html代码，如果传参，则是改变它的子节点的html代码，相当于innerHTML
+### html() 
+
+---- 可以获取指定元素节点下的子节点的html代码，如果传参，则是改变它的子节点的html代码，相当于innerHTML
+
 ~~~html
 <!DOCTYPE html>
 <html>
@@ -1510,8 +1640,14 @@ html() ---- 可以获取指定元素节点下的子节点的html代码，如果�
 </html>
 ~~~
 
-empty() ---- 清空指定元素节点下的所有子节点
-remove() ---- 删除指定元素节点以及它下面的所有字节点
+### empty() 
+
+---- 清空指定元素节点下的所有子节点
+
+### remove() 
+
+---- 删除指定元素节点以及它下面的所有字节点
+
 ~~~html
 <!DOCTYPE html>
 <html>
@@ -1597,8 +1733,12 @@ remove() ---- 删除指定元素节点以及它下面的所有字节点
 
 ~~~
 
-$(html代码字符串) ---- 创建一个新的节点
-将新节点挂在指定父节点下的最后一个位置的方法：
+### $(html代码字符串) 
+
+---- 创建一个新的节点
+
+### 将新节点挂在指定父节点下的最后一个位置的方法：
+
 > 新节点.appendTo(父节点)
 > 父节点.append(新节点)
 ~~~html
@@ -1641,3 +1781,43 @@ $(html代码字符串) ---- 创建一个新的节点
 prependTo和prepend是挂在父节点的第一个子节点位置
 insertBefore和before是挂在某个兄弟节点的前面
 insertAfter和after是挂在某个兄弟节点的后面
+
+# 问题
+
+//只要有一个消失就会输出true  这输出的是哪一个？
+~~~html
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<script type="text/javascript" src="jquery-1.11.3.min.js"></script>
+		<script type="text/javascript">
+			$(function() {
+
+				$("p").click(function() {
+					$(this).hide();
+				})
+				$("#btn1").click(function() {
+					$("p").show();
+				})
+				$("#btn2").click(function() {
+					// $("p").each(function() {
+					// 	alert($(this).is(":hidden"));
+					// })
+					alert($("p").is(":hidden"));
+				})
+			})
+		</script>
+		</script>
+	</head>
+	<body>
+		<p>点我我就消失</p>
+		<p>点我我就消失2</p>
+		<p>点我我就消失3</p>
+		<button type="button" id="btn1">全部出来！</button>
+		<button type="button" id="btn2">查看控件隐藏状态</button>
+	</body>
+</html>
+
+~~~
