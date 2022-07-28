@@ -948,5 +948,152 @@ confirm(字符串) ---- 弹出一个确认框
 
 通常写在`<form>`中，他不显示，但会随着表单的提交而被提交
 
+# js第三天
 
+## 置灰
+
+元素节点.disabled  属性表示是否置灰 ，它的取值为true和false，true表示置灰，false表示可用
+
+~~~html
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<script type="text/javascript">
+			window.onload = function() {
+				document.getElementById("btn1").onclick = function() {
+					var str = document.getElementById("str");
+					if (str.disabled == true) {
+						str.disabled = false;
+					} else {
+						str.disabled = true;
+					}
+				}
+			}
+		</script>
+	</head>
+	<body>
+		<input type="text" name="" id="str" value="" />
+		<br>
+		<button type="button" id="btn1">置灰</button>
+	</body>
+</html>
+~~~
+
+## 只读
+
+元素节点.readOnly  属性表示是否只读 ，它的取值为true和false，true表示只读，false表示可写
+
+注意：disabled 和 readOnly 的本质区别在于disabled 中的value值无法随表单提交，而readOnly中的value值可以随表单提前交
+
+## innerHTML
+
+它可以获取当前节点的HTML代码
+
+也可以使用元素节点.innerHTML=新的HTML代码 来改变当前元素节点的子元素
+
+~~~html
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<script type="text/javascript">
+			window.onload = function() {
+				document.getElementById("btn3").onclick = function() {
+					var city = document.getElementById("city");
+					alert(city.innerHTML);
+				}
+
+				document.getElementById("btn4").onclick = function() {
+					var game = document.getElementById("game");
+					alert(game.innerHTML);
+				}
+
+				document.getElementById("btn5").onclick = function() {
+					var game = document.getElementById("game");
+					var city = document.getElementById("city");
+					var temp = city.innerHTML;
+					city.innerHTML = game.innerHTML;
+					game.innerHTML = temp;
+				}
+
+			}
+		</script>
+	</head>
+	<body>
+		<ul id="city">
+			<li>北京</li>
+			<li>上海</li>
+			<li>广州</li>
+			<li>南京</li>
+		</ul>
+		<br>
+		<ul id="game">
+			<li id="yxlm">英雄联盟</li>
+			<li>星际争霸</li>
+			<li>魔兽世界</li>
+		</ul>
+		<br><br>
+		<button type="button" id="btn3">获取city的html代码</button>
+		<br><br>
+		<button type="button" id="btn4">获取game的html代码</button>
+		<br><br>
+		<button type="button" id="btn5">交换</button>
+	</body>
+</html>
+
+~~~
+
+## 外部js文件
+
+我们可以单独编写独立的js文件，然后再当前html中使用`<script type="text/javascript" src="外部js文件路径"/>`来将其引入 
+
+~~~js
+function abc() {
+	alert("我是abc");
+}
+~~~
+
+~~~html
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<script type="text/javascript" src="./myJs.js"></script>
+		<script type="text/javascript">
+			window.onload = function() {
+
+				abc();
+
+            }
+		</script>
+	</head>
+	<body>
+	</body>
+</html>
+~~~
+
+## my97Date日期控件
+
+一般来讲 日期框的内容都是用户手动选择的，而不是输入的。我们可以引入my97Date日期控件中的WdatePicker.js 然后再文本框的onclick事件上调用WdatePicker()即可，
+
+当用户选择某日期后，返回的是该日期的标准格式字符串
+
+~~~html
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<script type="text/javascript" src="My97DatePicker/WdatePicker.js"></script>
+
+	</head>
+	<body>
+		<input type="text" onclick="WdatePicker()" />
+	</body>
+</html>
+~~~
 
