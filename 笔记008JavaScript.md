@@ -1251,3 +1251,84 @@ change() ---- onChange事件
 </html>
 ~~~
 
+mouseenter() ---- onMouseenter事件
+
+mouseleave() ---- onMouseleave事件
+
+~~~html
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<script type="text/javascript" src="jquery-1.11.3.min.js"></script>
+		<script type="text/javascript">
+			$(function() {
+				$("p").mouseenter(function() {
+					$(this).css("background-color", "blue");
+				})
+
+				$("p").mouseleave(function() {
+					$(this).css("background-color", "yellow");
+				})
+			})
+		</script>
+	</head>
+	<body>
+		<p id="p1">我是一个段落</p>
+		<br><br>
+		<p>我是第二个段落</p>
+		<br><br>
+		<p>我是第三个段落</p>
+		<br>
+		<button type="button">改变段落的颜色</button>
+		<br>
+		<input type="text" class="field1" />
+		<br>
+		<select class="field1">
+			<option value="">北京</option>
+			<option value="">上海</option>
+			<option value="">广州</option>
+			<option value="">深圳</option>
+			<option value="">苏州</option>
+		</select>
+	</body>
+</html>
+~~~
+
+hide() ---- 隐藏指定元素节点
+
+show() ---- 显示隐藏的节点
+
+~~~html
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<script type="text/javascript" src="jquery-1.11.3.min.js"></script>
+		<script type="text/javascript">
+			$(function() {
+				$("p").click(function() {
+					$(this).hide();
+				})
+
+				$("#btn1").click(function() {
+					$("p").show();
+				})
+
+			})
+		</script>
+	</head>
+	<body>
+		<p id="p1">点我我就消失</p>
+		<br><br>
+		<p>俺也一样</p>
+		<br><br>
+		<p>俺也一样</p>
+		<br>
+		<button type="button" id="btn1">全部出现</button>
+	</body>
+</html>
+~~~
+
