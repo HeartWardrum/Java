@@ -1421,6 +1421,42 @@ prop(属性名，新值) ---- 改变当前元素的某些属性
 </html>
 ~~~
 
+## 用jQuery写多选框
+~~~html
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<script type="text/javascript" src="jquery-1.11.3.min.js"></script>
+		<script type="text/javascript">
+			$(function() {
 
+				$("#checkedAll").click(function() {
+					$("[name='hobby']").prop("checked", this.checked);
+				})
+
+
+				$("[name='hobby']").click(function() {
+					$("#checkedAll").prop("checked", $("[name=hobby]").length == $("[name=hobby]:checked").length);
+				})
+
+			})
+		</script>
+	</head>
+	<body>
+
+
+		<p>请选择你的爱好：</p>
+		全选<input type="checkbox" id="checkedAll" />
+		<br><br>
+		足球<input type="checkbox" name="hobby" id="" value="football" />
+		篮球<input type="checkbox" name="hobby" id="" value="basketball" />
+		乒乓球<input type="checkbox" name="hobby" id="" value="pingpong" />
+		羽毛球<input type="checkbox" name="hobby" id="" value="badminton" />
+	</body>
+</html>
+
+~~~
 
 
