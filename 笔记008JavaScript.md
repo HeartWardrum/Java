@@ -1113,7 +1113,9 @@ function abc() {
 
 $("元素名") ---- 元素选择器，选中指定元素
 
+$("#id值") ---- id选择器
 
+$(".class值") --- class选择器
 
 注意：jQuery的选择器选择到的对象，其实是一个数组类型
 
@@ -1185,4 +1187,67 @@ js对象也不能直接调用`jQuery`的方法，但是它可以先转型为`jQu
 ### jQuery 的方法
 
 text() ---- 获取指定元素节点中的文本内容
+
+click() ---- onClick事件
+
+css(属性值，属性名) ---- 改变元素节点的css样式
+
+~~~html
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<script type="text/javascript" src="jquery-1.11.3.min.js"></script>
+		<script type="text/javascript">
+			$(function() {
+				$("button").click(function() {
+					$("#p1").css("color", "red");//单击按钮使第一个段落变成红色
+				});
+			})
+		</script>
+	</head>
+	<body>
+		<p id="p1">我是一个段落</p>
+		<br><br>
+		<p>我是第二个段落</p>
+		<br><br>
+		<p>我是第三个段落</p>
+		<br>
+		<button type="button">改变段落的颜色</button>
+	</body>
+</html>
+
+~~~
+
+change() ---- onChange事件
+
+~~~html
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<script type="text/javascript" src="jquery-1.11.3.min.js"></script>
+		<script type="text/javascript">
+			$(function() {
+				$(".field1").change(function() {
+					$(this).css("background-color", "red");
+				})
+			})
+		</script>
+	</head>
+	<body>
+		<input type="text" class="field1" />
+		<br>
+		<select class="field1">
+			<option value="">北京</option>
+			<option value="">上海</option>
+			<option value="">广州</option>
+			<option value="">深圳</option>
+			<option value="">苏州</option>
+		</select>
+	</body>
+</html>
+~~~
 
