@@ -1459,4 +1459,125 @@ prop(属性名，新值) ---- 改变当前元素的某些属性
 
 ~~~
 
+html() ---- 可以获取指定元素节点下的子节点的html代码，如果传参，则是改变它的子节点的html代码，相当于innerHTML
+~~~html
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<script type="text/javascript" src="jquery-1.11.3.min.js"></script>
+		<script type="text/javascript">
+			$(function() {
+
+				$("#btn").click(function() {
+					alert($("div").html());
+					$("div").html("<h1>我是一个标题</h1>");
+				})
+
+
+			})
+		</script>
+
+	</head>
+	<body>
+		<div id="">
+			<p>我是一个段落</p>
+		</div>
+		<button type="button" id="btn">按钮</button>
+	</body>
+</html>
+~~~
+
+empty() ---- 清空指定元素节点下的所有子节点
+remove() ---- 删除指定元素节点以及它下面的所有字节点
+~~~html
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<script type="text/javascript" src="jquery-1.11.3.min.js"></script>
+		<script type="text/javascript">
+			$(function() {
+
+				$("#btn").click(function() {
+					alert($("div").html());
+					$("div").html("<h1>我是一个标题</h1>");
+				})
+
+				$("#btn2").click(function() {
+					$("div").empty();
+				})
+
+				$("#btn3").click(function() {
+					$("div").remove();
+				})
+
+			})
+		</script>
+		<style type="text/css">
+			div {
+				height: 80px;
+				width: 80px;
+				background-color: red;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="">
+			<p>我是一个段落</p>
+		</div>
+		<button type="button" id="btn">按钮</button>
+		<br>
+		<button type="button" id="btn2">清空</button>
+		<br>
+		<button type="button" id="btn3">删除</button>
+		<br>
+	</body>
+</html>
+~~~
+
+## 用 jQuery写点谁删谁
+
+~~~html
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<script type="text/javascript" src="jquery-1.11.3.min.js"></script>
+		<script type="text/javascript">
+			$(function() {
+				$("li").click(function() {
+					if (confirm("确定删除" + $(this).text() + "的信息吗？")) {
+						$(this).remove();
+					}
+				})
+			})
+		</script>
+	</head>
+	<body>
+
+		<ul id="city">
+			<li>北京</li>
+			<li>上海</li>
+			<li>广州</li>
+			<li>南京</li>
+		</ul>
+		<br>
+		<ul id="game">
+			<li id="yxlm">英雄联盟</li>
+			<li>星际争霸</li>
+			<li>魔兽世界</li>
+		</ul>
+	</body>
+</html>
+
+~~~
+
+$(html代码字符串) ---- 创建一个新的节点
+将新节点挂在指定父节点下的最后一个位置的方法：
+> 新节点.appendTo(父节点)
+> 父节点.append(新节点)
 
