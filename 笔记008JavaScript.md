@@ -1200,11 +1200,11 @@ js对象也不能直接调用`jQuery`的方法，但是它可以先转型为`jQu
 
 ### jQuery 的方法
 
-text() ---- 获取指定元素节点中的文本内容
+#### text() ---- 获取指定元素节点中的文本内容
 
-click() ---- onClick事件
+#### click() ---- onClick事件
 
-css(属性值，属性名) ---- 改变元素节点的css样式
+#### css(属性值，属性名) ---- 改变元素节点的css样式
 
 ~~~html
 <!DOCTYPE html>
@@ -1234,7 +1234,7 @@ css(属性值，属性名) ---- 改变元素节点的css样式
 
 ~~~
 
-change() ---- onChange事件
+#### change() ---- onChange事件
 
 ~~~html
 <!DOCTYPE html>
@@ -1265,7 +1265,7 @@ change() ---- onChange事件
 </html>
 ~~~
 
-mouseenter() ---- onMouseenter事件
+#### mouseenter() ---- onMouseenter事件
 
 mouseleave() ---- onMouseleave事件
 
@@ -1310,8 +1310,8 @@ mouseleave() ---- onMouseleave事件
 </html>
 ~~~
 
-hide() ---- 隐藏指定元素节点
-show() ---- 显示隐藏的节点
+#### hide() ---- 隐藏指定元素节点
+####  show() ---- 显示隐藏的节点
 
 ~~~html
 <!DOCTYPE html>
@@ -1345,8 +1345,9 @@ show() ---- 显示隐藏的节点
 </html>
 ~~~
 
-is(":hidden") ---- 判断当前控件是否隐藏，返回true和false
-find(元素节点) ---- 在当前元素节点下的子节点中查找指定元素节点
+#### is(":hidden") ---- 判断当前控件是否隐藏，返回true和false
+#### find(元素节点) ---- 在当前元素节点下的子节点中查找指定元素节点
+
 ~~~javascript
 $(function() {
 	$("dd").hide();
@@ -1364,10 +1365,11 @@ function menu(o) {
 	}
 }
 ~~~
-each() ---- 遍历当前jQuery对象中的每一个元素节点
-val() ---- 操作元素节点的value属性，如果无参，则是获取value值，如果传参数，则是改变value值
-prop(属性名) ---- 获取当前元素的某属性值
-prop(属性名，新值) ---- 改变当前元素的某些属性
+#### each() ---- 遍历当前jQuery对象中的每一个元素节点
+#### val() ---- 操作元素节点的value属性，如果无参，则是获取value值，如果传参数，则是改变value值
+#### prop(属性名) ---- 获取当前元素的某属性值
+#### prop(属性名，新值) ---- 改变当前元素的某些属性
+
 ~~~html
 <!DOCTYPE html>
 <html>
