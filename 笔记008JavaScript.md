@@ -1580,4 +1580,43 @@ $(html代码字符串) ---- 创建一个新的节点
 将新节点挂在指定父节点下的最后一个位置的方法：
 > 新节点.appendTo(父节点)
 > 父节点.append(新节点)
+~~~html
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<script type="text/javascript" src="jquery-1.11.3.min.js"></script>
+		<script type="text/javascript">
+			$(function() {
+				$("#btn1").click(function() {
+					//$("<li>杭州</li>").appendTo($("#city"));
+					$("#city").append($("<li>杭州</li>"));
+				})
 
+			})
+		</script>
+	</head>
+	<body>
+
+		<ul id="city">
+			<li>北京</li>
+			<li>上海</li>
+			<li>广州</li>
+			<li>南京</li>
+		</ul>
+		<br>
+		<ul id="game">
+			<li id="yxlm">英雄联盟</li>
+			<li>星际争霸</li>
+			<li>魔兽世界</li>
+		</ul>
+		<button type="button" id="btn1">新增一个城市</button>
+
+	</body>
+</html>
+~~~
+
+prependTo和prepend是挂在父节点的第一个子节点位置
+insertBefore和before是挂在某个兄弟节点的前面
+insertAfter和after是挂在某个兄弟节点的后面
