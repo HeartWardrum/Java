@@ -2072,6 +2072,129 @@ insertAfter和after是挂在某个兄弟节点的后面
 \S ---- 单个 非 空格
 \d ---- 单个数字
 \D ---- 单个 非 数字
+#### 数量词
+`?` ---- 0次或1次
+`+` ---- 1次或多次
+`*` ---- 任意次数
+`{n}` ---- 指定n次
+`{n,}` ---- 至少n次
+`{n,m}` ---- n到m次
+#### 组合
+小括号()  可以将一个正则包起来，作为一个组合，它的后面使用数量词来修饰，表示该组合允许出现指定次数
+例：编写正则，校验一个0-2位小数的正数或负数或0
+`var reg = /^\-?\d+(\.\d{1,2})?$/;`
+#### 字符串.length
+---- 获取字符串的长度
+#### return false
+---- 表示组织当前控件的默认行为  例如组织表单提交
+~~~html
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<script type="text/javascript" src="jquery-1.11.3.min.js"></script>
+		<script type="text/javascript">
+			$(function() {
+				$("#btn1").click(function() {
+					//var reg = /^a$/;
+					//var reg = new RegExp("^[\w]$");
+					//var reg = /^0\d{2,3}\-\d{8}$/;
+					//var reg = /^\-?\d+(\.\d{1,2})?$/;
+					var str = $("#str").val();
+					if (str == null || str == "") {
+						alert("内容不能为空");
+						return false;
+					}
+					if (str.length > 10) {
+						alert("内容过长");
+						return false;
+					}
+					alert(reg.test($("#str").val()));
+
+				})
+			})
+		</script>
+		<!-- 		<script type="text/javascript">
+			window.onload=function(){
+				document.getElementById("btn1").onclick=function(){
+					var reg= new RegExp("^a$");
+					alert(reg.test(document.getElementById("str").value));
+				}
+			}
+		</script> -->
+	</head>
+	<body>
+		<form action="./success.html" method="post">
+			<input type="text" name="" id="str" value="" />
+			<br>
+			<button type="submit" id="btn1">校验</button>
+		</form>
+
+	</body>
+</html>
+~~~
+
+~~~html
+
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<script type="text/javascript" src="jquery-1.11.3.min.js"></script>
+		<script type="text/javascript">
+			$(function() {
+
+
+
+				$("#email").change(function() {
+					var email = $.trim($(this).val());
+					if (email.length > 15) {
+						$("#message").html("  内容过长!给老子死！");
+						$("#btn1").prop("disabled", true);
+					} else {
+						var reg = /^\w+@\w+\.\w+$/;
+						if (reg.test(email)) {
+							$("#message").empty();
+							$("#btn1").prop("disabled", false);
+
+						} else {
+							$("#message").html("  格式错误!给老子死！");
+							$("#btn1").prop("disabled", true);
+						}
+
+					}
+
+				})
+				$("#btn1").click(function() {
+					if ($("#email").val() == null || $("#email").val() == "") {
+						$("#message").html("  不能为空!给老子死！");
+						$("#btn1").prop("disabled", true);
+						return false;
+					}
+				})
+
+				//alert($("#span2").text());
+				//$("#span2").html("123412");
+
+			})
+		</script>
+
+	</head>
+	<body>
+		<form action="./success.html" method="post">
+			Email:<input type="text" name="" id="email" value="" />
+			<span style="color:red" id="span1">*</span><span id="message" style="color:red"></span>
+			<br>
+			<button type="submit" id="btn1">校验</button>
+		</form>
+
+	</body>
+</html>
+
+~~~
+
 
 
 # 问题
