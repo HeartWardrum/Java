@@ -2022,7 +2022,34 @@ insertAfter和after是挂在某个兄弟节点的后面
 </html>
 ~~~
 
-- 
+### 正则的语法
+#### []
+---- 在多个字符中进行选择匹配，满足其一即可
+~~~html
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<script type="text/javascript" src="jquery-1.11.3.min.js"></script>
+		<script type="text/javascript">
+			$(function() {
+				$("#btn1").click(function() {
+					//var reg = /^a$/;
+					var reg = new RegExp("^[ab]$");
+					alert(reg.test($("#str").val()));
+
+				})
+			})
+		</script>
+	</head>
+	<body>
+		<input type="text" name="" id="str" value="" />
+		<br>
+		<button type="button" id="btn1">校验</button>
+	</body>
+</html>
+~~~
 
 
 
