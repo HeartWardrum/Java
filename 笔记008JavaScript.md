@@ -1892,7 +1892,137 @@ insertAfter和after是挂在某个兄弟节点的后面
 
 
 
+#### jQuery员工管理系统
+~~~html
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<style type="text/css">
+			body {
+				text-align: center;
+			}
 
+			table {
+				border-collapse: collapse;
+				margin: 0px auto;
+			}
+
+			table,
+			td,
+			th {
+				boder: 1px black solid;
+				padding: 10px;
+			}
+		</style>
+		<script type="text/javascript" src="jquery-1.11.3.min.js"></script>
+		<script type="text/javascript">
+			function removeTr(aNode) {
+				//删除
+				if (confirm("确定要删除：" + $(aNode).parent().parent().find("td").eq(0).text() + " 的信息吗"))
+					$(aNode).parent().parent().remove();
+			}
+			$(function() {
+
+				$("a").click(function() {
+					removeTr(this);
+				})
+
+				//新增
+				$("#btn1").click(function() {
+					var trNode = $("<tr><td>" + $("#name").val() + "</td><td>" + $("#email").val() + "</td><td>" + $("#salary").val() + "</td><td><a href='#'>Delete</a></td></tr>");
+					trNode.find("a").click(function() {
+						removeTr(this);
+					})
+					$("#table1").append(trNode);
+				})
+
+
+			})
+		</script>
+	</head>
+	<body>
+
+		员工管理系统
+		<br><br>
+		name:<input type="text" name="" id="name" value="Lucy" />&nbsp;&nbsp;
+		email:<input type="text" name="" id="email" value="Lucy@qq.com" />&nbsp;&nbsp;
+		salary:<input type="text" name="" id="salary" value="10000" />&nbsp;&nbsp;
+
+		<br><br>
+		<button type="button" id="btn1">新增</button>
+		<br><br>
+		<hr>
+		<br><br>
+		<table border="" id="table1">
+			<tr>
+				<th>name</th>
+				<th>email</th>
+				<th>salary</th>
+				<th></th>
+			</tr>
+			<tr>
+				<td>Tom</td>
+				<td>abc@qqcom</td>
+				<td>8000</td>
+				<td><a href="#">Delete</a></td>
+			</tr>
+			<tr>
+				<td>Jerry</td>
+				<td>abdfafc@qqcom</td>
+				<td>80dd00</td>
+				<td><a href="#">Delete</a></td>
+			</tr>
+			<tr>
+				<td>Mary</td>
+				<td>abdsfsfc@qqcom</td>
+				<td>80031310</td>
+				<td><a href="#">Delete</a></td>
+			</tr>
+		</table>
+	</body>
+</html>
+~~~
+
+## 正则表达式
+
+用来校验某个字符串是否符合指定的规则
+
+校验方法：
+使用正则对象.test(字符串)  可以返回true 或者 false 表示校验是否通过
+
+### 定义正则对象的语法：
+
+1. 以/^ 开始  以 $/ 结尾
+2. new RegExp("^正则表达式$");
+~~~html
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<script type="text/javascript" src="jquery-1.11.3.min.js"></script>
+		<script type="text/javascript">
+			$(function() {
+				$("#btn1").click(function() {
+					//var reg = /^a$/;
+					var reg = new RegExp("^a$");
+					alert(reg.test($("#str").val()));
+
+				})
+			})
+		</script>
+	</head>
+	<body>
+		<input type="text" name="" id="str" value="" />
+		<br>
+		<button type="button" id="btn1">校验</button>
+	</body>
+</html>
+~~~
+
+- 
 
 
 
