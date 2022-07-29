@@ -1227,7 +1227,9 @@ for (Constructor constructor : constructors) {
 
 
 
+### &和&&区别
 
+区别在于 & 两边都运算，而 && 先算 && 左侧，若左侧为 false 那么右侧就不运算了。因此从效率上来说，判断语句中推荐使用 &&
 
 
 
