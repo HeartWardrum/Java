@@ -1154,6 +1154,58 @@ $(":表单控件类型") ---- 表单选择器
 $(":控件状态") ---- 表示选中指定状态的元素
 注意：如果选择器中间有空格，那么表示在其子元素中进行相应的选择
 
+在单选框指定的列表下添加数据：
+~~~html
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<script type="text/javascript" src="jquery-1.11.3.min.js"></script>
+		<script type="text/javascript">
+			$(function() {
+
+				$("#sub").click(function() {
+					var strValue = $("#str").val();
+					strValue = $.trim(strValue);//取出两端空格
+					if (strValue == null || strValue == "") {
+						alert("请输入名称");
+					} else {
+						$("#" + $(":radio[name='type']:checked").val()).append($("<li> " + strValue + "</li>"));
+
+					}
+				})
+
+			})
+		</script>
+	</head>
+	<body>
+
+		<ul id="city">
+			<li>北京</li>
+			<li>上海</li>
+			<li>广州</li>
+			<li>南京</li>
+		</ul>
+		<br>
+		<ul id="game">
+			<li>英雄联盟</li>
+			<li>星际争霸</li>
+			<li>魔兽世界</li>
+		</ul>
+		<br>
+		<p>请选择类型</p>
+		城市<input type="radio" name="type" value="city" />
+		游戏<input type="radio" name="type" checked="checked" value="game" />
+		<br>
+		<p>请输入名称</p>
+		<input type="text" id="str" />
+		<br><br>
+		<button id="sub">提交</button>
+	</body>
+</html>
+~~~
+
 jQuery对象也可以通过get(下标)来转型js对象
 
 ~~~html
@@ -1781,6 +1833,68 @@ mouseleave() ---- onMouseleave事件
 prependTo和prepend是挂在父节点的第一个子节点位置
 insertBefore和before是挂在某个兄弟节点的前面
 insertAfter和after是挂在某个兄弟节点的后面
+
+
+
+### $.trim(字符串)
+---- 去除字符串的前后空格
+
+
+
+# js第四天
+### parent() 
+---- 找到指定节点的父节点
+
+### find(元素名).eq(下标)
+---- 找到指定元素数组的某个下标位置的元素
+~~~html
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<script type="text/javascript" src="jquery-1.11.3.min.js"></script>
+		<script type="text/javascript">
+			$(function() {
+				$("#btn1").click(function() {
+					//$("#id33").parent().parent().css("background-color","red");
+					$("#id33").parent().parent().find("tr").eq(1).find("td").eq(1).css("background-color", "red");
+				})
+			})
+		</script>
+		<style type="text/css">
+
+		</style>
+	</head>
+	<body>
+		<table border="" cellspacing="" cellpadding="">
+			<tr>
+				<td>11</td>
+				<td>12</td>
+				<td>13</td>
+			</tr>
+			<tr>
+				<td>21</td>
+				<td>22</td>
+				<td>23</td>
+			</tr>
+			<tr>
+				<td>31</td>
+				<td>32</td>
+				<td id="id33">33</td>
+			</tr>
+		</table>
+		<br>
+		<button type="button" id="btn1">选中父标签的父标签</button>
+	</body>
+</html>
+~~~
+
+
+
+
+
+
 
 # 问题
 
