@@ -1990,12 +1990,12 @@ insertAfter和after是挂在某个兄弟节点的后面
 用来校验某个字符串是否符合指定的规则
 
 校验方法：
-使用正则对象.test(字符串)  可以返回true 或者 false 表示校验是否通过
+使用`正则对象.test(字符串)` 可以返回true 或者 false 表示校验是否通过
 
 ### 定义正则对象的语法：
 
-1. 以/^ 开始  以 $/ 结尾
-2. new RegExp("^正则表达式$");
+1. 以`/^` 开始  以 `$/` 结尾
+2. `new RegExp("^正则表达式$");`
 ~~~html
 <!DOCTYPE html>
 <html>
@@ -2037,7 +2037,7 @@ insertAfter和after是挂在某个兄弟节点的后面
 			$(function() {
 				$("#btn1").click(function() {
 					//var reg = /^a$/;
-					var reg = new RegExp("^[ab]$");
+					var reg = new RegExp("^[ab]$");//var reg = /^[ab]$/;
 					alert(reg.test($("#str").val()));
 
 				})
@@ -2054,13 +2054,13 @@ insertAfter和after是挂在某个兄弟节点的后面
 #### ^
 ---- 写在[]内表示取反
 例：`new RegExp("^[^ab]$")` //a b ab  都是false
-#### -
 表示两个字符之间任意单个字符
 例：`new RegExp("^[a-z]$")` 
 注意：正则本身用到的特殊字符，如果要校验，得转义
 注意：这些特殊字符如果在[]里面，那么无序转义，除了[]包[]，里面的[]仍需转义
 使用  \  来转义
 例：`var reg = /^\$$/;` // $ 为true
+
 #### 元字符
 小数点 ---- 除了换行符以外的任意单个字符
 例：`var reg = /^.$/;`
