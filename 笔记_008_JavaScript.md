@@ -2197,7 +2197,200 @@ insertAfter和after是挂在某个兄弟节点的后面
 
 ~~~
 
+# js第五天
+## bookstrap控件
+### 栅格系统
+~~~html
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<script type='text/javascript' src="js/jquery-1.11.3.min.js"></script>
+		<link rel="stylesheet" type="text/css" href="css/bootstrap/3.3.6/bootstrap.min.css">
+		<script type="text/javascript" src="js/bootstrap/3.3.6/bootstrap.min.js"></script>
+		<style type="text/css">
+			div.container div.row div {
+				margin: 5px 0px;
+				background-color: red;
+				border: 1px solid blue;
+				text-align: center;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-12">一共十二列，我独占12列</div>
+			</div>
+			<div class="row">
+				<div class="col-lg-1">一共十二列，我独占1列</div>
+				<div class="col-lg-1">一共十二列，我独占1列</div>
+				<div class="col-lg-1">一共十二列，我独占1列</div>
+				<div class="col-lg-1">一共十二列，我独占1列</div>
+				<div class="col-lg-1">一共十二列，我独占1列</div>
+				<div class="col-lg-1">一共十二列，我独占1列</div>
+				<div class="col-lg-1">一共十二列，我独占1列</div>
+				<div class="col-lg-1">一共十二列，我独占1列</div>
+				<div class="col-lg-1">一共十二列，我独占1列</div>
+				<div class="col-lg-1">一共十二列，我独占1列</div>
+				<div class="col-lg-1">一共十二列，我独占1列</div>
+				<div class="col-lg-1">一共十二列，我独占1列</div>
+			</div>
+		</div>
+	</body>
+</html>
 
+~~~
+
+### 图片轮播
+~~~html
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<script type='text/javascript' src="js/jquery-1.11.3.min.js"></script>
+		<link rel="stylesheet" type="text/css" href="css/bootstrap/3.3.6/bootstrap.min.css">
+		<script type="text/javascript" src="js/bootstrap/3.3.6/bootstrap.min.js"></script>
+		<style type="text/css">
+			div.container div.row div {
+				margin: 5px 0px;
+				background-color: red;
+				border: 1px solid blue;
+				text-align: center;
+			}
+
+			div.item img {
+				width: 100%;
+			}
+
+			div #lunbo {
+				width: 80%;
+				margin: 0 auto;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="lunbo" class="carousel slide" data-ride="carousel" data-interval="1000">
+			<ol class="carousel-indicators">
+				<li data-target="lunbo" data-slide-to="0" class="active"></li>
+				<li data-target="lunbo" data-slide-to="1"></li>
+				<li data-target="lunbo" data-slide-to="2"></li>
+				<li data-target="lunbo" data-slide-to="3"></li>
+			</ol>
+			<div class="carousel-inner">
+				<div class="item active">
+					<img src="./img/lunbo/1.jpg">
+				</div>
+				<div class="item">
+					<img src="./img/lunbo/2.jpg">
+				</div>
+				<div class="item">
+					<img src="./img/lunbo/3.jpg">
+				</div>
+				<div class="item">
+					<img src="./img/lunbo/4.jpg">
+				</div>
+			</div>
+		</div>
+	</body>
+</html>
+
+~~~
+
+### BootStrap 的 日期控件
+1. 解压日期控件的zip包
+2. 将解压的文件夹拷贝到当前项目中
+3. 打开 sample in bootstrap v3 文件夹中的index.html 拷贝其中的某个`<div>`到自己的项目中
+4. 加载bootstrap-datatimepicker.min.css
+5. 在`<div>`的下方加载 bootstrap-datatimepicker.js 和 bootstrap-datetimepicker.zh_CN.js
+6. 拷贝 index.html中的 $('form_date').datetimepicker({}) 到当前的项目文件中
+~~~html
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<script type='text/javascript' src="js/jquery-1.11.3.min.js"></script>
+		<link rel="stylesheet" type="text/css" href="css/bootstrap/3.3.6/bootstrap.min.css">
+		<script type="text/javascript" src="js/bootstrap/3.3.6/bootstrap.min.js"></script>
+		<style type="text/css">
+			div.container div.row div {
+				margin: 5px 0px;
+				background-color: red;
+				border: 1px solid blue;
+				text-align: center;
+			}
+
+			div.item img {
+				width: 100%;
+			}
+
+			div #lunbo {
+				width: 80%;
+				margin: 0 auto;
+			}
+		</style>
+		<link href="./bootstrap-datetimepicker-master/css/bootstrap-datetimepicker.min.css" rel="stylesheet" media="screen">
+		<script type="text/javascript" src="./bootstrap-datetimepicker-master/js/bootstrap-datetimepicker.js" charset="UTF-8"></script>
+		<script type="text/javascript" src="./bootstrap-datetimepicker-master/js/locales/bootstrap-datetimepicker.zh-CN.js"
+		 charset="UTF-8"></script>
+		<script type="text/javascript">
+			$(function() {
+				$('.form_date').datetimepicker({
+					language: 'zh-CN',
+					format: 'yyyy-mm-dd',
+					weekStart: 1,
+					todayBtn: 1,
+					autoclose: 1,
+					todayHighlight: 1,
+					startView: 2,
+					minView: 2,
+					forceParse: 0
+				});
+			})
+		</script>
+	</head>
+	<body>
+		<div class="form-group">
+			<label for="dtp_input2" class="col-md-2 control-label">Date Picking</label>
+			<div class="input-group date form_date col-md-5" data-date="" data-date-format="dd MM yyyy" data-link-field="dtp_input2"
+			 data-link-format="yyyy-mm-dd">
+				<input class="form-control" size="16" type="text" value="" readonly>
+				<span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+				<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+			</div>
+			<input type="hidden" id="dtp_input2" value="" /><br />
+		</div>
+		<hr>
+
+		<div id="lunbo" class="carousel slide" data-ride="carousel" data-interval="1000">
+			<ol class="carousel-indicators">
+				<li data-target="lunbo" data-slide-to="0" class="active"></li>
+				<li data-target="lunbo" data-slide-to="1"></li>
+				<li data-target="lunbo" data-slide-to="2"></li>
+				<li data-target="lunbo" data-slide-to="3"></li>
+			</ol>
+			<div class="carousel-inner">
+				<div class="item active">
+					<img src="./img/lunbo/1.jpg">
+				</div>
+				<div class="item">
+					<img src="./img/lunbo/2.jpg">
+				</div>
+				<div class="item">
+					<img src="./img/lunbo/3.jpg">
+				</div>
+				<div class="item">
+					<img src="./img/lunbo/4.jpg">
+				</div>
+			</div>
+		</div>
+	</body>
+</html>
+
+~~~
 
 # 问题
 
