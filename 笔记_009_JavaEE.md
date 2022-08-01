@@ -1,4 +1,5 @@
-**`J2EE JAVAEE Java web`**
+**`J2EE     JAVAEE     Java web`**
+
 # JavaEE
 http://127.0.0.1:8080  测试TomCat首页
 
@@ -19,22 +20,144 @@ servlet核心配置文件
 - `<servlet-name> `是我们自己起的servlet名字
 - `<servlet-class>` 是我们自己写的servlet类的全类名
 
-每个`<servlet>` 都有`<servlet-mapping>` 与之对应` <servlet-mapping>` 中包含`<servlet-name> `和 `<url-pattern>`
-- `<servlet-name> `和 `<servlet>`中的`<servlet-name>` 对应  `<url-pattern>`指的是请求名
+
+每个`<servlet>` 都有`<servlet-mapping>` 与之对应
+` <servlet-mapping>` 中包含`<servlet-name> `和 `<url-pattern>`
+- `<servlet-mapping>`中的`<servlet-name> `与 `<servlet>`中的`<servlet-name>` 对应  值相等就完事了
+- `<url-pattern>`指的是请求名 通常以`/`开头
 
 当我们启动tomcat之后，我们的javaEE项目就发布了，它等待着前端发起以下格式的请求：
 http://ip地址:端口/web应用名/请求名
 
+~~~java
+package com.iweb.homework;
+
+import javax.servlet.*;
+import java.io.IOException;
+
+/**
+ * @Author HearWardrum
+ * 联系方式：tianxiayifan@qq.com
+ * @Date 2022-08-01/0001
+ * 描述：测试Servlet生命周期
+ */
+
+public class Test2 implements Servlet {
+    public Test2() {
+        System.out.println("构造Test2");
+    }
+
+    @Override
+    public void init(ServletConfig servletConfig) throws ServletException {
+        System.out.println("初始化Test2");
+    }
+
+    @Override
+    public ServletConfig getServletConfig() {
+        return null;
+    }
+
+    @Override
+    public void service(ServletRequest servletRequest, ServletResponse servletResponse) throws ServletException, IOException {
+        System.out.println("Test2收到一个请求");
+    }
+
+    @Override
+    public String getServletInfo() {
+        return null;
+    }
+
+    @Override
+    public void destroy() {
+
+    }
+}
+~~~
+~~~xml
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
+         version="4.0">
+
+    <servlet>
+        <servlet-name>hello</servlet-name>
+        <servlet-class>com.iweb.homework.Test2</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>hello</servlet-name>
+        <url-pattern>/my1threquest</url-pattern>
+    </servlet-mapping>
+
+</web-app>
+
+//  运行后在弹出页面的地址栏后面补上my1threquest 回车 即可构造初始化Servlet并接收到请求
+~~~
+
+
+
 ### `<load-on-startup>`
 在`<servlet>`中，表示当前servlet对象被创建和初始化的时机，如果取值为0 或正整数，则随着tomcat启动，自动完成创建和初始化
-注意：数值越小的`<load-on-startup>` 它的`<servlet>`越先被创建和初始化
+注意：数值越小(>=0)的`<load-on-startup>` 它的`<servlet>`越先被创建和初始化
+~~~xml
+    <servlet>
+        <servlet-name>hello</servlet-name>
+        <servlet-class>com.iweb.homework.Test2</servlet-class>
+        <load-on-startup>0</load-on-startup>
+    </servlet>
+
+~~~
 
 注意：一个`<servlet>`可以对应多个`<servlet-mapping>`，只需要`<servlet-name> `一致即可，它们的`<url-pattern>`不一样，所以接收到不同的请求，可以进入同一个方法
+
+~~~xml
+    <servlet>
+        <servlet-name>hello</servlet-name>
+        <servlet-class>com.iweb.homework.Test2</servlet-class>
+        <load-on-startup>0</load-on-startup>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>hello</servlet-name>
+        <url-pattern>/my1threquest</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>hello</servlet-name>
+        <url-pattern>/my2ndrequest</url-pattern>
+    </servlet-mapping>
+    
+    // 运行后在弹出页面的地址栏后面补上my1threquest或者my2ndrequest 回车 都会使test2收到一个请求
+~~~
 
 注意：在`<servlet-mapping>`中，可以使用通配符表示任意请求，通配符的格式：
 1. /*
 2. /
-3. *.后缀名
+3. *.后缀名(后缀名随便写)
+~~~xml
+    <servlet>
+        <servlet-name>hello</servlet-name>
+        <servlet-class>com.iweb.homework.Test2</servlet-class>
+        <load-on-startup>0</load-on-startup>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>hello</servlet-name>
+        <url-pattern>/*</url-pattern>
+    </servlet-mapping>
+    
+    // 运行后在弹出页面的地址栏后面随便补上点什么 回车 都会使test2收到一个请求
+~~~
+
+~~~xml
+    <servlet-mapping>
+        <servlet-name>hello</servlet-name>
+        <url-pattern>*.do</url-pattern>
+    </servlet-mapping>
+    // 运行后在弹出页面的地址栏后面 补上 随便什么.do 回车 都会使test2收到一个请求
+
+~~~
 
 ### servletConfig
 这是当前servlet的大管家，它可以获取servlet方方面面的信息
@@ -42,19 +165,110 @@ http://ip地址:端口/web应用名/请求名
 1. `<init-param>`表示servlet的初始化参数
 	我们可以通过  该对象.getInitParameter(参数名)  获取参数值
 2. getServletName() ---- 获取当前servlet名字
+	~~~java
+    @Override
+    public void init(ServletConfig servletConfig) throws ServletException {
+        System.out.println("初始化Test2");
+        String str = servletConfig.getInitParameter("username");
+        System.out.println(str);
+        String servletName = servletConfig.getServletName();
+        System.out.println(servletName);
+
+    }
+	~~~
+	~~~xml
+	    <servlet>
+        <servlet-name>hello</servlet-name>
+        <servlet-class>com.iweb.homework.Test2</servlet-class>
+        <init-param>
+            <param-name>username</param-name>
+            <param-value>root</param-value>
+        </init-param>
+        <load-on-startup>0</load-on-startup>
+    </servlet>
+    // 在初始化Servlet时 输出 :
+    // root
+    // hello 
+	~~~
 3. getServletContext() ---- 获取当前web应用的对象
-	注意：Servlet Context对象表示当前web应用的对象，它可以获取当前web应用方方面面的信息
+	注意：ServletContext对象表示当前web应用的对象，它可以获取当前web应用方方面面的信息
+	~~~java
+	    @Override
+    public void init(ServletConfig servletConfig) throws ServletException {
+        ServletContext sc = servletConfig.getServletContext();
+        String user = sc.getInitParameter("username");
+        System.out.println(user);
+    }
+	~~~
+	~~~xml
+	    <context-param>
+        <param-name>username</param-name>
+        <param-value>Admin</param-value>
+    </context-param>
+    // 在初始化Servlet时 输出 :
+    //Admin
+	~~~
 	
 ### ServletContext对象的相关信息：
 `<context-param>` ---- 当前web应用的初始化参数
 我们可以通过ServletContext对象调用
 getInitParameter(参数名) 来获取它的参数值
 getRealPath(文件的类路径) ---- 获取到该文件部署后的绝对路径
+	~~~java
+	    @Override
+    public void init(ServletConfig servletConfig) throws ServletException {
+        System.out.println("初始化Test2");
+        ServletContext sc = servletConfig.getServletContext();
+        String path = sc.getRealPath("/hi.html");
+        System.out.println(path);
+    }
+	~~~
 getContextPath() ---- 获取的是当前web应用的根目录
 
 浏览器页面向后端java类发请求的方式：
 1. 地址栏直接写url
-2. `<a>`标签超联集
+2. `<a>`标签超链接
+		~~~xml
+	    <servlet>
+        <servlet-name>hello</servlet-name>
+        <servlet-class>com.iweb.homework.Test2</servlet-class>
+        <init-param>
+            <param-name>username</param-name>
+            <param-value>root</param-value>
+        </init-param>
+        <load-on-startup>0</load-on-startup>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>hello</servlet-name>
+        <url-pattern>*.do</url-pattern>
+    </servlet-mapping>
+	~~~
+	~~~html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h1>我是一个标题</h1>
+<a href="abc.do?age=18">发一个请求</a>
+</body>
+</html>
+
+	~~~
+	~~~java
+	    @Override
+    public void service(ServletRequest servletRequest, ServletResponse servletResponse) throws ServletException, IOException {
+        System.out.println("Test2收到一个请求");
+        String age = servletRequest.getParameter("age");
+        System.out.println(age);
+    }
+    //点一下超链接发一个请求
+    //输出参数值18
+	~~~
+
 3. `<form>`表单提交
 
 请求的url可以携带参数，格式：
@@ -80,5 +294,4 @@ HttpServletRequest
 getMethod() ---- 获取当前请求的请求方式，返回GET或POST
 getServletContext() ---- 直接获取当前web应用的ServletContext
 getServletPath() ---- 获取当前请求的请求名
-
 
