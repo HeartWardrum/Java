@@ -47,4 +47,38 @@ http://ip地址:端口/web应用名/请求名
 	
 ### ServletContext对象的相关信息：
 `<context-param>` ---- 当前web应用的初始化参数
-我们可以通过ServletContext对象调用getInitParameter(参数名) 来获取它的参数值
+我们可以通过ServletContext对象调用
+getInitParameter(参数名) 来获取它的参数值
+getRealPath(文件的类路径) ---- 获取到该文件部署后的绝对路径
+getContextPath() ---- 获取的是当前web应用的根目录
+
+浏览器页面向后端java类发请求的方式：
+1. 地址栏直接写url
+2. `<a>`标签超联集
+3. `<form>`表单提交
+
+请求的url可以携带参数，格式：
+1. url?参数名1=参数值1&参数名2=参数值2
+2. 在`<form>`中的表单控件上，name属性对应参数名，value属性对应参数值
+
+后端Java类中，我们可以使用  ServletRequest对象.getParameter(参数名)  来获取参数值
+
+面试题：
+提交方式get和post的区别
+get请求 ---- 请求参数是跟在url地址后面的
+	所有的<a>都是get请求
+post请求 ---- 请求参数是封装在消息体中的
+	<form>的method可以指定其post，如果不指定，则默认为get
+注意：get请求的参数的长度不能超过1k，post请求没有长度限制
+
+ServletResponse
+返回响应
+我们可以通过该对象调用getWrite()得到PrintWrite对象，然后再调用PrintWrite对象的print()方法往浏览器打印需要返回的内容
+
+HttpServletRequest
+它是ServletRequest的子接口，我们在实际发送请求的过程中，前端传递给后端的全部都是HttpServletRequest对象，所以我们可以将ServletRequest向下转型为HttpServletRequest对象，然后可以调用它新增加的方法：
+getMethod() ---- 获取当前请求的请求方式，返回GET或POST
+getServletContext() ---- 直接获取当前web应用的ServletContext
+getServletPath() ---- 获取当前请求的请求名
+
+
