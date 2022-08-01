@@ -173,7 +173,7 @@ public class Test2 implements Servlet {
         System.out.println(str);
         String servletName = servletConfig.getServletName();
         System.out.println(servletName);
-
+	
     }
 	~~~
 	~~~xml
@@ -214,7 +214,7 @@ public class Test2 implements Servlet {
 我们可以通过ServletContext对象调用
 getInitParameter(参数名) 来获取它的参数值
 getRealPath(文件的类路径) ---- 获取到该文件部署后的绝对路径
-	~~~java
+~~~java
 	    @Override
     public void init(ServletConfig servletConfig) throws ServletException {
         System.out.println("初始化Test2");
@@ -222,29 +222,12 @@ getRealPath(文件的类路径) ---- 获取到该文件部署后的绝对路径
         String path = sc.getRealPath("/hi.html");
         System.out.println(path);
     }
-	~~~
+~~~
 getContextPath() ---- 获取的是当前web应用的根目录
 
 浏览器页面向后端java类发请求的方式：
 1. 地址栏直接写url
 2. `<a>`标签超链接
-		~~~xml
-	    <servlet>
-        <servlet-name>hello</servlet-name>
-        <servlet-class>com.iweb.homework.Test2</servlet-class>
-        <init-param>
-            <param-name>username</param-name>
-            <param-value>root</param-value>
-        </init-param>
-        <load-on-startup>0</load-on-startup>
-    </servlet>
-
-    <servlet-mapping>
-        <servlet-name>hello</servlet-name>
-        <url-pattern>*.do</url-pattern>
-    </servlet-mapping>
-	~~~
-	~~~html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -257,17 +240,17 @@ getContextPath() ---- 获取的是当前web应用的根目录
 </body>
 </html>
 
-	~~~
-	~~~java
-	    @Override
-    public void service(ServletRequest servletRequest, ServletResponse servletResponse) throws ServletException, IOException {
-        System.out.println("Test2收到一个请求");
-        String age = servletRequest.getParameter("age");
-        System.out.println(age);
-    }
-    //点一下超链接发一个请求
-    //输出参数值18
-	~~~
+```java
+
+    @Override
+public void service(ServletRequest servletRequest, ServletResponse servletResponse) throws ServletException, IOException {
+    System.out.println("Test2收到一个请求");
+    String age = servletRequest.getParameter("age");
+    System.out.println(age);
+}
+//点一下超链接发一个请求
+//输出参数值18
+```
 
 3. `<form>`表单提交
 
@@ -282,12 +265,22 @@ getContextPath() ---- 获取的是当前web应用的根目录
 get请求 ---- 请求参数是跟在url地址后面的
 	所有的<a>都是get请求
 post请求 ---- 请求参数是封装在消息体中的
-	<form>的method可以指定其post，如果不指定，则默认为get
+
+`<form>`的method属性可以指定其为post，如果不指定，则默认为get
+
 注意：get请求的参数的长度不能超过1k，post请求没有长度限制
 
 ServletResponse
 返回响应
 我们可以通过该对象调用getWrite()得到PrintWrite对象，然后再调用PrintWrite对象的print()方法往浏览器打印需要返回的内容
+~~~java
+    @Override
+    public void service(ServletRequest servletRequest, ServletResponse servletResponse) throws ServletException, IOException {
+        System.out.println("Test2收到一个请求");
+        PrintWriter pw = servletResponse.getWriter();
+        pw.print("hello");
+    }
+~~~
 
 HttpServletRequest
 它是ServletRequest的子接口，我们在实际发送请求的过程中，前端传递给后端的全部都是HttpServletRequest对象，所以我们可以将ServletRequest向下转型为HttpServletRequest对象，然后可以调用它新增加的方法：
