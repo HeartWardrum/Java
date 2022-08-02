@@ -272,6 +272,7 @@ public void service(ServletRequest servletRequest, ServletResponse servletRespon
 1. url?参数名1=参数值1&参数名2=参数值2
 2. 在`<form>`中的表单控件上，name属性对应参数名，value属性对应参数值
 
+### ServletRequest
 后端Java类中，我们可以使用  ServletRequest对象.getParameter(参数名)  来获取参数值
 
 ### 面试题：提交方式get和post的区别
@@ -282,10 +283,6 @@ post请求 ---- 请求参数是封装在消息体中的
 `<form>`的method属性可以指定其为post，如果不指定，则默认为get
 
 注意：get请求的参数的长度不能超过1k，post请求没有长度限制
-
-### ServletRequest
-
-调用get
 
 ### ServletResponse
 返回响应
@@ -305,4 +302,6 @@ HttpServletRequest
 getMethod() ---- 获取当前请求的请求方式，返回GET或POST
 getServletContext() ---- 直接获取当前web应用的ServletContext
 getServletPath() ---- 获取当前请求的请求名
+getContextPath() ---- 获取的是当前web应用的根目录
+
 
