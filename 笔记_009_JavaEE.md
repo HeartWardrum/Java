@@ -420,7 +420,537 @@ public class Test1 extends HttpServlet {
 
 隐含对象指的是在jsp中没有定义而可以直接使用的对象
 
-1. request ---- HttpServletRequest的对象
+1. request ---- HttpServletRequest的对象,它表示当前JSP页面打开的这次请求
 2. response ---- HttpServletResponse的对象
 3. pageContest ---- PageContext的对象，它表示当前页面，它可以获取其他8个隐含对象
 4. session ---- HttpSession的对象，它表示一次会话（浏览器的打开到关闭）
+5. application ---- ServletContext的对象，它表示当前的web应用
+6. config ---- ServletConfig对象，它表示当前jsp翻译出来的那个servlet中的ServletConfig对象
+7. out ---- JspWriter的对象，可以直接把字符串打印在浏览器上
+8. page ---- 表示当前JSP翻译出来的那个servlet类的对象
+9. exception ---- 表示jsp中发生的各种异常
+
+### JSP表达式
+
+<%=表达式内容%> ---- 可以直接将java变量或表达式打印在页面上
+
+~~~jsp
+<%@ page import="java.util.Date" %><%--
+  Created by IntelliJ IDEA.
+  User: lenovo
+  Date: 2022-08-02/0002
+  Time: 10:25
+  To change this template use File | Settings | File Templates.
+--%>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<html>
+<head>
+    <title>Title</title>
+</head>
+<body>
+<h3>这是我的以一个jsp页面</h3>
+<%
+    Date date = new Date();
+    out.print(date);
+%>
+<br/>
+<br/>
+<%=date%>
+<br/>
+<br/>
+<%
+    String age = request.getParameter("age");
+    out.print(age);
+%>
+
+<%
+    int intage = Integer.valueOf(age);
+    if (intage > 18) {
+        out.print("您已成年");
+    } else {
+        out.print("未成年人给爷死！");
+    }
+
+%>
+</body>
+</html>
+
+~~~
+
+需要打印的内容以静态页面的方式呈现：（效果同上面一样）
+~~~jsp
+<%@ page import="java.util.Date" %><%--
+  Created by IntelliJ IDEA.
+  User: lenovo
+  Date: 2022-08-02/0002
+  Time: 10:25
+  To change this template use File | Settings | File Templates.
+--%>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<html>
+<head>
+    <title>Title</title>
+</head>
+<body>
+<h3>这是我的以一个jsp页面</h3>
+<%
+    Date date = new Date();
+    out.print(date);
+%>
+<br/>
+<br/>
+<%=date%>
+<br/>
+<br/>
+<%
+    String age = request.getParameter("age");
+    out.print(age);
+%>
+
+<%
+    int intage = Integer.valueOf(age);
+    if (intage >= 18) {
+%>
+
+您已成年
+<%
+} else {
+%>
+未成年人给爷死！
+<%
+    }
+
+%>
+</body>
+</html>
+~~~
+
+### JSP的注释
+以`<%--`开头   以`--%>`结尾
+
+### 域对象
+pageContext, request, session, application 四个隐含对象成为域对象，它们可以调用setAttribute(键，值)   进行存值
+getAttribute(键)   进行取值
+removeAttribute(键)    进行删除
+~~~jsp
+<%--
+  Created by IntelliJ IDEA.
+  User: HeartWardrum
+  Date: 2022-08-02/0002
+  Time: 11:22
+  To change this template use File | Settings | File Templates.
+--%>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<html>
+<head>
+    <title>Title</title>
+</head>
+<body>
+<h1>test2.jsp</h1>
+<%
+    pageContext.setAttribute("pageKey", "pageValue");
+    request.setAttribute("requestKey", "requestValue");
+    session.setAttribute("sessionKey", "sessionValue");
+    application.setAttribute("applicationKey", "applicationValue");
+%>
+
+<%
+    application.removeAttribute("applicationKey");
+%>
+
+
+
+<%=pageContext.getAttribute("pageKey")%>
+<br/>
+<%=request.getAttribute("requestKey")%>
+<br/>
+<%=session.getAttribute("sessionKey")%>
+<br/>
+<%=application.getAttribute("applicationKey")%>
+
+</body>
+</html>
+~~~
+
+### 域对象的作用范围：
+pageContext ---- 当前页面
+request ---- 一次请求
+session ---- 一次会话
+application ---- 整个web应用
+
+test2：
+~~~jsp
+<%--
+  Created by IntelliJ IDEA.
+  User: HeartWardrum
+  Date: 2022-08-02/0002
+  Time: 11:22
+  To change this template use File | Settings | File Templates.
+--%>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<html>
+<head>
+    <title>Title</title>
+</head>
+<body>
+<h1>test2.jsp</h1>
+<%
+    pageContext.setAttribute("pageKey", "pageValue");
+    request.setAttribute("requestKey", "requestValue");
+    session.setAttribute("sessionKey", "sessionValue");
+    application.setAttribute("applicationKey", "applicationValue");
+%>
+
+<%=pageContext.getAttribute("pageKey")%>
+<br/>
+<%=request.getAttribute("requestKey")%>
+<br/>
+<%=session.getAttribute("sessionKey")%>
+<br/>
+<%=application.getAttribute("applicationKey")%>
+
+<br/>
+<a href="test3.jsp">跳转到test3页面</a>
+
+</body>
+</html>
+~~~
+
+test3：
+~~~jsp
+<%--
+  Created by IntelliJ IDEA.
+  User: HeartWardrum
+  Date: 2022-08-02/0002
+  Time: 11:40
+  To change this template use File | Settings | File Templates.
+--%>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<html>
+<head>
+    <title>Title</title>
+</head>
+<body>
+<%=pageContext.getAttribute("pageKey")%>
+<br/>
+<%=request.getAttribute("requestKey")%>
+<br/>
+<%=session.getAttribute("sessionKey")%>
+<br/>
+<%=application.getAttribute("applicationKey")%>
+
+</body>
+</html>
+~~~
+### 请求转发和重定向
+这是两种用来实现java类跳转到下一个目标的资源的技术
+#### 第一种：请求转发的步骤
+1. 定义一个String 存放目标资源的路径
+2. 通过当前request对象调用getRequestDispatcher(路径) 获取RequestDispatcher对象
+3. 使用RequestDispatcher对象调用forward(request,response)完成转发
+~~~jsp
+<%--
+  Created by IntelliJ IDEA.
+  User: HeartWardrum
+  Date: 2022-08-02/0002
+  Time: 13:34
+  To change this template use File | Settings | File Templates.
+--%>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<html>
+<head>
+    <title>Title</title>
+</head>
+<body>
+<h1>测试请求转发和重定向</h1>
+<br/>
+<a href="testForward">请求转发</a>
+
+</body>
+</html>
+~~~
+~~~jsp
+<%--
+  Created by IntelliJ IDEA.
+  User: HeartWardrum
+  Date: 2022-08-02/0002
+  Time: 13:35
+  To change this template use File | Settings | File Templates.
+--%>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<html>
+<head>
+    <title>Title</title>
+</head>
+<body>
+<h1>成功页面</h1>
+</body>
+</html>
+~~~
+~~~java
+public class TestForward extends HttpServlet {
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        System.out.println("即将开始请求转发");
+        String path = "/success.jsp";
+        RequestDispatcher rd = req.getRequestDispatcher(path);
+        rd.forward(req, resp);//完成转发
+    }
+}
+~~~
+~~~xml
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
+         version="4.0">
+
+    <servlet>
+        <servlet-name>testForward</servlet-name>
+        <servlet-class>com.iweb.test.TestForward</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>testForward</servlet-name>
+        <url-pattern>/testForward</url-pattern>
+    </servlet-mapping>
+
+</web-app>
+~~~
+#### 第二种：重定向
+1. 定义一个String 存放目标资源的路径
+2. 利用当前response对象调用sendRedirect(路径) 完成重定向
+~~~jsp
+<%--
+  Created by IntelliJ IDEA.
+  User: HeartWardrum
+  Date: 2022-08-02/0002
+  Time: 13:34
+  To change this template use File | Settings | File Templates.
+--%>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<html>
+<head>
+    <title>Title</title>
+</head>
+<body>
+<h1>测试请求转发和重定向</h1>
+<br/>
+<a href="testForward">请求转发</a>
+<br/>
+<a href="testRedirect">重定向</a>
+</body>
+</html>
+~~~
+~~~xml
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
+         version="4.0">
+
+    <servlet>
+        <servlet-name>testRedirect</servlet-name>
+        <servlet-class>com.iweb.test.TestRedirect</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>testRedirect</servlet-name>
+        <url-pattern>/testRedirect</url-pattern>
+    </servlet-mapping>
+
+</web-app>
+~~~
+~~~java
+public class TestRedirect extends HttpServlet {
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        System.out.println("即将开始重定向");
+        String path = "/test20220802/success.jsp";
+        resp.sendRedirect(path);
+
+
+    }
+}
+~~~
+
+##### 请求转发和重定向的区别：
+- 请求转发在转发前和转发后，是同一次请求
+- 重定向在重定向前和重定向后是两次不同的请求
+
+###### 细节上的区别：
+1. 目标路径的斜杠含义不同
+	转发的时候，/ 表示web应用的根目录
+	重定向的时候，/ 表示web站点的根目录
+	
+
+注意：http请求的格式：
+http://ip:端口  ---- web站点的根目录
+web站点的根目录 + web应用的名字 ---- web应用的根目录
+web应用的根目录 + 请求名 ---- 完整的http请求
+
+2. url地址栏显示的内容不同：
+	转发的时候显示的是初次发起的请求名
+	重定向的时候显示的是最终目标资源的文件名
+	
+3. 转发前和转发后是同一个request对象
+	重定向前和重定向后是两个不同的request对象
+~~~java
+public class TestForward extends HttpServlet {
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        System.out.println("即将开始请求转发");
+        req.setAttribute("myKey01","myValue01");
+        String path = "/success.jsp";
+        RequestDispatcher rd = req.getRequestDispatcher(path);
+        rd.forward(req, resp);//完成转发
+    }
+}
+~~~
+~~~java
+public class TestRedirect extends HttpServlet {
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        System.out.println("即将开始重定向");
+        req.setAttribute("myKey02", "myValue02");
+        String path = "/test20220802/success.jsp";
+        resp.sendRedirect(path);
+    }
+}
+~~~
+~~~jsp
+<%--
+  Created by IntelliJ IDEA.
+  User: HeartWardrum
+  Date: 2022-08-02/0002
+  Time: 13:34
+  To change this template use File | Settings | File Templates.
+--%>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<html>
+<head>
+    <title>Title</title>
+</head>
+<body>
+<h1>测试请求转发和重定向</h1>
+<br/>
+<a href="testForward">请求转发</a>
+<br/>
+<a href="testRedirect">重定向</a>
+</body>
+</html>
+~~~
+
+4. 转发只能转到当前web应用以内的资源
+	重定向可以重定向到任何资源
+~~~java
+public class TestForward extends HttpServlet {
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        System.out.println("即将开始请求转发");
+        req.setAttribute("myKey01","myValue01");
+        String path = "http://www.bing.com";
+        RequestDispatcher rd = req.getRequestDispatcher(path);
+        rd.forward(req, resp);//完成转发
+    }
+}
+~~~
+~~~java
+public class TestRedirect extends HttpServlet {
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        System.out.println("即将开始重定向");
+        req.setAttribute("myKey02", "myValue02");
+        String path = "http://www.bing.com";
+        resp.sendRedirect(path);
+    }
+}
+~~~
+
+注意：请求转发和重定向 不仅仅可以跳转到下一个页面，它还可以跳转进入下一个servlet
+~~~java
+public class TestForward extends HttpServlet {
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        System.out.println("即将开始请求转发");
+        req.setAttribute("myKey01","myValue01");
+        String path = "/test";
+        RequestDispatcher rd = req.getRequestDispatcher(path);
+        rd.forward(req, resp);//完成转发
+    }
+}
+~~~
+~~~java
+public class TestRedirect extends HttpServlet {
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        System.out.println("即将开始重定向");
+        req.setAttribute("myKey02", "myValue02");
+        String path = "/test20220802/test";
+        resp.sendRedirect(path);
+    }
+}
+~~~
+~~~xml
+    <servlet>
+        <servlet-name>test</servlet-name>
+        <servlet-class>com.iweb.test.Test</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>test</servlet-name>
+        <url-pattern>/test</url-pattern>
+    </servlet-mapping>
+~~~
+~~~java
+public class Test extends HttpServlet {
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        System.out.println("我是下一个java类");
+    }
+}
+~~~
+
+### 发请求的路径问题
+我们通过<a>的href属性和<form>的action属性发请求，最好写成以下路径格式：
+`<%=request.getContextPath()%>/请求名`
+否则有可能会带来路径的错误
+~~~java
+<%--
+  Created by IntelliJ IDEA.
+  User: HeartWardrum
+  Date: 2022-08-02/0002
+  Time: 13:34
+  To change this template use File | Settings | File Templates.
+--%>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<html>
+<head>
+    <title>Title</title>
+</head>
+<body>
+<h1>测试请求转发和重定向</h1>
+<br/>
+<a href="<%=request.getContextPath()%>/testForward">请求转发</a>
+<br/>
+<a href="<%=request.getContextPath()%>/testRedirect">重定向</a>
+<form action="<%=request.getContextPath()%>/testRedirect">
+
+</form>
+</body>
+</html>
+~~~
+### 表单提交中文乱码问题
+在request.getParameter(""); 之前添加：
+request.setCharacterEncoding("utf-8"); 即可
+~~~java
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        req.setCharacterEncoding("utf-8");
+        String username = req.getParameter("username");
+        System.out.println(username);
+    }
+~~~
+
+### MVC开发模型
+M ---- Model
+V ---- View
+C ---- Control
