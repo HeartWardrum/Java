@@ -15,7 +15,7 @@ servlet生命周期的相关方法：
 
 servlet核心配置文件
 所有的请求和java类都是靠 `web.xml`对应的
-每一个`<servlet>`表示一个servlet，它包含`<servlet-name>` 和 `<servlet-class>`
+每一个`<servlet>`标签表示一个servlet，它包含`<servlet-name>` 和 `<servlet-class>`
 
 - `<servlet-name> `是我们自己起的servlet名字
 - `<servlet-class>` 是我们自己写的servlet类的全类名
@@ -162,53 +162,66 @@ public class Test2 implements Servlet {
 ### servletConfig
 这是当前servlet的大管家，它可以获取servlet方方面面的信息
 例如：
-1. `<init-param>`表示servlet的初始化参数
-	我们可以通过  该对象.getInitParameter(参数名)  获取参数值
-2. getServletName() ---- 获取当前servlet名字
-	~~~java
+
+#### 1. `<init-param>`
+
+表示servlet的初始化参数
+
+我们可以通过  该对象.getInitParameter(参数名)  获取参数值
+
+#### 2. getServletName() 
+
+---- 获取当前servlet名字
+
+~~~java
+ @Override
+ public void init(ServletConfig servletConfig) throws ServletException {
+     System.out.println("初始化Test2");
+     String str = servletConfig.getInitParameter("username");
+     System.out.println(str);
+     String servletName = servletConfig.getServletName();
+     System.out.println(servletName);
+
+ }
+~~~
+~~~xml
+    <servlet>
+     <servlet-name>hello</servlet-name>
+     <servlet-class>com.iweb.homework.Test2</servlet-class>
+     <init-param>
+         <param-name>username</param-name>
+         <param-value>root</param-value>
+     </init-param>
+     <load-on-startup>0</load-on-startup>
+ </servlet>
+ // 在初始化Servlet时 输出 :
+ // root
+ // hello 
+~~~
+
+#### 3. getServletContext() 
+
+---- 获取当前web应用的对象
+
+注意：ServletContext对象表示当前web应用的对象，它可以获取当前web应用方方面面的信息
+
+~~~java
     @Override
-    public void init(ServletConfig servletConfig) throws ServletException {
-        System.out.println("初始化Test2");
-        String str = servletConfig.getInitParameter("username");
-        System.out.println(str);
-        String servletName = servletConfig.getServletName();
-        System.out.println(servletName);
-	
-    }
-	~~~
-	~~~xml
-	    <servlet>
-        <servlet-name>hello</servlet-name>
-        <servlet-class>com.iweb.homework.Test2</servlet-class>
-        <init-param>
-            <param-name>username</param-name>
-            <param-value>root</param-value>
-        </init-param>
-        <load-on-startup>0</load-on-startup>
-    </servlet>
-    // 在初始化Servlet时 输出 :
-    // root
-    // hello 
-	~~~
-3. getServletContext() ---- 获取当前web应用的对象
-	注意：ServletContext对象表示当前web应用的对象，它可以获取当前web应用方方面面的信息
-	~~~java
-	    @Override
-    public void init(ServletConfig servletConfig) throws ServletException {
-        ServletContext sc = servletConfig.getServletContext();
-        String user = sc.getInitParameter("username");
-        System.out.println(user);
-    }
-	~~~
-	~~~xml
-	    <context-param>
-        <param-name>username</param-name>
-        <param-value>Admin</param-value>
-    </context-param>
-    // 在初始化Servlet时 输出 :
-    //Admin
-	~~~
-	
+ public void init(ServletConfig servletConfig) throws ServletException {
+     ServletContext sc = servletConfig.getServletContext();
+     String user = sc.getInitParameter("username");
+     System.out.println(user);
+ }
+~~~
+~~~xml
+    <context-param>
+     <param-name>username</param-name>
+     <param-value>Admin</param-value>
+ </context-param>
+ // 在初始化Servlet时 输出 :
+ //Admin
+~~~
+
 ### ServletContext对象的相关信息：
 `<context-param>` ---- 当前web应用的初始化参数
 我们可以通过ServletContext对象调用
@@ -225,7 +238,8 @@ getRealPath(文件的类路径) ---- 获取到该文件部署后的绝对路径
 ~~~
 getContextPath() ---- 获取的是当前web应用的根目录
 
-浏览器页面向后端java类发请求的方式：
+### 浏览器页面向后端java类发请求的方式：
+
 1. 地址栏直接写url
 2. `<a>`标签超链接
 <!DOCTYPE html>
@@ -260,8 +274,7 @@ public void service(ServletRequest servletRequest, ServletResponse servletRespon
 
 后端Java类中，我们可以使用  ServletRequest对象.getParameter(参数名)  来获取参数值
 
-面试题：
-提交方式get和post的区别
+### 面试题：提交方式get和post的区别
 get请求 ---- 请求参数是跟在url地址后面的
 	所有的<a>都是get请求
 post请求 ---- 请求参数是封装在消息体中的
@@ -270,9 +283,14 @@ post请求 ---- 请求参数是封装在消息体中的
 
 注意：get请求的参数的长度不能超过1k，post请求没有长度限制
 
-ServletResponse
+### ServletRequest
+
+调用get
+
+### ServletResponse
 返回响应
 我们可以通过该对象调用getWrite()得到PrintWrite对象，然后再调用PrintWrite对象的print()方法往浏览器打印需要返回的内容
+
 ~~~java
     @Override
     public void service(ServletRequest servletRequest, ServletResponse servletResponse) throws ServletException, IOException {
