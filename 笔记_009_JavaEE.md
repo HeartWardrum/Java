@@ -411,3 +411,16 @@ public class Test1 extends HttpServlet {
 </body>
 </html>
 ~~~
+
+### jsp的本质
+
+本质是servlet 是后端技术
+
+### jsp九大隐含对象
+
+隐含对象指的是在jsp中没有定义而可以直接使用的对象
+
+1. request ---- HttpServletRequest的对象
+2. response ---- HttpServletResponse的对象
+3. pageContest ---- PageContext的对象，它表示当前页面，它可以获取其他8个隐含对象
+4. session ---- HttpSession的对象，它表示一次会话（浏览器的打开到关闭）
