@@ -1,7 +1,7 @@
 **`J2EE     JAVAEE     Java web`**
 
 # JavaEE
-http://127.0.0.1:8080  测试TomCat首页
+http://127.0.0.1:8088  测试TomCat首页
 
 ## servlet
 Servlet ---- 是个接口
@@ -304,4 +304,29 @@ getServletContext() ---- 直接获取当前web应用的ServletContext
 getServletPath() ---- 获取当前请求的请求名
 getContextPath() ---- 获取的是当前web应用的根目录
 
+# 日期：2022-08-02
 
+## HttpServlet
+
+这是一个抽象类，它实现了Servlet接口，并且将ServletRequest和ServletResponse转型成了HttpServletRequest和HttpServletResponse
+
+然后调用HttpServletRequest的getMethod方法判断当前请求是GET还是POST，从而为我们提供了doGet()和doPost()方法
+
+对于我们编程来讲，我们只需要继承HttpServlet类并重写doXxx方法即可，我们可以专注于我们的业务逻辑
+
+~~~java
+public class Test1 extends HttpServlet {
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        System.out.println("来了一个get请求");
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        System.out.println("来了一个post请求");
+    }
+}
+~~~
+~~~xml
+
+~~~
