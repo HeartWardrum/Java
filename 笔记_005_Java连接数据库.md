@@ -365,7 +365,7 @@ public class JdbcUtil {
 
 
     //查询的jdbc
-    public static <E> List<Map<String, Object>> quaryBySql(String sql, E... e) {
+    public static <E> List<Map<String, Object>> queryBySql(String sql, E... e) {
         getConnection();
         List<Map<String, Object>> list = new ArrayList<>();
 
