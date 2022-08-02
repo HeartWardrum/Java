@@ -328,5 +328,86 @@ public class Test1 extends HttpServlet {
 }
 ~~~
 ~~~xml
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
+         version="4.0">
 
+    <servlet>
+        <servlet-name>test1</servlet-name>
+        <servlet-class>com.iweb.test.Test1</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>test1</servlet-name>
+        <url-pattern>/test1</url-pattern>
+    </servlet-mapping>
+
+</web-app>
+~~~
+
+~~~html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<a href="test1">我是test1</a>
+<br/>
+<form action="test1" method="post">
+    <button>提交</button>
+</form>
+</body>
+</html>
+~~~
+
+## JSP
+将前后端混合编写的一种技术，混合编写的代码写在.jsp的文件中，页面上静态展示的内容使用html编写，动态展示的数据使用java编写。java代码在jsp页面上需要用<%%>包起来
+~~~jsp
+<%--
+  Created by IntelliJ IDEA.
+  User: lenovo
+  Date: 2022-08-02/0002
+  Time: 10:25
+  To change this template use File | Settings | File Templates.
+--%>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<html>
+<head>
+    <title>Title</title>
+</head>
+<body>
+<h3>这是我的以一个jsp页面</h3>
+<%
+    System.out.println("hello jsp!");
+%>
+</body>
+</html>
+~~~
+### out.print();
+---- 将指定内容打印在浏览器页面上
+~~~jsp
+<%@ page import="java.util.Date" %><%--
+  Created by IntelliJ IDEA.
+  User: lenovo
+  Date: 2022-08-02/0002
+  Time: 10:25
+  To change this template use File | Settings | File Templates.
+--%>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<html>
+<head>
+    <title>Title</title>
+</head>
+<body>
+<h3>这是我的以一个jsp页面</h3>
+<%
+    Date date = new Date();
+    out.print(date);
+%>
+</body>
+</html>
 ~~~
