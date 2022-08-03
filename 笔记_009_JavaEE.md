@@ -422,7 +422,7 @@ public class Test1 extends HttpServlet {
 
 1. request ---- HttpServletRequest的对象,它表示当前JSP页面打开的这次请求
 2. response ---- HttpServletResponse的对象
-3. pageContest ---- PageContext的对象，它表示当前页面，它可以获取其他8个隐含对象
+3. pageContext ---- PageContext的对象，它表示当前页面，它可以获取其他8个隐含对象
 4. session ---- HttpSession的对象，它表示一次会话（浏览器的打开到关闭）
 5. application ---- ServletContext的对象，它表示当前的web应用
 6. config ---- ServletConfig对象，它表示当前jsp翻译出来的那个servlet中的ServletConfig对象
