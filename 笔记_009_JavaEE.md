@@ -365,6 +365,9 @@ public class Test1 extends HttpServlet {
 ~~~
 
 ## JSP
+
+JavaServer Pages
+
 将前后端混合编写的一种技术，混合编写的代码写在.jsp的文件中，页面上静态展示的内容使用html编写，动态展示的数据使用java编写。java代码在jsp页面上需要用<%%>包起来
 ~~~jsp
 <%--
