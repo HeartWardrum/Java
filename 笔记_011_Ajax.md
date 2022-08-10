@@ -96,7 +96,7 @@ public class HelloAjax extends HttpServlet {
 # JSON
 ---- 这是一种数据格式，经常用于前后端交互的时候，来封装传递的数据，格式：
 以`{`开头，以`}`结尾，中间是键值对，键和值以冒号分割，键值对之间以逗号分割
-在js中，Json对象.键  可以得到值
+在js中，`Json对象.键 ` 可以得到值
 ~~~jsp
 <%--
   Created by IntelliJ IDEA.
