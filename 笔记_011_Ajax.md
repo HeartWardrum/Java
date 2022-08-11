@@ -353,3 +353,264 @@ public class HelloAjax extends HttpServlet {
         resp.setCharacterEncoding("utf-8");
         resp.setContentType("text/html");
 ~~~
+
+## fastjson
+这是由阿里巴巴公司提供的，将java对象转json字符串的框架，我们只需要使用
+JSONObject.toJSONString(json对象);   ---- 就可以得到该对象对应的JSON字符串
+
+使用方法：
+-  导入fastjson-1.2.53.jar包
+~~~java
+    public static void main(String[] args) {
+        Student s = new Student("1001", "张三", "20", "男");
+        String json = JSONObject.toJSONString(s);
+        System.out.println(json);
+        //输出
+        //{"gender":"男","sage":"20","sname":"张三","sno":"1001"}
+
+    }
+~~~
+**注意**：如果有一个集合对象，那么fastjson将提供一个JSON数组字符串来表示
+~~~java
+    public static void main(String[] args) {
+        Student s = new Student("1001", "张三", "20", "男");
+        String json = JSONObject.toJSONString(s);
+        //System.out.println(json);
+
+        Student s2 = new Student("1002", "张三", "20", "男");
+        Student s3 = new Student("1003", "李四", "20", "男");
+        Student s4 = new Student("1004", "王五", "20", "男");
+        List<Student> list = new ArrayList<>();
+        list.add(s);
+        list.add(s2);
+        list.add(s3);
+        list.add(s4);
+        String json2 = JSONObject.toJSONString(list);
+        System.out.println(json2);
+
+
+    }
+~~~
+
+~~~java
+    public static void main(String[] args) {
+        Student s = new Student("1001", "张三", "20", "男");
+        String json = JSONObject.toJSONString(s);
+        //System.out.println(json);
+
+        Student s2 = new Student("1002", "张三", "20", "男");
+        Student s3 = new Student("1003", "李四", "20", "男");
+        Student s4 = new Student("1004", "王五", "20", "男");
+        List<Student> list = new ArrayList<>();
+        list.add(s);
+        list.add(s2);
+        list.add(s3);
+        list.add(s4);
+        String json2 = JSONObject.toJSONString(list);
+        //System.out.println(json2);
+
+        Teacher teacher = new Teacher("5000", "王小明", "30", list);
+        String json3 = JSONObject.toJSONString(teacher);
+        System.out.println(json3);
+
+
+    }
+~~~
+
+在项目中，我们首先迅速打开页面，展示静态内容，然后我们可以使用Ajax发起二次请求，查询数据库，将数据库填充在静态页面上，缓解因为性能问题造成用户长时间等待空白页面的焦虑
+~~~java
+package com.iweb.test;
+
+/**
+ * @Author HearWardrum
+ * 联系方式：tianxiayifan@qq.com
+ * @Date 2022-08-11/0011
+ * 描述：
+ */
+
+public class Student {
+    private String sno;
+    private String sname;
+    private String sage;
+    private String gender;
+
+
+    public Student() {
+    }
+
+    public Student(String sno, String sname, String sage, String gender) {
+        this.sno = sno;
+        this.sname = sname;
+        this.sage = sage;
+        this.gender = gender;
+    }
+
+    public String getSno() {
+        return sno;
+    }
+
+    public void setSno(String sno) {
+        this.sno = sno;
+    }
+
+    public String getSname() {
+        return sname;
+    }
+
+    public void setSname(String sname) {
+        this.sname = sname;
+    }
+
+    public String getSage() {
+        return sage;
+    }
+
+    public void setSage(String sage) {
+        this.sage = sage;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+}
+~~~
+~~~java
+package com.iweb.test;
+
+import com.alibaba.fastjson.JSONObject;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+
+/**
+ * @Author HearWardrum
+ * 联系方式：tianxiayifan@qq.com
+ * @Date 2022-08-11/0011
+ * 描述：
+ */
+
+public class StudentServlet extends HttpServlet {
+
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        doPost(req, resp);
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String path = req.getServletPath();
+        switch (path) {
+            case "/toEdit.student":
+                req.getRequestDispatcher("/edit.jsp").forward(req, resp);
+                break;
+            case "/queryDate.student":
+                query(req, resp);
+                break;
+            default:
+                break;
+
+        }
+    }
+
+    protected void query(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        String sno = req.getParameter("sno");
+        System.out.println("根据学号：" + sno + "开始查询数据库");
+        Student s = new Student("1001", "张三", "20", "男");
+        String res = JSONObject.toJSONString(s);
+        resp.setCharacterEncoding("utf-8");
+        resp.getWriter().print(res);
+
+    }
+
+}
+~~~
+~~~xml
+    <servlet>
+        <servlet-name>student</servlet-name>
+        <servlet-class>com.iweb.test.StudentServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>student</servlet-name>
+        <url-pattern>*.student</url-pattern>
+    </servlet-mapping>
+~~~
+~~~jsp
+<%--
+  Created by IntelliJ IDEA.
+  User: HeartWardrum
+  Date: 2022-08-11/0011
+  Time: 11:55
+  To change this template use File | Settings | File Templates.
+--%>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<html>
+<head>
+    <title>Title</title>
+</head>
+<body>
+<script type="text/javascript" src="<%=request.getContextPath()%>/jquery-3.2.1.js"></script>
+<script type="text/javascript">
+    $(function () {
+        var url = "<%=request.getContextPath()%>/queryDate.student";
+        var param = {
+            "sno": ${param.sno}
+        };
+        $.post(url, param, function (data) {
+            var jsonObj = JSON.parse(data);
+            $("#sno").val(jsonObj.sno);
+            $("#sname").val(jsonObj.sname);
+            $("#sage").val(jsonObj.sage);
+            $("#gender").val(jsonObj.gender);
+        })
+    })
+
+
+</script>
+<h1>我是编辑页面</h1>
+学号：<input id="sno" name="sno" value=""/>
+<br/><br/>
+姓名：<input id="sname" name="sname" value=""/>
+<br/><br/>
+年龄：<input id="sage" name="sage" value=""/>
+<br/><br/>
+性别： <input id="gender" name="gender" value=""/>
+<br/><br/>
+<input type="submit" value="提交">
+
+</body>
+</html>
+~~~
+~~~jsp
+<%--
+  Created by IntelliJ IDEA.
+  User: HeartWardrum
+  Date: 2022-08-11/0011
+  Time: 9:46
+  To change this template use File | Settings | File Templates.
+--%>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<html>
+<head>
+    <title>$Title$</title>
+</head>
+<body>
+<a href="<%=request.getContextPath()%>/toEdit.student?sno=1001">编辑</a>
+</body>
+</html>
+~~~
+以上代码实现分布式加载页面，先显示静态布局，再等两秒后加载数据
+
+
