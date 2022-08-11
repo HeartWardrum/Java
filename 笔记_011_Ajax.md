@@ -222,7 +222,7 @@ public class HelloAjax extends HttpServlet {
 # `JQuery`框架将原生态的Ajax代码封装成一个叫作`$.ajax()`
 
 然后它再次对$.ajax()进行二次封装，提供给我们以下三个函数：
-1. load() ---- 由某元素节点调用，返回值自动填充在改元素节点的子元素位置,它如果传一个url，则发起get请求，如果传一个url和一个json格式的参数对象，则发起post请求
+1. load() ---- 由某元素节点调用，返回值自动填充在该元素节点的子元素位置,它如果传一个url，则发起get请求，如果传一个url和一个json格式的参数对象，则发起post请求
 ~~~jsp
 <%--
   Created by IntelliJ IDEA.
