@@ -261,3 +261,183 @@ public class MyServlet extends HttpServlet {
 创建两个过滤器，第一个专门过滤账号对不对，对就放行，不对就转发回登录页面，提升账号错误
 
 如果放行，那就来到第二个过滤器，校验密码，对就放行，不对就转发回登录页面，提升密码错误
+
+~~~java
+package com.iweb.test;
+
+import javax.servlet.*;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
+
+/**
+ * @Author HearWardrum
+ * 联系方式：tianxiayifan@qq.com
+ * @Date 2022-08-12/0012
+ * 描述：
+ */
+
+public class UsernameFilter implements Filter {
+    @Override
+    public void init(FilterConfig filterConfig) throws ServletException {
+
+    }
+
+    @Override
+    public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
+        String username = servletRequest.getParameter("username");
+        HttpServletRequest request = (HttpServletRequest) servletRequest;
+        ServletContext sc = request.getServletContext();
+        String user = sc.getInitParameter("user");
+        if (user.equals(username)) {
+            filterChain.doFilter(servletRequest, servletResponse);
+
+        } else {
+            request.setAttribute("message", "账号错误");
+            request.getRequestDispatcher("/index.jsp").forward(servletRequest, servletResponse);
+        }
+    }
+
+    @Override
+    public void destroy() {
+
+    }
+}
+
+~~~
+
+~~~java
+package com.iweb.test;
+
+import javax.servlet.*;
+import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
+
+/**
+ * @Author HearWardrum
+ * 联系方式：tianxiayifan@qq.com
+ * @Date 2022-08-12/0012
+ * 描述：
+ */
+
+public class PasswordFilter implements Filter {
+    @Override
+    public void init(FilterConfig filterConfig) throws ServletException {
+
+    }
+
+    @Override
+    public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
+        String password = servletRequest.getParameter("password");
+        HttpServletRequest request = (HttpServletRequest) servletRequest;
+        ServletContext sc = request.getServletContext();
+        String user = sc.getInitParameter("passwd");
+        if (user.equals(password)) {
+            filterChain.doFilter(servletRequest, servletResponse);
+
+        } else {
+            request.setAttribute("message", "密码错误");
+            request.getRequestDispatcher("/index.jsp").forward(servletRequest, servletResponse);
+        }
+    }
+
+    @Override
+    public void destroy() {
+
+    }
+}
+
+~~~
+
+~~~xml
+
+    <context-param>
+        <param-name>user</param-name>
+        <param-value>root</param-value>
+    </context-param>
+
+    <context-param>
+        <param-name>passwd</param-name>
+        <param-value>123456</param-value>
+    </context-param>
+
+
+    <filter>
+        <filter-name>usernameFilter</filter-name>
+        <filter-class>com.iweb.test.UsernameFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>usernameFilter</filter-name>
+        <url-pattern>/success.jsp</url-pattern>
+    </filter-mapping>
+
+    <filter>
+        <filter-name>passwordFilter</filter-name>
+        <filter-class>com.iweb.test.PasswordFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>passwordFilter</filter-name>
+        <url-pattern>/success.jsp</url-pattern>
+    </filter-mapping>
+~~~
+
+~~~jsp
+<%--
+  Created by IntelliJ IDEA.
+  User: HeartWardrum
+  Date: 2022-08-12/0012
+  Time: 8:45
+  To change this template use File | Settings | File Templates.
+--%>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<html>
+<head>
+    <title>$Title$</title>
+
+    <%
+        String username = request.getParameter("username");
+        String password = request.getParameter("username");
+
+    %>
+</head>
+<body>
+<h1>登录页面</h1>
+<form action="<%=request.getContextPath()%>/success.jsp" method="post">
+
+    账号：<input type="text" name="username" value=""/>
+    <br/>
+    密码：<input type="password" name="password" value=""/>
+    <br/>
+    <input type="submit" value="登录">
+    <br/>
+    <br/>
+    <span style="color:red;">${message}</span>
+
+</form>
+</body>
+</html>
+
+~~~
+
+~~~jsp
+<%--
+  Created by IntelliJ IDEA.
+  User: HeartWardrum
+  Date: 2022-08-12/0012
+  Time: 10:43
+  To change this template use File | Settings | File Templates.
+--%>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<html>
+<head>
+    <title>Title</title>
+</head>
+<body>
+<h1>登录成功！</h1>
+</body>
+</html>
+
+~~~
+
+
+
