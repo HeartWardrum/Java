@@ -1,3 +1,11 @@
+---
+title:  笔记_002_java
+tag: 
+	- java
+categories: 
+	- java
+---
+
 ## 第七天
 
 ### Set

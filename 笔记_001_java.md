@@ -1,3 +1,11 @@
+---
+title:  笔记_001_java
+tag: 
+	- java
+categories: 
+	- java
+---
+
 # 第一天
 
 面向对象

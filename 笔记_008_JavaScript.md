@@ -1,3 +1,11 @@
+---
+title:  笔记_008_javaScript
+tag: 
+	- javaScript
+categories: 
+	- java
+---
+
 # JavaScript
 
 JS的代码都是通过一系列的事件调用方法来执行的

@@ -1,3 +1,10 @@
+---
+title:  笔记_005_JDBC
+tag: 
+	- JDBC
+categories: 
+	- java
+---
 ## JDBC ---- 这是java连接数据库的接口
 
 通常需要使用 ` Class.forName(驱动类)` 来加载数据库驱动

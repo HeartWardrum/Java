@@ -1,3 +1,11 @@
+---
+title:  笔记_011_Ajax
+tag: 
+	- java
+categories: 
+	- java
+---
+
 # Ajax
 
 Asynchronous JavaScript And Xml
@@ -612,5 +620,4 @@ public class StudentServlet extends HttpServlet {
 </html>
 ~~~
 以上代码实现分布式加载页面，先显示静态布局，再等两秒后加载数据
-
 
