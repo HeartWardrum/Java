@@ -1,3 +1,11 @@
+---
+title:  笔记_012_Filter过滤器
+tag: 
+	- java
+categories: 
+	- java
+---
+
 # Filter
 
 通常来讲，过滤器指的是一个实现类Filter接口（Tomcat中的）的java类，它可以通过web.xml来配置所拦截的资源
@@ -245,5 +253,4 @@ public class MyServlet extends HttpServlet {
 
 过滤器支持多层过滤，多个过滤器可以拦截同一个请求，每个过滤器放行会放行到下一层过滤器，如果当前是最后一层，则放行到目标资源
 注意：多层过滤的时候，先后顺序是由web.xml中的`<filter-mapping>`配置的先后顺序决定的
-
 
