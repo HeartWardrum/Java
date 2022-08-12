@@ -8,7 +8,7 @@ categories:
 
 # Filter
 
-通常来讲，过滤器指的是一个实现类Filter接口（Tomcat中的）的java类，它可以通过web.xml来配置所拦截的资源
+通常来讲，过滤器指的是一个实现Filter接口（Tomcat中的）的java类，它可以通过web.xml来配置所拦截的资源
 过滤器有生命周期相关的方法：
 init() ---- 初始化
 doFilter() ---- 拦截到一个请求
