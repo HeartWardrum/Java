@@ -454,3 +454,15 @@ Maven项目的核心配置温简是pom.xml,它主要配置了当前项目所需�
 `<artifactId>项目名</artifactId>`
 `<version>版本号</version>`
 
+
+以下代码放pom.xml 中解决控制台打印中文乱码问题
+~~~xml
+    <properties>
+        <maven.compiler.source>8</maven.compiler.source>
+        <maven.compiler.target>8</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.encoding>UTF-8</maven.compiler.encoding>
+    </properties>
+
+~~~
+
