@@ -110,5 +110,140 @@ public class HelloFilter implements Filter {
 
 **注意**：过滤器可以拦截一个去往servlet的请求
 
+过滤器的初始化参数：在`<filter>`中，可以配置`<init-param>`，其中包含`<param-name>`和`<param-value>`我们在init方法中可以使用filterConfig对象调用getInitParameter(参数名)得到参数值
+
+**注意**：servlet 能干的事情，filter都能干，过滤器可以取代servlet，除此之外，它还善于过滤
+~~~java
+package com.iweb.test;
+
+import javax.servlet.*;
+import java.io.IOException;
+
+/**
+ * @Author HearWardrum
+ * 联系方式：tianxiayifan@qq.com
+ * @Date 2022-08-12/0012
+ * 描述：
+ */
+
+public class MyFilter implements Filter {
+    @Override
+    public void init(FilterConfig filterConfig) throws ServletException {
+        String username = filterConfig.getInitParameter("username");
+        System.out.println(username);
+
+        ServletContext sc = filterConfig.getServletContext();
+        String user = sc.getInitParameter("user");
+        System.out.println(user);
+    }
+
+    @Override
+    public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
+        System.out.println("拦截MyServlet");
+        filterChain.doFilter(servletRequest, servletResponse);
+    }
+
+    @Override
+    public void destroy() {
+
+    }
+}
+~~~
+~~~java
+package com.iweb.test;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+
+/**
+ * @Author HearWardrum
+ * 联系方式：tianxiayifan@qq.com
+ * @Date 2022-08-12/0012
+ * 描述：
+ */
+
+public class MyServlet extends HttpServlet {
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        System.out.println("来了一个请求");
+    }
+
+
+}
+~~~
+~~~xml
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
+         version="4.0">
+
+    <context-param>
+        <param-name>user</param-name>
+        <param-value>root</param-value>
+    </context-param>
+
+    <filter>
+        <filter-name>hello</filter-name>
+        <filter-class>com.iweb.test.HelloFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>hello</filter-name>
+        <url-pattern>/test1.jsp</url-pattern>
+    </filter-mapping>
+
+
+    <filter>
+        <filter-name>myfilter</filter-name>
+        <filter-class>com.iweb.test.MyFilter</filter-class>
+        <init-param>
+            <param-name>username</param-name>
+            <param-value>admin</param-value>
+        </init-param>
+    </filter>
+    <filter-mapping>
+        <filter-name>myfilter</filter-name>
+        <url-pattern>/myServlet</url-pattern>
+    </filter-mapping>
+
+
+    <servlet>
+        <servlet-name>myServlet</servlet-name>
+        <servlet-class>com.iweb.test.MyServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>myServlet</servlet-name>
+        <url-pattern>/myServlet</url-pattern>
+    </servlet-mapping>
+
+
+</web-app>
+~~~
+~~~jsp
+<%--
+  Created by IntelliJ IDEA.
+  User: HeartWardrum
+  Date: 2022-08-12/0012
+  Time: 8:45
+  To change this template use File | Settings | File Templates.
+--%>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<html>
+<head>
+    <title>$Title$</title>
+</head>
+<body>
+<a href="<%=request.getContextPath()%>/test1.jsp">test1</a>
+<br/>
+<a href="<%=request.getContextPath()%>/myServlet">发个请求</a>
+</body>
+</html>
+~~~
+
+过滤器支持多层过滤，多个过滤器可以拦截同一个请求，每个过滤器放行会放行到下一层过滤器，如果当前是最后一层，则放行到目标资源
+注意：多层过滤的时候，先后顺序是由web.xml中的`<filter-mapping>`配置的先后顺序决定的
 
 
