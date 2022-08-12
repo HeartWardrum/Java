@@ -454,6 +454,3 @@ Maven项目的核心配置温简是pom.xml,它主要配置了当前项目所需�
 `<artifactId>项目名</artifactId>`
 `<version>版本号</version>`
 
-
-
-
