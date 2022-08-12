@@ -439,5 +439,9 @@ public class PasswordFilter implements Filter {
 
 ~~~
 
-
+# Maven
+项目管理工具
+Maven的两大核心
+1. 依赖管理：对Jar包统一管理，jar存放在仓库中，项目中只要配置坐标信息即可，坐标信息包括公司名+项目名+版本号
+2. 项目构建：编码完成后，它可以对项目进行自动的编译，打包，部署等一系列操作
 
