@@ -445,3 +445,15 @@ Maven的两大核心
 1. 依赖管理：对Jar包统一管理，jar存放在仓库中，项目中只要配置坐标信息即可，坐标信息包括公司名+项目名+版本号
 2. 项目构建：编码完成后，它可以对项目进行自动的编译，打包，部署等一系列操作
 
+mvn help:system
+
+Maven项目的核心配置温简是pom.xml,它主要配置了当前项目所需要的jar包依赖
+我们添加`<dependencies>`表示一组依赖，它包含一组`<dependency>`，每个`<dependency>`就是一个依赖
+每个`<dependency>`中包含：
+`<groupId>公司名</groupId>`
+`<artifactId>项目名</artifactId>`
+`<version>版本号</version>`
+
+
+
+
