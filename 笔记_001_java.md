@@ -1522,9 +1522,11 @@ public class Test13 {
 
 ### wait和sleep的区别
 
-1. 类不一样
-2. sleep会自动醒，wait需要notify唤醒
+1. sleep 是 Thread 类的静态本地方法，wait 则是 Object 类的本地方法
+2. sleep会自动醒，wait如果没有指定毫秒数则需要notify唤醒
 3. 某个线程在sleep的过程中不会释放线程锁，而在wait的过程中会释放线程锁
+4. sleep 一般用于当前线程休眠，或者轮循暂停操作，wait 则多用于多线程之间的通信
+5. sleep 会让出 CPU 执行时间且强制上下文切换，而 wait 则不一定，wait 后可能还是有机会重新竞争到锁继续执行的。
 
 ### 多线程经典例题：生产消费
 
