@@ -7,13 +7,11 @@ categories:
 ---
 ## JDBC ---- 这是java连接数据库的接口
 
-通常需要使用 ` Class.forName(驱动类)` 来加载数据库驱动
-
-接着获取`Connection`对象表示数据库的连接
-
-然后获取`Statement`对象表示sql语句
-
-最后获取`ResultSet`对象表示查询的结果集，它通过`Statement`对象调用`excuteQuery(Sql语句)`来执行获取
+通常需要
+1. 使用 ` Class.forName(驱动类)` 来加载数据库驱动
+2. 接着获取`Connection`对象表示数据库的连接
+3. 然后获取`Statement`对象表示sql语句
+4. 最后获取`ResultSet`对象表示查询的结果集，它通过`Statement`对象调用`excuteQuery(Sql语句)`来执行获取
 
 注意：以上对象在使用完毕后需要调用close方法来进行关闭
 
