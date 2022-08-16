@@ -22,14 +22,14 @@ servlet生命周期的相关方法：
 
 servlet核心配置文件
 所有的请求和java类都是靠 `web.xml`对应的
-每一个`<servlet>`标签表示一个servlet，它包含`<servlet-name>` 和 `<servlet-class>`
+每一个`<servlet>`标签表示一 个servlet，它包含`<servlet-name>` 和 `<servlet-class>`
 
 - `<servlet-name> `是我们自己起的servlet名字
 - `<servlet-class>` 是我们自己写的servlet类的全类名
 
-
 每个`<servlet>` 都有`<servlet-mapping>` 与之对应
 ` <servlet-mapping>` 中包含`<servlet-name> `和 `<url-pattern>`
+
 - `<servlet-mapping>`中的`<servlet-name> `与 `<servlet>`中的`<servlet-name>` 对应  值相等就完事了
 - `<url-pattern>`指的是请求名 通常以`/`开头
 
@@ -284,7 +284,7 @@ public void service(ServletRequest servletRequest, ServletResponse servletRespon
 
 ### 面试题：提交方式get和post的区别
 get请求 ---- 请求参数是跟在url地址后面的
-	所有的<a>都是get请求
+	所有的`<a>`都是get请求
 post请求 ---- 请求参数是封装在消息体中的
 
 `<form>`的method属性可以指定其为post，如果不指定，则默认为get
