@@ -304,9 +304,9 @@ public class HelloAjax extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         System.out.println("我是一个post请求");
-        req.setCharacterEncoding("utf-8");
-        String name = req.getParameter("name");
-        resp.setCharacterEncoding("utf-8");
+        req.setCharacterEncoding("utf-8");//请求转码  ----- 中文请求不乱码
+        String name = req.getParameter("name");//获取
+        resp.setCharacterEncoding("utf-8");//响应转码  ----- 打印中文不乱码
         resp.setContentType("text/html");//设置发送到客户端的响应的内容类型
         PrintWriter pw = resp.getWriter();
         pw.print("hello " + name);
