@@ -294,7 +294,7 @@ post请求 ---- 请求参数是封装在消息体中的
 
 ### ServletResponse
 返回响应
-我们可以通过该对象调用getWrite()得到PrintWrite对象，然后再调用PrintWrite对象的print()方法往浏览器打印需要返回的内容
+我们可以通过该对象调用getWrite()得到PrintWriter对象，然后再调用PrintWriter对象的print()方法往浏览器打印需要返回的内容
 
 ~~~java
     @Override
@@ -952,6 +952,7 @@ public class Test extends HttpServlet {
 ### 表单提交中文乱码问题
 在request.getParameter(""); 之前添加：
 request.setCharacterEncoding("utf-8"); 即可
+
 ~~~java
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

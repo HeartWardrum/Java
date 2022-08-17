@@ -296,7 +296,7 @@ public class HelloAjax extends HttpServlet {
         System.out.println("Hello Ajax");
         String name = req.getParameter("name");
         resp.setCharacterEncoding("utf-8");
-        resp.setContentType("text/html");
+        resp.setContentType("text/html");//设置发送到客户端的响应的内容类型
         PrintWriter pw = resp.getWriter();
         pw.print("Hello " + name);
     }
@@ -307,7 +307,7 @@ public class HelloAjax extends HttpServlet {
         req.setCharacterEncoding("utf-8");
         String name = req.getParameter("name");
         resp.setCharacterEncoding("utf-8");
-        resp.setContentType("text/html");
+        resp.setContentType("text/html");//设置发送到客户端的响应的内容类型
         PrintWriter pw = resp.getWriter();
         pw.print("hello " + name);
     }
