@@ -14,7 +14,10 @@ Asynchronous JavaScript And Xml
 
 Ajax总是在JS的事件中发请求
 
-原生态的Ajax代码是在围绕真XMLHttpRequest对象展开的，我们可以调用它的open方法装载数据，调用它的send方法发送请求，调用它的onreadystatechange()方法接收来自后端的响应
+原生态的Ajax代码是围绕XMLHttpRequest对象展开的，我们可以
+1. 调用它的open方法装载数据
+2. 调用它的send方法发送请求
+3. 调用它的onreadystatechange()方法接收来自后端的响应
 
 原生态的Ajax写法
 ~~~jsp

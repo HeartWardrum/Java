@@ -256,10 +256,11 @@ getContextPath() ---- 获取的是当前web应用的根目录
     <title>Title</title>
 </head>
 <body>
-<h1>我是一个标题</h1>
+<h1 style="color:gold;">我是一个标题</h1>
 <a href="abc.do?age=18">发一个请求</a>
 </body>
 </html>
+
 
 ```java
 
@@ -728,7 +729,7 @@ public class TestForward extends HttpServlet {
 </web-app>
 ~~~
 #### 第二种：重定向
-1. 定义一个String 存放目标资源的路径
+1. 定义一个String 存放目标资源的路径 (路径要从web根目录开始)
 2. 利用当前response对象调用sendRedirect(路径) 完成重定向
 ~~~jsp
 <%--
