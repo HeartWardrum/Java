@@ -729,7 +729,7 @@ public class TestForward extends HttpServlet {
 </web-app>
 ~~~
 #### 第二种：重定向
-1. 定义一个String 存放目标资源的路径 (路径要从web根目录开始)
+1. 定义一个String 存放目标资源的路径 (路径要从web站点根目录开始)
 2. 利用当前response对象调用sendRedirect(路径) 完成重定向
 ~~~jsp
 <%--
@@ -794,7 +794,7 @@ public class TestRedirect extends HttpServlet {
 	重定向的时候，/ 表示web站点的根目录
 	
 
-注意：http请求的格式：
+**注意**：http请求的格式：
 http://ip:端口  ---- web站点的根目录
 web站点的根目录 + web应用的名字 ---- web应用的根目录
 web应用的根目录 + 请求名 ---- 完整的http请求
@@ -921,9 +921,10 @@ public class Test extends HttpServlet {
 ~~~
 
 ### 发请求的路径问题
-我们通过<a>的href属性和<form>的action属性发请求，最好写成以下路径格式：
+我们通过`<a>`的href属性和`<form>`的action属性发请求，最好写成以下路径格式：
 `<%=request.getContextPath()%>/请求名`
 否则有可能会带来路径的错误
+
 ~~~java
 <%--
   Created by IntelliJ IDEA.
@@ -963,6 +964,10 @@ request.setCharacterEncoding("utf-8"); 即可
 ~~~
 
 ### MVC开发模型
-M ---- Model
-V ---- View
-C ---- Control
+Model View Controller
+#### 最典型的MVC就是jsp+servlet+javabean模式
+- JavaBean作为模型，既可以作为数据模型来封装业务数据，又可以作为业务逻辑模型来包含应用的业务操作。其中，数据模型用来存储或传递业务数据，而业务逻辑模型接收到控制器传过来的模型更新请求后，执行特定的业务逻辑处理，然后返回相应的执行结果。
+
+- JSP作为视图层，负责提供页面为用户展示数据，提供相应的表单（Form）来用于用户的请求，并在适当的时候（点击按钮）向控制器发出请求来请求模型进行更新。
+
+- Serlvet作为控制器，用来接收用户提交的请求，然后获取请求中的数据，将之转换为业务模型需要的数据模型，然后调用业务模型相应的业务方法进行更新，同时根据业务执行结果来选择要返回的视图。
