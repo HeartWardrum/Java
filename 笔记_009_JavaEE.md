@@ -540,7 +540,7 @@ JavaServer Pages
 以`<%--`开头   以`--%>`结尾
 
 ### 域对象
-pageContext, request, session, application 四个隐含对象成为域对象，它们可以调用setAttribute(键，值)   进行存值
+pageContext, request, session, application 四个隐含对象称为域对象，它们可以调用setAttribute(键，值)   进行存值
 getAttribute(键)   进行取值
 removeAttribute(键)    进行删除
 ~~~jsp
