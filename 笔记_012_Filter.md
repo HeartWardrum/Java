@@ -18,6 +18,7 @@ destory() ---- 销毁
 `<filter>`下包含`<filter-name>`和`<filter-class>`
 `<filter-class>`指向过滤器类的全类名
 `<filter-mapping>`下包含`<filter>`对应的`<filter-name>`和需要拦截的`<url-pattern>`
+
 ~~~java
 package com.iweb.test;
 
@@ -106,7 +107,7 @@ public class HelloFilter implements Filter {
 </html>
 ~~~
 ## 放行
-如果在doFilter()方法拦截到请求之后需要放行，则可以调用它的参数FilterChain对象的doFilter(request,response)对象进行放行
+如果在doFilter()方法拦截到请求之后需要放行，则可以调用它的参数FilterChain对象的doFilter(request,response)方法进行放行
 ~~~java
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
@@ -285,13 +286,12 @@ public class UsernameFilter implements Filter {
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
-        String username = servletRequest.getParameter("username");
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         ServletContext sc = request.getServletContext();
-        String user = sc.getInitParameter("user");
+        String user = sc.getInitParameter("user");//配置文件中存储的账号信息 项目中用数据库数据替代
+        String username = request.getParameter("username");//前端传入的账号
         if (user.equals(username)) {
             filterChain.doFilter(servletRequest, servletResponse);
-
         } else {
             request.setAttribute("message", "账号错误");
             request.getRequestDispatcher("/index.jsp").forward(servletRequest, servletResponse);
