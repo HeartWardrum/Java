@@ -954,10 +954,10 @@ System.out.println(s);//11:23:08 2022/07/08
 - 阻塞状态:
   如果一个线程执行了sleep（睡眠）、suspend（挂起）等方法，失去所占用资源之后，该线程就从运行状态进入阻塞状态。在睡眠时间已到或获得设备资源后可以重新进入就绪状态。可以分为三种：
 
-- 等待阻塞：运行状态中的线程执行 wait() 方法，使线程进入到等待阻塞状态。
-​			同步阻塞：线程在获取 synchronized 同步锁失败(因为同步锁被其他线程占用)。
-​			其他阻塞：通过调用线程的 sleep() 或 join() 发出了 I/O 请求时，线程就会进入到阻塞状态。当sleep() 状态超时，join() 等待线程终止或超时，或者 I/O 处理完毕，线程重新转入就绪状态。
-
+  ​			等待阻塞：运行状态中的线程执行 wait() 方法，使线程进入到等待阻塞状态。
+  ​			同步阻塞：线程在获取 synchronized 同步锁失败(因为同步锁被其他线程占用)。
+  ​			其他阻塞：通过调用线程的 sleep() 或 join() 发出了 I/O 请求时，线程就会进入到阻塞状态。当sleep() 状态超时，join() 等待线程终止或超时，或者 I/O 处理完毕，线程重新转入就绪状态。
+  
 - 死亡状态:
   一个运行状态的线程完成任务或者其他终止条件发生时，该线程就切换到终止状态。
 
@@ -1364,124 +1364,117 @@ public class Time {
  简单死锁：
 
 ~~~~java
-//例如
-package com.iweb.Test2;
+package com.iweb.test;
+
+/**
+ * @Author HearWardrum
+ * 联系方式：tianxiayifan@qq.com
+ * @Date 2022-08-22/0022
+ * 描述：简单死锁实例
+ */
 
 public class TestDeadLock implements Runnable {
-    int flag;
+    boolean flag;
 
-    static Object o1 = new Object();
-    static Object o2 = new Object();
 
-    public int getFlag() {
+    public boolean isFlag() {
         return flag;
     }
 
-    public void setFlag(int flag) {
+    public void setFlag(boolean flag) {
         this.flag = flag;
     }
 
+    //必须要静态变量
+    static Object o1 = new Object();
+    static Object o2 = new Object();
+
+
     @Override
     public void run() {
-        if (flag == 1) {
+
+        if (flag) {
             synchronized (o1) {
-                System.out.println("我是" + Thread.currentThread().getName() + " 线程,我开始工作了");
+                System.out.println(Thread.currentThread().getName() + "开始工作");
                 try {
-                    Thread.sleep(1000);
+                    Thread.sleep(2000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
                 synchronized (o2) {
-                    System.out.println("我的任务完成了！ ");
+                    System.out.println("work is done");
                 }
+
             }
         } else {
             synchronized (o2) {
-                System.out.println("我是" + Thread.currentThread().getName() + " 线程,我开始工作了");
+                System.out.println(Thread.currentThread().getName() + "开始工作");
                 try {
-                    Thread.sleep(1000);
+                    Thread.sleep(2000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
                 synchronized (o1) {
-                    System.out.println("我的任务完成了");
+                    System.out.println("work is done");
                 }
 
             }
         }
     }
-}
-~~~~
 
-~~~java
-//测试类
-package com.iweb.Test2;
-
-public class Test {
     public static void main(String[] args) {
-        TestDeadLock td1 = new TestDeadLock();
-        td1.setFlag(1);
-        Thread t1 = new Thread(td1);
-        t1.setName("t1");
 
-        TestDeadLock td2 = new TestDeadLock();
-        td2.setFlag(2);
-        Thread t2 = new Thread(td2);
-        t2.setName("t2");
+        //测试
+        TestDeadLock r1 = new TestDeadLock();
+        r1.setFlag(true);
+        Thread t1 = new Thread(r1);
+        t1.setName("线程1");
+
+        TestDeadLock r2 = new TestDeadLock();
+        r2.setFlag(false);
+        Thread t2 = new Thread(r2);
+        t2.setName("线程2");
 
         t1.start();
         t2.start();
     }
 }
-~~~
+~~~~
 
 避免死锁：尽可能将加锁的粒度加粗
 
 - 解锁如下：
 
 ~~~java
-package com.iweb.Test2;
+//只需要修改run()方法
+@Override
+public void run() {
 
-public class TestDeadLock implements Runnable {
-    int flag;
-
-    static Object o1 = new Object();
-    static Object o2 = new Object();
-
-    public int getFlag() {
-        return flag;
-    }
-    public void setFlag(int flag) {
-        this.flag = flag;
-    }
-
-    @Override
-    public void run() {
-        if (flag == 1) {
-            synchronized (this) {
-                System.out.println("我是" + Thread.currentThread().getName() + " 线程,我开始工作了");
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                //synchronized (o2) {
-                    System.out.println("我的任务完成了！ ");
-                //}
+    if (flag) {
+        synchronized (this) {
+            System.out.println(Thread.currentThread().getName() + "开始工作");
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
-        } else {
-            synchronized (this) {
-                System.out.println("我是" + Thread.currentThread().getName() + " 线程,我开始工作了");
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                //synchronized (o1) {
-                    System.out.println("我的任务完成了");
-                //}
+            //synchronized (o2) {
+            System.out.println("work is done");
+            //}
 
+        }
+    } else {
+        synchronized (this) {
+            System.out.println(Thread.currentThread().getName() + "开始工作");
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
+            //synchronized (o1) {
+            System.out.println("work is done");
+            //}
+
         }
     }
 }
