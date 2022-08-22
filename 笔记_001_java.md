@@ -1548,26 +1548,67 @@ public class Test13 {
 ### 多线程经典例题：生产消费
 
 ~~~java
-//消费类
-package com.iweb.test3;
+/**
+ * @Author HearWardrum
+ * 联系方式：tianxiayifan@qq.com
+ * @Date 2022-08-22/0022
+ * 描述：消费者
+ */
 
 public class Customer implements Runnable {
-
-    ManTouStack manTouStack;
+    MantouStack mantouStack;
 
     public Customer() {
     }
 
-    public Customer(ManTouStack manTouStack) {
-        this.manTouStack = manTouStack;
+    public Customer(MantouStack mantouStack) {
+        this.mantouStack = mantouStack;
     }
 
     @Override
     public void run() {
-        for (int i = 1; i < 20; i++) {
-            ManTou mt = manTouStack.pop();
+        for (int i = 0; i < 20; i++) {//没买到20个都要继续买
+            Mantou mt = mantouStack.pop();//从框中取走一个
             try {
-                Thread.sleep((long) (Math.random() * 1000));
+                Thread.sleep((long) (Math.random() * 1000)); //休息个[0,1)秒再接着买
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+}
+
+~~~
+
+~~~java
+package com.iweb.test3;
+
+/**
+ * @Author HearWardrum
+ * 联系方式：tianxiayifan@qq.com
+ * @Date 2022-08-22/0022
+ * 描述：生产者
+ */
+
+public class Producer implements Runnable {
+    MantouStack mantouStack = new MantouStack();
+
+    public Producer() {
+    }
+
+    public Producer(MantouStack mantouStack) {
+        this.mantouStack = mantouStack;
+    }
+
+    @Override
+    public void run() {
+        for (int i = 0; i < 20; i++) {//生产完二十个馒头下班回家
+            Mantou mt = new Mantou(i);
+            mantouStack.push(mt);//馒头放进框内
+
+            //捏累了休息一会
+            try {
+                Thread.sleep((long) (Math.random() * 1000));//[0,1)随机秒数
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -1575,19 +1616,26 @@ public class Customer implements Runnable {
         }
     }
 }
+
 ~~~
 
 ~~~java
 package com.iweb.test3;
 
-public class ManTou {
-    private int id;
+/**
+ * @Author HearWardrum
+ * 联系方式：tianxiayifan@qq.com
+ * @Date 2022-08-22/0022
+ * 描述：馒头类
+ */
 
-    public ManTou() {
+public class Mantou {
+    int id;
 
+    public Mantou() {
     }
 
-    public ManTou(int id) {
+    public Mantou(int id) {
         this.id = id;
     }
 
@@ -1601,9 +1649,7 @@ public class ManTou {
 
     @Override
     public String toString() {
-        return "ManTou{" +
-                "id=" + id +
-                '}';
+        return "馒头编号：" + id;
     }
 }
 
@@ -1612,92 +1658,78 @@ public class ManTou {
 ~~~java
 package com.iweb.test3;
 
-public class ManTouStack {
-    ManTou[] arr = new ManTou[6];
-    int index = 0;//表示当前框中的馒头
+/**
+ * @Author HearWardrum
+ * 联系方式：tianxiayifan@qq.com
+ * @Date 2022-08-22/0022
+ * 描述：馒头框
+ */
 
-    //生产
-    synchronized void push(ManTou mt) {
-        while (arr.length == index) {
+public class MantouStack {
+
+    Mantou[] mantous = new Mantou[6];//馒头框里最多放六个馒头
+    int countOfMantou = 0;//当前框里的馒头数
+
+
+    //放入馒头
+    public synchronized void push(Mantou mantou) {
+        while (mantous.length == countOfMantou) {//框里馒头满了
             try {
                 wait();
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }
+        //框里空出来了
         notify();
-        arr[index] = mt;
-        index++;
-        System.out.println("捏好一个馒头：" + mt);
+        mantous[countOfMantou] = mantou;
+        countOfMantou++;
+        System.out.println("放进来一个馒头 " + mantou);
     }
 
-    //消费
-    synchronized ManTou pop() {
-        while (index == 0) {
+    //取出馒头
+    public synchronized Mantou pop() {
+        while (countOfMantou == 0) {//框里没馒头了
             try {
                 wait();
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }
+        //有馒头了
         notify();
-        index--;
-        System.out.println("消费了馒头:" + arr[index]);
-        return arr[index];
+        countOfMantou--;
+        System.out.println("取走了 " + mantous[countOfMantou]);
+        return mantous[countOfMantou];
     }
+
 }
 ~~~
 
 ~~~java
-//生产类
 package com.iweb.test3;
 
-public class Producer implements Runnable {
-    ManTouStack manTouStack;
-
-    public Producer(ManTouStack manTouStack) {
-        this.manTouStack = manTouStack;
-    }
-
-    public Producer() {
-    }
-
-    @Override
-    public void run() {
-        for (int i = 1; i <= 20; i++) {
-            ManTou mt = new ManTou(i);
-            manTouStack.push(mt);
-        }
-        try {
-            Thread.sleep((long) (Math.random() * 1000));
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
-}
-
-~~~
-
-~~~java
-//测试类
-package com.iweb.test3;
+/**
+ * @Author HearWardrum
+ * 联系方式：tianxiayifan@qq.com
+ * @Date 2022-08-22/0022
+ * 描述：测试类
+ */
 
 public class Test {
 
 
     public static void main(String[] args) {
-        ManTouStack mts = new ManTouStack();
-        Producer p1 = new Producer(mts);
-        Customer c1 = new Customer(mts);
+        MantouStack mantouStack = new MantouStack();//得使用同一个馒头框
+        Producer p = new Producer(mantouStack);
+        Customer c = new Customer(mantouStack);
+        Thread producerThread = new Thread(p);
+        Thread customerThread = new Thread(c);
 
-        Thread thread = new Thread(p1);
-        Thread thread2 = new Thread(c1);
-
-        thread.start();
-        thread2.start();
+        producerThread.start();
+        customerThread.start();
     }
 }
-
 ~~~
 
 改写生产者消费者的代码:
