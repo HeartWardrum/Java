@@ -507,9 +507,9 @@ return sum;
 
 `close() ---- 关闭该输入流`
 
-Windows的文件分割符默认为反斜杠，Linux是正斜杠；Java中的File.separator 返回的是当前操作系统的文件分隔符
+Windows的文件分割符默认为反斜杠，Linux是正斜杠；Java中的`File.separator() `返回的是当前操作系统的文件分隔符
 
-在实际开发中，我们其实只需要写正斜杆，因为Windows会只能地将其转为反斜杠
+在实际开发中，我们其实只需要写正斜杆，因为Windows会智能地将其转为反斜杠
 
 ~~~java
   public static void main(String[] args) {
@@ -607,7 +607,7 @@ public static void main(String[] args) {
 
 ### FileWriter
 
-文件字字符输出流，用来写文件；当我们new一个FileWriter对象时，需要传入文件路径，如果路径不存在，则会自动创建。换句话说相当于一根管道怼到了该文件上，这根管道可以用来向文件中注水
+文件字符输出流，用来写文件；当我们new一个FileWriter对象时，需要传入文件路径，如果路径不存在，则会自动创建。换句话说相当于一根管道怼到了该文件上，这根管道可以用来向文件中注水
 
 `write(int) ---- 将一个字节通过该字节流输出到文件中`
 
@@ -659,7 +659,7 @@ public static void main(String[] args) {
             is = new FileInputStream("D:/java/MyProject/Test20220708/src/com/iweb/test/Test.java");
             bis = new BufferedInputStream(is);
             int i = 0;
-            while ((i = is.read()) != -1) {
+            while ((i = bis.read()) != -1) {
                 System.out.print((char) i);
             }
         } catch (FileNotFoundException e) {
