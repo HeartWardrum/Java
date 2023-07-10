@@ -633,3 +633,125 @@ public class Changeable {
 }
 ~~~
 
+### 静态方法
+
+static关键字用来声明独立于对象的静态方法。静态方法与类共存，对象还未实例化时就已经存在。
+
+静态方法不能使用类的非静态变量，也不能调用非静态方法（存在的东西 不能调用 不存在的东西）
+
+静态方法推荐以 `类名.方法名`调用
+
+### 非静态方法
+
+无static修饰，需要实例化对象，才能调用方法
+
+~~~java
+public class StaticTest {
+    public static void main(String[] args) {
+        say();
+    }
+
+    public static void say() {
+        System.out.println("静态方法类加载时就已经存在，独立于对象");
+        //nonStatic();// 调用不存在的方法！报错
+        new StaticTest().nonStatic(); // 需要创建对象才产生非静态方法！
+    }
+
+    public void nonStatic(){
+        System.out.println("这是个非静态方法，需要对象实例化才存在");
+        // say();  // 调用已存在的方法，没问题
+    }
+}
+~~~
+
+静态方法和非静态方法的本质区别：
+
+- 静态方法是类中使用static修饰的方法，在类定义的时候已经被装载和分配。
+- 而非静态方法是不加static关键字的方法，在类定义时没有占用内存，只有在类被实例化成对象时，对象调用该方法才被分配内存
+
+### 实际参数
+
+传递给被调用方法的值，预先创建并赋予确定值
+
+### 形式参数
+
+用来接收调用该方法时传递的参数，只有在被调用的时候才分配内存空间，一旦调用结束，就释放内存空间，因此仅仅在方法内有效。
+
+### 值传递
+
+形参是实参的拷贝，改变形参的值不会影响外部实参的值
+
+### 引用传递
+
+在调用函数时将实际参数的地址直接传递到函数中，那么在函数中对参数进行修改，将影响到实际参数。
+
+~~~java
+class Hello{
+
+	public static void main(String[] args){
+		StringBuffer stringBuffer = new StringBuffer("hello");
+		System.out.println(stringBuffer.toString());
+		change(stringBuffer);
+		System.out.println(stringBuffer.toString());
+	}
+
+	private static void change(StringBuffer s){
+		s.append(" world");
+	}
+}
+~~~
+
+注意：在Java中，字符串是不可变的（immutable）。这意味着一旦创建了一个字符串对象，它的值就不能被改变。当你尝试对字符串进行修改时，实际上是创建了一个新的字符串对象，而原始的字符串对象保持不变。
+
+~~~java
+public class Quote {
+    public static void main(String[] args) {
+        String str = "hello";
+        System.out.println(str);//hello
+        change(str);
+        System.out.println(str);//hello
+    }
+
+    private static void change(String s) {
+        s = "hello world";
+    }
+}
+
+~~~
+
+在给定的代码中，当`change`方法被调用时，它接收一个字符串参数`s`。然后，在`change`方法内部将`s`赋值为新的字符串`"hello world"`。这个赋值操作只是将`s`引用指向了一个新的字符串对象，而原始的字符串对象`"hello"`并没有发生改变。
+
+在`main`方法中，虽然调用了`change`方法并将`str`作为参数传递，但在`change`方法内部对`s`的修改不会影响到`main`方法中的`str`。这是因为字符串是不可变的，对于传递给方法的参数，其实际上是参数值的一个副本。在方法内部对副本的修改不会影响到原始的变量。
+
+因此，最终在`main`方法中打印`str`时，它的值仍然是原始的字符串`"hello"`，并没有发生改变。
+
+### 通过命令行传参
+
+有时候你希望运行一个程序时候再传递给它消息，这要靠传递命令行参数给main()函数实现
+
+命令行参数是再执行程序时紧跟在程序名字后面的信息
+
+实例：
+
+~~~java
+class Hello{
+
+	public static void main(String[] args){
+		
+		for(String arg: args){
+			System.out.println(arg);
+		}
+	}
+	
+}
+//在命令行中输入：
+//javac Hello.java
+//java Hello  121 21
+//打印：
+//121
+//
+//
+~~~
+
+
+
