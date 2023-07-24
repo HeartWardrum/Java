@@ -1447,37 +1447,10 @@ public class TestDeadLock implements Runnable {
 
 ~~~java
 //只需要修改run()方法
+//2023年7月24日修正，以下代码有误，详见新的笔记
 @Override
-public void run() {
 
-    if (flag) {
-        synchronized (this) {
-            System.out.println(Thread.currentThread().getName() + "开始工作");
-            try {
-                Thread.sleep(2000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            //synchronized (o2) {
-            System.out.println("work is done");
-            //}
-
-        }
-    } else {
-        synchronized (this) {
-            System.out.println(Thread.currentThread().getName() + "开始工作");
-            try {
-                Thread.sleep(2000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            //synchronized (o1) {
-            System.out.println("work is done");
-            //}
-
-        }
-    }
-}
+   
 ~~~
 
 注意：1. 当一个线程进入了某个加锁的方法时，其他线程完全可以访问其他没有加锁的方法
