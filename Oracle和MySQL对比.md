@@ -7,11 +7,6 @@
 3. Oracle支持大并发，大访问量，是[OLTP](#OLTP)的最好的工具
 4. MySQL安装完成后占用的内存远远小于Oracle
 
-## 微观上
-
-1. 对于事务的支持
-   MySQL默认对事务不支持，至少有某些存储引擎如：innodb
-
 # Oracle中特有
 
 在select语句后面添加for update；可以实现图形化界面的增删改操作。
@@ -64,5 +59,5 @@ MySQL使用date_format()将日期转字符串
 
 On-Line Transaction Processing联机事务处理过程，也成为面向交易的处理过程，其基本特征是前台接受的用户数据可以立即传送到计算中心进行处理，并且在很短的时间内给出处理结果，是对用户操作快速响应的方式之一。
 
-## InnoDB
+
 
