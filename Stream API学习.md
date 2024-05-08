@@ -246,3 +246,7 @@ allCustomers.stream()
                 .findFirst();
 ~~~
 
+#### reduce
+
+接收两个参数：一个初始值，一个`BinaryOperator<T> accumulator`将两个元素合并成一个新的值，比如我们对一个数字list累加。
+
