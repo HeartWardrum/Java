@@ -250,3 +250,80 @@ allCustomers.stream()
 
 接收两个参数：一个初始值，一个`BinaryOperator<T> accumulator`将两个元素合并成一个新的值，比如我们对一个数字list累加。
 
+#### count
+
+~~~java
+numbers.stream().count()
+~~~
+
+## 数据收集器collect
+
+所有的收集器都定义在了Collectors中，基本上可以把这些方法分为三类：
+
+- 将元素规约和汇总称一个值
+- 分组
+- 分区
+
+### 规约和汇总
+
+1、找出年龄最大和最小的客户
+
+~~~java
+        Customer c1 = new Customer("张三", 10);
+        Customer c2 = new Customer("里斯", 12);
+        Customer c3 = new Customer("王武", 13);
+
+        List<Customer> customers = Stream.of(c1, c2, c3).collect(toList());
+
+        Optional<Customer> min = customers.stream().collect(minBy(Comparator.comparing(Customer::getAge)));
+        System.out.println("年龄最小的客户为：" + min.get());
+
+        Optional<Customer> max = customers.stream().collect(maxBy(Comparator.comparing(Customer::getAge)));
+        System.out.println("年龄最大的客户为：" + max.get());
+~~~
+
+2、求取年龄的平均值
+
+~~~java
+        Double avgAge = customers.stream().collect(averagingInt(Customer::getAge));
+        System.out.println("年龄平均值为：" + avgAge);
+~~~
+
+3、进行字符串连接
+
+把客户所有人的名字连接称一个字符串用逗号分隔
+
+~~~java
+        String str = customers.stream().map(Customer::getName).collect(joining(","));
+        System.out.println(str);
+~~~
+
+### 分组
+
+1、根据客户的年龄进行分组
+
+~~~java
+ Map<Integer, List<Customer>> groupByAge = customers.stream().collect(groupingBy(Customer::getAge));
+        System.out.println(groupByAge);
+~~~
+
+Map的key就是年龄，`List<Customer>`就是相同年龄的用户
+
+2、先按照用户的地区分组，再按照年龄分组
+
+~~~java
+Map<String, Map<Integer, List<Customer>>> groupByAreaAndThenByAge = customers.stream().collect(groupingBy(Customer::getArea, groupingBy(Customer::getAge)));
+~~~
+
+3、分组后再统计数量
+
+~~~java
+ Map<String, Long> countInArea = customers.stream().collect(groupingBy(Customer::getArea, counting()));
+~~~
+
+4、以地区分组后再找出年龄最大的
+
+~~~java
+ Map<String, Optional<Customer>> optionalMap = customers.stream().collect(groupingBy(Customer::getArea, maxBy(Comparator.comparing(Customer::getAge))));
+~~~
+
