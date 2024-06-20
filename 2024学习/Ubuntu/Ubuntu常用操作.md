@@ -1,0 +1,1 @@
+打開terminal : Ctrl+Alt+t
