@@ -65,3 +65,7 @@ npm run serve
    ```
 
 这应该能解决你在安装 Element UI 时遇到的依赖冲突问题。如果你还有其他问题或需要进一步的帮助，请告诉我。
+
+# 向后端发送请求
+
+https://blog.csdn.net/weixin_43275277/article/details/131778943
