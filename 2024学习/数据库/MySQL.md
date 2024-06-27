@@ -1,36 +1,12 @@
-Windows的MySQL启动方式
+## 索引
 
+## 为什么使用联合索引
 
+1. 减少开销
 
-打开管理员cmd
+建一个联合索引 `(col1,col2,col3)`，实际相当于建了 `(col1)`，`(col1,col2)`，`(col1,col2,col3)` 三个索引。每多一个索引，都会增加写操作的开销和磁盘空间的开销。对于大量数据的表，使用联合索引会大大的减少开销！
 
-启动服务
+2. 覆盖索引
 
-~~~shell
-net start mysql
-~~~
-
-登录MySQL
-
-~~~shell
-mysql -uroot -p
-~~~
-
-切换数据库
-
-~~~shell
-use mysql;
-~~~
-
-关闭MySQL
-
-~~~shell
-exit
-~~~
-
-关闭服务
-
-~~~shell
-net stop mysql
-~~~
+对联合索引 `(col1,col2,col3)`，如果有如下的 SQL：`select col1,col2,col3 from test where col1=1 and col2=2;`。那么 MySQL 可以直接通过遍历索引取得数据，而无需回表，这减少了很多的随机 IO 操作。减少 IO 操作，特别的随机 IO 其实是 DBA 主要的优化策略。所以，在真正的实际应用中，覆盖索引是主要的提升性能的优化手段之一。
 
