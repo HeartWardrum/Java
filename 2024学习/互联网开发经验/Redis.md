@@ -69,3 +69,106 @@ Remote Dictionary Server
 5. **限流和熔断**：对访问量进行限流，设置熔断机制，防止数据库因大量请求被压垮。
 
 通过这些措施，可以有效防止和缓解穿透雪崩问题，保证系统的稳定性和可用性。
+
+### 并发竞争
+
+并发竞争（Concurrency Competition），也称为竞争条件（Race Condition），是指在多线程或多进程环境下，多个线程或进程同时访问和操作共享资源时，由于访问顺序的不确定性，可能导致数据不一致或程序行为不可预期的问题。以下是一些常见的并发竞争问题和解决方法：
+
+### 常见的并发竞争问题
+
+1. **读-写竞争**：一个线程在读取数据的同时，另一个线程正在写入数据，导致读取到的数据不一致。
+
+2. **写-写竞争**：多个线程同时写入同一个数据，导致最终的数据状态不可预测。
+
+3. **检查-更新竞争**：一个线程在检查某个条件并基于该条件进行更新操作时，另一个线程在检查和更新之间也进行了更新操作，导致数据状态错误。
+
+### 并发竞争的解决方法
+
+1. **锁机制（Locks）**：
+   - **互斥锁（Mutex）**：确保一次只有一个线程能访问共享资源，常用于保护临界区。
+   - **读写锁（Read-Write Lock）**：允许多个线程同时读取数据，但在写入数据时需要独占访问。
+
+2. **信号量（Semaphores）**：用于控制对资源的访问，通过计数机制限制并发线程的数量。
+
+3. **条件变量（Condition Variables）**：允许线程在等待某个条件满足时被挂起，当条件满足时通知等待的线程。
+
+4. **原子操作（Atomic Operations）**：提供对基本数据类型的原子操作，确保操作的不可分割性，常用于计数器、自增变量等简单操作。
+
+5. **无锁编程（Lock-Free Programming）**：通过使用原子操作和内存屏障等技术，实现不依赖锁的并发控制，减少锁竞争带来的性能开销。
+
+6. **事务内存（Transactional Memory）**：通过将一组操作视为一个事务来执行，确保操作要么全部成功，要么全部失败，避免部分操作成功导致的数据不一致。
+
+### 示例代码
+
+以下是一个简单的使用互斥锁来解决并发竞争问题的示例：
+
+```java
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
+
+public class Counter {
+    private int count = 0;
+    private final Lock lock = new ReentrantLock();
+
+    public void increment() {
+        lock.lock();
+        try {
+            count++;
+        } finally {
+            lock.unlock();
+        }
+    }
+
+    public int getCount() {
+        lock.lock();
+        try {
+            return count;
+        } finally {
+            lock.unlock();
+        }
+    }
+
+    public static void main(String[] args) throws InterruptedException {
+        Counter counter = new Counter();
+        Thread t1 = new Thread(() -> {
+            for (int i = 0; i < 1000; i++) {
+                counter.increment();
+            }
+        });
+
+        Thread t2 = new Thread(() -> {
+            for (int i = 0; i < 1000; i++) {
+                counter.increment();
+            }
+        });
+
+        t1.start();
+        t2.start();
+        t1.join();
+        t2.join();
+
+        System.out.println("Final count: " + counter.getCount());
+    }
+}
+```
+
+在这个示例中，`increment` 和 `getCount` 方法使用互斥锁来确保只有一个线程能够访问和修改 `count` 变量，从而避免了并发竞争问题。
+
+理解并发竞争以及如何解决它，是开发健壮和高效并发程序的重要环节。
+
+## Redis数据类型
+
+- String 对应Java  `String` `Map<String,String>`
+- Hash   `HashMap ` `Map<String,Map<String,String>>`
+- List       `LinkedList`     `Map<String,List<String>>`
+- Set    `Map<String,Set<String>>`
+- `zSet` 有序集合   `TreeSet`   `Map<String,SortSet<String>>`
+
+### Redis线程模型
+
+Redis是单线程，为什么这么快？
+
+1. 纯内存操作
+2. 线程模型
+
+ 
